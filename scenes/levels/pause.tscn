@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://djabaayggu771"]
+
+[ext_resource type="Script" uid="uid://xetfp4ip70yu" path="res://scenes/levels/pause.gd" id="1_685k6"]
+[ext_resource type="FontFile" uid="uid://b56h7p1fur2pf" path="res://fonts/batcity.otf" id="2_685k6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_685k6"]
+bg_color = Color(0, 0, 0, 0.61960787)
+
+[sub_resource type="LabelSettings" id="LabelSettings_2brvh"]
+font = ExtResource("2_685k6")
+font_color = Color(0.7294118, 0.23529412, 0.11764706, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Pause" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_685k6")
+metadata/_edit_vertical_guides_ = [0.0, 0.0]
+metadata/_edit_horizontal_guides_ = [0.0]
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_685k6")
+
+[node name="Label" type="Label" parent="PanelContainer"]
+layout_mode = 2
+text = "PAUSE"
+label_settings = SubResource("LabelSettings_2brvh")
+horizontal_alignment = 1
+
+[node name="EnablePauseTimer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[connection signal="timeout" from="EnablePauseTimer" to="." method="_on_enable_pause_timeout"]

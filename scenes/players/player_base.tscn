@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://co0ygwi05urpg"]
+
+[ext_resource type="Script" uid="uid://h03y14783ef7" path="res://scenes/players/player_base.gd" id="1_et4ps"]
+[ext_resource type="Texture2D" uid="uid://cc3862r18228" path="res://sprites/base_eagle.png" id="1_mg6dd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_et4ps"]
+size = Vector2(16, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gndg1"]
+atlas = ExtResource("1_mg6dd")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlb7o"]
+atlas = ExtResource("1_mg6dd")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_etsps"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gndg1")
+}],
+"loop": true,
+"name": &"destroyed",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlb7o")
+}],
+"loop": true,
+"name": &"live",
+"speed": 5.0
+}]
+
+[node name="Player Base" type="StaticBody2D" groups=["Base"]]
+disable_mode = 1
+collision_layer = 256
+collision_mask = 56
+script = ExtResource("1_et4ps")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("RectangleShape2D_et4ps")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_etsps")
+animation = &"live"

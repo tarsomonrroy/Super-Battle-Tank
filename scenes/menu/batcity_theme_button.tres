@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dk24jjlsl1fuu"]
+
+[ext_resource type="FontFile" uid="uid://bvi2edo7cpovj" path="res://fonts/True_Battle_City.ttf" id="1_ewnhh"]
+
+[resource]
+default_font = ExtResource("1_ewnhh")
+default_font_size = 4

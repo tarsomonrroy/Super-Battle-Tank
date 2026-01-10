@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dwuky0cox5ota"]
+
+[ext_resource type="FontFile" uid="uid://26exc3m7fowv" path="res://fonts/retro.ttf" id="1_p5r15"]
+
+[resource]
+default_font = ExtResource("1_p5r15")
+default_font_size = 11

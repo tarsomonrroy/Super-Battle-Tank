@@ -1,0 +1,230 @@
+[gd_scene load_steps=24 format=3 uid="uid://dbsv6qbev1f1a"]
+
+[ext_resource type="StyleBox" uid="uid://bv35ml3p68wbq" path="res://scenes/maker/panel_theme.tres" id="1_edyfa"]
+[ext_resource type="LabelSettings" uid="uid://bb2u8lhx0w2up" path="res://fonts/batcity_settings.tres" id="1_h80a8"]
+[ext_resource type="Script" uid="uid://j4nna6nxhcmo" path="res://scenes/maker/save_level_window.gd" id="1_q1ucx"]
+[ext_resource type="LabelSettings" uid="uid://bfp775vrse8n5" path="res://fonts/batcity_settings_small.tres" id="2_r2duo"]
+[ext_resource type="FontFile" uid="uid://26exc3m7fowv" path="res://fonts/retro.ttf" id="3_lkwct"]
+[ext_resource type="FontFile" uid="uid://b56h7p1fur2pf" path="res://fonts/batcity.otf" id="3_owgkk"]
+[ext_resource type="Theme" uid="uid://dwuky0cox5ota" path="res://fonts/spinbox_theme.tres" id="4_q1ucx"]
+[ext_resource type="Script" uid="uid://b7oweajl6ju14" path="res://scenes/maker/level_name_edit.gd" id="5_n24tn"]
+[ext_resource type="Texture2D" uid="uid://bbao27m1e062w" path="res://sprites/arrow/up.png" id="5_t4145"]
+[ext_resource type="Texture2D" uid="uid://cse83j7dkdyuv" path="res://sprites/arrow/pressed_up.png" id="6_qll0p"]
+[ext_resource type="Texture2D" uid="uid://cnj4bfdd4glg6" path="res://sprites/arrow/disabled_up.png" id="7_wclgq"]
+[ext_resource type="Texture2D" uid="uid://dmjn8rpll2u5n" path="res://sprites/arrow/down.png" id="8_etdtw"]
+[ext_resource type="Texture2D" uid="uid://c0w701quf8028" path="res://sprites/arrow/pressed_down.png" id="9_x04iy"]
+[ext_resource type="Texture2D" uid="uid://cewip2vo7a0sf" path="res://sprites/arrow/disabled_down.png" id="10_ojbfv"]
+[ext_resource type="PackedScene" uid="uid://cdp255njvi8rg" path="res://scenes/maker/tank_list_window.tscn" id="13_qll0p"]
+[ext_resource type="PackedScene" uid="uid://co3jwhfq8nudy" path="res://scenes/maker/tank_setup_window.tscn" id="13_t4145"]
+[ext_resource type="PackedScene" uid="uid://rl4ry72stotm" path="res://scenes/maker/confirm_overwrite.tscn" id="17_hix2w"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lkwct"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q1ucx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t4145"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qll0p"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wclgq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_etdtw"]
+
+[node name="Save Level Window" type="PanelContainer"]
+self_modulate = Color(0, 0, 0, 1)
+z_index = 30
+offset_left = 8.0
+offset_top = 32.0
+offset_right = 328.0
+offset_bottom = 224.0
+theme_override_styles/panel = ExtResource("1_edyfa")
+script = ExtResource("1_q1ucx")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_top = 9
+theme_override_constants/margin_bottom = 9
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "SAVE LEVEL"
+label_settings = ExtResource("1_h80a8")
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer1" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+theme_override_constants/margin_left = 15
+
+[node name="HBoxContainer1" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer1"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer1/HBoxContainer1"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "LEVEL NAME:"
+label_settings = ExtResource("2_r2duo")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer1/HBoxContainer1"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/margin_left = 4
+
+[node name="LevelNameEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/MarginContainer1/HBoxContainer1/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+focus_mode = 1
+theme_override_constants/minimum_character_width = 18
+theme_override_fonts/font = ExtResource("3_lkwct")
+theme_override_font_sizes/font_size = 11
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lkwct")
+text = "custom_level"
+placeholder_text = "level_name"
+drag_and_drop_selection_enabled = false
+select_all_on_focus = true
+script = ExtResource("5_n24tn")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "BOTS SETUP"
+label_settings = ExtResource("2_r2duo")
+
+[node name="CheckQuick" type="CheckBox" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_q1ucx")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_q1ucx")
+button_pressed = true
+text = "Quickly"
+
+[node name="CheckManual" type="CheckBox" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_q1ucx")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_t4145")
+text = "Manually"
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer2"]
+layout_mode = 2
+text = "TOTAL BOTS:"
+label_settings = ExtResource("2_r2duo")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+
+[node name="TotalBotsSpin" type="SpinBox" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer2/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("4_q1ucx")
+theme_override_icons/up = ExtResource("5_t4145")
+theme_override_icons/up_hover = ExtResource("5_t4145")
+theme_override_icons/up_pressed = ExtResource("6_qll0p")
+theme_override_icons/up_disabled = ExtResource("7_wclgq")
+theme_override_icons/down = ExtResource("8_etdtw")
+theme_override_icons/down_hover = ExtResource("8_etdtw")
+theme_override_icons/down_pressed = ExtResource("9_x04iy")
+theme_override_icons/down_disabled = ExtResource("10_ojbfv")
+min_value = 20.0
+value = 20.0
+alignment = 1
+
+[node name="BotSetup" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_owgkk")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qll0p")
+text = "SETUP"
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer3"]
+layout_mode = 2
+text = "SPAWN TIME:"
+label_settings = ExtResource("2_r2duo")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer3"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+
+[node name="SpawnTimeSpin" type="SpinBox" parent="MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer3/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("4_q1ucx")
+theme_override_icons/up = ExtResource("5_t4145")
+theme_override_icons/up_hover = ExtResource("5_t4145")
+theme_override_icons/up_pressed = ExtResource("6_qll0p")
+theme_override_icons/up_disabled = ExtResource("7_wclgq")
+theme_override_icons/down = ExtResource("8_etdtw")
+theme_override_icons/down_hover = ExtResource("8_etdtw")
+theme_override_icons/down_pressed = ExtResource("9_x04iy")
+theme_override_icons/down_disabled = ExtResource("10_ojbfv")
+min_value = 1.0
+max_value = 5.0
+step = 0.1
+value = 2.5
+alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="CancelButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_owgkk")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wclgq")
+text = "CANCEL"
+
+[node name="SaveButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_owgkk")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/focus = SubResource("StyleBoxEmpty_etdtw")
+disabled = true
+text = "SAVE"
+
+[node name="Tank List Window" parent="." instance=ExtResource("13_qll0p")]
+visible = false
+layout_mode = 2
+
+[node name="Tank Setup Window" parent="." instance=ExtResource("13_t4145")]
+visible = false
+layout_mode = 2
+
+[node name="Confirm Overwrite" parent="." instance=ExtResource("17_hix2w")]
+visible = false
+layout_mode = 2
+
+[connection signal="toggled" from="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckQuick" to="." method="_on_check_quick_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckManual" to="." method="_on_check_manual_toggled"]

@@ -1,0 +1,764 @@
+[gd_scene load_steps=26 format=3 uid="uid://88aplvsiyxdi"]
+
+[ext_resource type="Script" uid="uid://dvrjoi84ykn12" path="res://scenes/menu/main_menu.gd" id="1_3rkf3"]
+[ext_resource type="Texture2D" uid="uid://cld8j7txywo5g" path="res://sprites/main_menu.png" id="2_247la"]
+[ext_resource type="FontFile" uid="uid://b56h7p1fur2pf" path="res://fonts/batcity.otf" id="3_247la"]
+[ext_resource type="Texture2D" uid="uid://dmi2juboe7xsf" path="res://sprites/options_menu.png" id="3_qgo02"]
+[ext_resource type="LabelSettings" uid="uid://bfp775vrse8n5" path="res://fonts/batcity_settings_small.tres" id="3_xn6kt"]
+[ext_resource type="Texture2D" uid="uid://1krni5ns08dn" path="res://sprites/icon_left.png" id="4_hj162"]
+[ext_resource type="FontFile" uid="uid://cwbnydkueulh7" path="res://fonts/battle_city.otf" id="5_isoef"]
+[ext_resource type="Theme" uid="uid://dk24jjlsl1fuu" path="res://scenes/menu/batcity_theme_button.tres" id="5_vovv2"]
+[ext_resource type="Texture2D" uid="uid://dkek315wi1rr3" path="res://sprites/icon_right.png" id="5_xn6kt"]
+
+[sub_resource type="Animation" id="Animation_hj162"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainMenu:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(168, 360)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CreditsText:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 457)]
+}
+
+[sub_resource type="Animation" id="Animation_isoef"]
+resource_name = "finished"
+length = 0.001
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainMenu:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(168, 120)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CreditsText:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 216)]
+}
+
+[sub_resource type="Animation" id="Animation_kiqgm"]
+resource_name = "start"
+length = 2.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainMenu:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(168, 360), Vector2(168, 120)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CreditsText:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 457), Vector2(0, 216)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xn6kt"]
+_data = {
+&"RESET": SubResource("Animation_hj162"),
+&"finished": SubResource("Animation_isoef"),
+&"start": SubResource("Animation_kiqgm")
+}
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1k4da"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vovv2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kiqgm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_247la"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hj162"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xn6kt"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_isoef"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qgo02"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_isoef"]
+bg_color = Color(1, 1, 1, 1)
+border_width_top = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_qgo02"]
+font = ExtResource("3_247la")
+font_size = 8
+
+[sub_resource type="LabelSettings" id="LabelSettings_vovv2"]
+font = ExtResource("3_247la")
+font_size = 8
+
+[sub_resource type="LabelSettings" id="LabelSettings_isoef"]
+font = ExtResource("5_isoef")
+font_size = 8
+font_color = Color(0.7294118, 0.23529412, 0.11764706, 1)
+
+[node name="Main Menu" type="Node2D"]
+script = ExtResource("1_3rkf3")
+metadata/_edit_vertical_guides_ = [0.0]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 336.0
+offset_bottom = 256.0
+color = Color(0, 0, 0, 1)
+
+[node name="MainMenu" type="Sprite2D" parent="."]
+position = Vector2(168, 360)
+scale = Vector2(1.0625, 1.0714285)
+texture = ExtResource("2_247la")
+
+[node name="OptionMenu" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(168, 120)
+scale = Vector2(1.0625, 1.0714285)
+texture = ExtResource("3_qgo02")
+
+[node name="CreditsText" type="Label" parent="."]
+offset_top = 457.0
+offset_right = 352.0
+offset_bottom = 492.0
+text = "© 1980 1985 NANCO LTD.
+© BIOS AXIS - 2025"
+label_settings = ExtResource("3_xn6kt")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_xn6kt")
+}
+
+[node name="Menu" type="Node2D" parent="."]
+
+[node name="PanelContainer1" type="PanelContainer" parent="Menu"]
+offset_left = 48.0
+offset_right = 288.0
+offset_bottom = 24.0
+size_flags_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_1k4da")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Menu/PanelContainer1"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="HiScoreTitle" type="Label" parent="Menu/PanelContainer1/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+text = "HIGHSCORE 1P -"
+label_settings = ExtResource("3_xn6kt")
+vertical_alignment = 1
+
+[node name="HiScoreValue1" type="Label" parent="Menu/PanelContainer1/HBoxContainer"]
+visible = false
+layout_mode = 2
+text = "000000"
+label_settings = ExtResource("3_xn6kt")
+vertical_alignment = 1
+
+[node name="HiScoreValue2" type="Label" parent="Menu/PanelContainer1/HBoxContainer"]
+visible = false
+layout_mode = 2
+text = "000000"
+label_settings = ExtResource("3_xn6kt")
+vertical_alignment = 1
+
+[node name="HiScoreValue3" type="Label" parent="Menu/PanelContainer1/HBoxContainer"]
+visible = false
+layout_mode = 2
+text = "000000"
+label_settings = ExtResource("3_xn6kt")
+vertical_alignment = 1
+
+[node name="HiScoreValue4" type="Label" parent="Menu/PanelContainer1/HBoxContainer"]
+visible = false
+layout_mode = 2
+text = "000000"
+label_settings = ExtResource("3_xn6kt")
+vertical_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="Menu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 336.0
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_vovv2")
+
+[node name="Players" type="Label" parent="Menu/PanelContainer2"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+text = "1 PLAYER MODE"
+label_settings = ExtResource("3_xn6kt")
+
+[node name="Page1" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(168, 168)
+
+[node name="PageContainer" type="PanelContainer" parent="Page1"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.5
+offset_top = -20.5
+offset_right = 46.5
+offset_bottom = 20.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_kiqgm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Page1/PageContainer"]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="PlayGame" type="Button" parent="Page1/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "PLAY GAME"
+
+[node name="Options" type="Button" parent="Page1/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "OPTIONS"
+
+[node name="Construction" type="Button" parent="Page1/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "CONSTRUCTION"
+
+[node name="ExitGame" type="Button" parent="Page1/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "EXIT GAME"
+
+[node name="Page2" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(168, 168)
+
+[node name="PageContainer" type="PanelContainer" parent="Page2"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.5
+offset_top = -20.5
+offset_right = 46.5
+offset_bottom = 20.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_kiqgm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Page2/PageContainer"]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="1Player" type="Button" parent="Page2/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "1 PLAYER"
+
+[node name="2Player" type="Button" parent="Page2/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "2 PLAYERS"
+
+[node name="3Player" type="Button" parent="Page2/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "3 PLAYERS"
+
+[node name="4Player" type="Button" parent="Page2/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "4 PLAYERS"
+
+[node name="Page3" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(168, 168)
+
+[node name="PageContainer" type="PanelContainer" parent="Page3"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.5
+offset_top = -20.5
+offset_right = 46.5
+offset_bottom = 20.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_kiqgm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Page3/PageContainer"]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="Campaign" type="Button" parent="Page3/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "START CAMPAIGN"
+
+[node name="Freeplay" type="Button" parent="Page3/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "FREEPLAY"
+
+[node name="Custom" type="Button" parent="Page3/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "CUSTOM LEVELS"
+
+[node name="Survival" type="Button" parent="Page3/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "SURVIVAL"
+
+[node name="Page4" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(168, 152)
+
+[node name="PageContainer" type="PanelContainer" parent="Page4"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -106.0
+offset_top = -27.0
+offset_right = 105.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_kiqgm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Page4/PageContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 7
+
+[node name="FreeToCampaign" type="Button" parent="Page4/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "FREEPLAY TO CAMPAIGN - OFF"
+alignment = 0
+
+[node name="BotBonus" type="Button" parent="Page4/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "BOTS USE BONUS - OFF"
+alignment = 0
+
+[node name="HardMode" type="Button" parent="Page4/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "HARD MODE - OFF"
+alignment = 0
+
+[node name="AutoFire" type="Button" parent="Page4/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "AUTO FIRE - OFF"
+alignment = 0
+
+[node name="Language" type="Button" parent="Page4/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "LANGUAGE: ENGLISH"
+alignment = 0
+
+[node name="Gamepad" type="Button" parent="Page4/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "GAMEPADS"
+
+[node name="Page5" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(168, 160)
+
+[node name="PageContainer" type="PanelContainer" parent="Page5"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -12.5
+offset_right = 48.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_kiqgm")
+
+[node name="VBoxContainerGeneral" type="VBoxContainer" parent="Page5/PageContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Page5/PageContainer/VBoxContainerGeneral"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "CONSTRUCTION"
+label_settings = ExtResource("3_xn6kt")
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Page5/PageContainer/VBoxContainerGeneral"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_isoef")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Page5/PageContainer/VBoxContainerGeneral"]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="NewConstruction" type="Button" parent="Page5/PageContainer/VBoxContainerGeneral/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "NEW LEVEL"
+
+[node name="LoadConstruction" type="Button" parent="Page5/PageContainer/VBoxContainerGeneral/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "LOAD LEVEL"
+
+[node name="Page6" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(168, 176)
+
+[node name="PageContainer" type="PanelContainer" parent="Page6"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.5
+offset_top = -12.5
+offset_right = 46.5
+offset_bottom = 12.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_kiqgm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Page6/PageContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Title" type="Label" parent="Page6/PageContainer/VBoxContainer"]
+layout_mode = 2
+text = "CHOOSE LEVEL:"
+label_settings = ExtResource("3_xn6kt")
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Page6/PageContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_isoef")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Page6/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Left" type="Label" parent="Page6/PageContainer/VBoxContainer/HBoxContainer"]
+self_modulate = Color(0.30980393, 0.30980393, 0.30980393, 1)
+layout_mode = 2
+text = "<"
+label_settings = SubResource("LabelSettings_qgo02")
+
+[node name="LevelName" type="Label" parent="Page6/PageContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "NO LEVELS TO LOAD"
+label_settings = ExtResource("3_xn6kt")
+
+[node name="Right" type="Label" parent="Page6/PageContainer/VBoxContainer/HBoxContainer"]
+self_modulate = Color(0.30980393, 0.30980393, 0.30980393, 1)
+layout_mode = 2
+text = ">"
+label_settings = SubResource("LabelSettings_vovv2")
+
+[node name="LevelScore" type="Label" parent="Page6/PageContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "
+SCORE: 000000"
+label_settings = ExtResource("3_xn6kt")
+horizontal_alignment = 1
+
+[node name="Error" type="Label" parent="Page6/PageContainer/VBoxContainer"]
+layout_mode = 2
+text = "INVALID LEVEL!!!"
+label_settings = SubResource("LabelSettings_isoef")
+horizontal_alignment = 1
+
+[node name="Page7" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(168, 168)
+
+[node name="PageContainer" type="PanelContainer" parent="Page7"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.5
+offset_top = -12.5
+offset_right = 46.5
+offset_bottom = 12.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_kiqgm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Page7/PageContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Title" type="Label" parent="Page7/PageContainer/VBoxContainer"]
+layout_mode = 2
+text = "EXIT GAME?"
+label_settings = ExtResource("3_xn6kt")
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Page7/PageContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_isoef")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Page7/PageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 40
+
+[node name="ExitYes" type="Button" parent="Page7/PageContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_fonts/font = ExtResource("3_247la")
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "YES"
+
+[node name="ExitNo" type="Button" parent="Page7/PageContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vovv2")
+theme_override_fonts/font = ExtResource("3_247la")
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxEmpty_247la")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_hj162")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xn6kt")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_isoef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qgo02")
+text = "NO"
+
+[node name="IconLeft" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(124, 143)
+texture = ExtResource("4_hj162")
+
+[node name="IconRight" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(211, 143)
+texture = ExtResource("5_xn6kt")
+
+[node name="HiScoreTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="InitialDelayTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="RepeatTimer" type="Timer" parent="."]
+wait_time = 0.075
+one_shot = true
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_finished"]
+[connection signal="timeout" from="HiScoreTimer" to="." method="_on_hi_score_timeout"]
+[connection signal="timeout" from="InitialDelayTimer" to="." method="_on_initial_delay_timeout"]
+[connection signal="timeout" from="RepeatTimer" to="." method="_on_repeat_timeout"]

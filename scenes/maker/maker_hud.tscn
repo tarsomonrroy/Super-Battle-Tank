@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://cj32b4ssyiy1n"]
+
+[ext_resource type="Script" uid="uid://b74kuk8f0dsml" path="res://scenes/maker/maker_hud.gd" id="1_86b6n"]
+
+[node name="Maker Hud" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_86b6n")

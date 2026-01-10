@@ -1,0 +1,166 @@
+[gd_scene load_steps=14 format=3 uid="uid://8ybwg7u5nse7"]
+
+[ext_resource type="Script" uid="uid://ochp13keion6" path="res://scenes/hud/player_panel.gd" id="1_34my4"]
+[ext_resource type="LabelSettings" uid="uid://bfp775vrse8n5" path="res://fonts/batcity_settings_small.tres" id="1_bkcxx"]
+[ext_resource type="Texture2D" uid="uid://bpk82l8bx3fqd" path="res://sprites/bot_1.png" id="2_34my4"]
+[ext_resource type="Texture2D" uid="uid://c7eajdcfembvq" path="res://sprites/bot_2.png" id="3_y3bms"]
+[ext_resource type="Texture2D" uid="uid://86ihql4ksi1h" path="res://sprites/bot_3.png" id="4_jnxyd"]
+[ext_resource type="Texture2D" uid="uid://cgaq7dxemt3yf" path="res://sprites/bot_4.png" id="5_dgvgj"]
+[ext_resource type="FontFile" uid="uid://cwbnydkueulh7" path="res://fonts/battle_city.otf" id="6_0l6er"]
+[ext_resource type="FontFile" uid="uid://bvi2edo7cpovj" path="res://fonts/True_Battle_City.ttf" id="8_y3bms"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_34my4"]
+font = ExtResource("6_0l6er")
+font_size = 8
+font_color = Color(0.7294118, 0.23529412, 0.11764706, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ah5vv"]
+bg_color = Color(1, 1, 1, 1)
+border_width_top = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_y3bms"]
+font = ExtResource("6_0l6er")
+font_size = 8
+font_color = Color(0.9019608, 0.6117647, 0.11372549, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jnxyd"]
+font = ExtResource("8_y3bms")
+font_size = 4
+font_color = Color(0.7294118, 0.23529412, 0.11764706, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_wbhi3"]
+font = ExtResource("6_0l6er")
+font_size = 8
+
+[node name="Player Panel" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -168.0
+offset_top = -128.0
+offset_right = -168.0
+offset_bottom = -128.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_34my4")
+
+[node name="PlayerName" type="Label" parent="."]
+layout_mode = 0
+offset_left = -40.0
+offset_top = 8.0
+offset_right = 40.0
+offset_bottom = 16.0
+text = "PLAYER 1"
+label_settings = SubResource("LabelSettings_34my4")
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 0
+offset_left = -36.0
+offset_top = 16.0
+offset_right = 36.0
+offset_bottom = 24.0
+theme_override_styles/separator = SubResource("StyleBoxFlat_ah5vv")
+
+[node name="TotalScore" type="Label" parent="."]
+layout_mode = 0
+offset_left = -32.0
+offset_top = 24.0
+offset_right = 32.0
+offset_bottom = 32.0
+text = "000000"
+label_settings = SubResource("LabelSettings_y3bms")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bot1" type="Sprite2D" parent="."]
+position = Vector2(-16, 48)
+texture = ExtResource("2_34my4")
+
+[node name="total_bot1" type="Label" parent="."]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 24.0
+offset_bottom = 56.0
+text = "0"
+label_settings = ExtResource("1_bkcxx")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bot2" type="Sprite2D" parent="."]
+position = Vector2(-16, 72)
+texture = ExtResource("3_y3bms")
+
+[node name="total_bot2" type="Label" parent="."]
+layout_mode = 0
+offset_top = 64.0
+offset_right = 24.0
+offset_bottom = 80.0
+text = "0"
+label_settings = ExtResource("1_bkcxx")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bot3" type="Sprite2D" parent="."]
+position = Vector2(-16, 96)
+texture = ExtResource("4_jnxyd")
+
+[node name="total_bot3" type="Label" parent="."]
+layout_mode = 0
+offset_top = 88.0
+offset_right = 24.0
+offset_bottom = 104.0
+text = "0"
+label_settings = ExtResource("1_bkcxx")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bot4" type="Sprite2D" parent="."]
+position = Vector2(-16, 120)
+texture = ExtResource("5_dgvgj")
+
+[node name="total_bot4" type="Label" parent="."]
+layout_mode = 0
+offset_top = 112.0
+offset_right = 24.0
+offset_bottom = 128.0
+text = "0"
+label_settings = ExtResource("1_bkcxx")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="total_bots" type="Label" parent="."]
+layout_mode = 0
+offset_left = -32.0
+offset_top = 136.0
+offset_right = 32.0
+offset_bottom = 144.0
+text = "TOTAL: 0"
+label_settings = ExtResource("1_bkcxx")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="bonus1" type="Label" parent="."]
+layout_mode = 0
+offset_left = -40.0
+offset_top = 152.0
+offset_right = 40.0
+offset_bottom = 160.0
+text = "PERFECT!"
+label_settings = SubResource("LabelSettings_jnxyd")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="bonus2" type="Label" parent="."]
+layout_mode = 0
+offset_left = -40.0
+offset_top = 160.0
+offset_right = 40.0
+offset_bottom = 168.0
+text = "1000 PTS"
+label_settings = SubResource("LabelSettings_wbhi3")
+horizontal_alignment = 1
+vertical_alignment = 1

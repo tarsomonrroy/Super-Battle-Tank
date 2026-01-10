@@ -1,0 +1,14 @@
+AnimationPlayer
+Label
+Node
+ColorRect
+PanelContainer
+HBoxContainer
+Camera2D
+Timer
+CheckBox
+Button
+AnimatedSprite2D
+Node2D
+HSeparator
+MarginContainer

@@ -1,0 +1,108 @@
+[gd_scene load_steps=12 format=3 uid="uid://b6w0clggia3xi"]
+
+[ext_resource type="Texture2D" uid="uid://bfbl0fya88xuw" path="res://sprites/stars.png" id="1_4jnxi"]
+[ext_resource type="Script" uid="uid://bfdkeb4te4yad" path="res://scenes/hud/star.gd" id="2_hqhab"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hqhab"]
+atlas = ExtResource("1_4jnxi")
+region = Rect2(0, 0, 9, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_baaki"]
+atlas = ExtResource("1_4jnxi")
+region = Rect2(9, 0, 9, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibnkv"]
+atlas = ExtResource("1_4jnxi")
+region = Rect2(18, 0, 9, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x4r6w"]
+atlas = ExtResource("1_4jnxi")
+region = Rect2(27, 0, 9, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ehag8"]
+atlas = ExtResource("1_4jnxi")
+region = Rect2(0, 8, 9, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vxkri"]
+atlas = ExtResource("1_4jnxi")
+region = Rect2(9, 8, 9, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pwm60"]
+atlas = ExtResource("1_4jnxi")
+region = Rect2(18, 8, 9, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ba6jx"]
+atlas = ExtResource("1_4jnxi")
+region = Rect2(27, 8, 9, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ehag8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hqhab")
+}],
+"loop": true,
+"name": &"level_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_baaki")
+}],
+"loop": true,
+"name": &"level_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ibnkv")
+}],
+"loop": true,
+"name": &"level_3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x4r6w")
+}],
+"loop": true,
+"name": &"level_4",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ehag8")
+}],
+"loop": true,
+"name": &"super_level_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vxkri")
+}],
+"loop": true,
+"name": &"super_level_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pwm60")
+}],
+"loop": true,
+"name": &"super_level_3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ba6jx")
+}],
+"loop": true,
+"name": &"super_level_4",
+"speed": 5.0
+}]
+
+[node name="Star" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_ehag8")
+animation = &"level_4"
+script = ExtResource("2_hqhab")

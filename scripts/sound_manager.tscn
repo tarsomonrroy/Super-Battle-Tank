@@ -1,0 +1,66 @@
+[gd_scene load_steps=9 format=3 uid="uid://cq5cije5k4ggh"]
+
+[ext_resource type="Script" uid="uid://cmojbx07vng2k" path="res://scripts/sound_manager.gd" id="1_n078j"]
+[ext_resource type="AudioStream" uid="uid://do43uyj02e0gx" path="res://sounds/water_boat.wav" id="4_oevbj"]
+[ext_resource type="AudioStream" uid="uid://x5ndhidnkepr" path="res://sounds/level_intro.ogg" id="5_j5jgh"]
+[ext_resource type="AudioStream" uid="uid://bpk6p56ptrnin" path="res://sounds/score_bit.wav" id="6_smfjq"]
+[ext_resource type="AudioStream" uid="uid://ir0pvnrgemuq" path="res://sounds/cut_tree.wav" id="6_sxob0"]
+[ext_resource type="AudioStream" uid="uid://cp53tf51lhv82" path="res://sounds/game_over.ogg" id="7_gxeqg"]
+[ext_resource type="AudioStream" uid="uid://d2s37aaqilwr7" path="res://sounds/enemy_moving.wav" id="8_viu6q"]
+[ext_resource type="AudioStream" uid="uid://diqgghyrlvwv7" path="res://sounds/player_moving.wav" id="15_p6ntf"]
+
+[node name="Sound Manager" type="Node"]
+script = ExtResource("1_n078j")
+
+[node name="Enemy Moving" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_viu6q")
+
+[node name="Player Moving" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_p6ntf")
+
+[node name="Player Water" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_oevbj")
+
+[node name="Cut Tree" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_sxob0")
+
+[node name="Score Bit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_smfjq")
+
+[node name="Level Intro" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_j5jgh")
+
+[node name="Game Over" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_gxeqg")
+
+[node name="Audios" type="Node" parent="."]
+
+[node name="Audio1" type="AudioStreamPlayer" parent="Audios"]
+mix_target = 2
+
+[node name="Audio2" type="AudioStreamPlayer" parent="Audios"]
+mix_target = 2
+
+[node name="Audio3" type="AudioStreamPlayer" parent="Audios"]
+mix_target = 2
+
+[node name="Audio4" type="AudioStreamPlayer" parent="Audios"]
+mix_target = 2
+
+[node name="Audio5" type="AudioStreamPlayer" parent="Audios"]
+mix_target = 2
+
+[node name="Audio6" type="AudioStreamPlayer" parent="Audios"]
+mix_target = 2
+
+[node name="Audio7" type="AudioStreamPlayer" parent="Audios"]
+mix_target = 2
+
+[node name="Audio8" type="AudioStreamPlayer" parent="Audios"]
+mix_target = 2
+
+[node name="Audio9" type="AudioStreamPlayer" parent="Audios"]
+mix_target = 2
+
+[node name="Audio10" type="AudioStreamPlayer" parent="Audios"]
+mix_target = 2

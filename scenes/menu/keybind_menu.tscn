@@ -1,0 +1,144 @@
+[gd_scene load_steps=11 format=3 uid="uid://bvw7ithigywh0"]
+
+[ext_resource type="LabelSettings" uid="uid://bfp775vrse8n5" path="res://fonts/batcity_settings_small.tres" id="1_12ru7"]
+[ext_resource type="Script" uid="uid://t6w72jowahhq" path="res://scenes/menu/keybind_menu.gd" id="1_fya8w"]
+[ext_resource type="Theme" uid="uid://dk24jjlsl1fuu" path="res://scenes/menu/batcity_theme_button.tres" id="2_h1blc"]
+[ext_resource type="FontFile" uid="uid://b56h7p1fur2pf" path="res://fonts/batcity.otf" id="3_5bqtf"]
+[ext_resource type="StyleBox" uid="uid://qbhbilil3b6e" path="res://scenes/menu/button_flat_stylebox.tres" id="3_evdiu"]
+[ext_resource type="StyleBox" uid="uid://crqnyv302yqnx" path="res://scenes/menu/button_exit_stylebox.tres" id="6_fya8w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_evdiu"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fya8w"]
+bg_color = Color(1, 1, 1, 1)
+border_width_top = 1
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q1f1a"]
+
+[sub_resource type="Theme" id="Theme_n8f4w"]
+default_font = ExtResource("3_5bqtf")
+default_font_size = 8
+
+[node name="Keybind Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fya8w")
+
+[node name="PageContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_right = 336.0
+offset_bottom = 256.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_evdiu")
+
+[node name="MarginContainer" type="MarginContainer" parent="PageContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainerGeneral" type="VBoxContainer" parent="PageContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="Title" type="Label" parent="PageContainer/MarginContainer/VBoxContainerGeneral"]
+layout_mode = 2
+text = "KEYBINDS"
+label_settings = ExtResource("1_12ru7")
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="PageContainer/MarginContainer/VBoxContainerGeneral"]
+layout_mode = 2
+theme_override_constants/separation = 10
+theme_override_styles/separator = SubResource("StyleBoxFlat_fya8w")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PageContainer/MarginContainer/VBoxContainerGeneral"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="ButtonLeft" type="Button" parent="PageContainer/MarginContainer/VBoxContainerGeneral/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_h1blc")
+theme_type_variation = &"FlatButton"
+theme_override_styles/normal = ExtResource("3_evdiu")
+theme_override_styles/pressed = ExtResource("3_evdiu")
+theme_override_styles/hover = ExtResource("3_evdiu")
+theme_override_styles/disabled = ExtResource("3_evdiu")
+theme_override_styles/focus = ExtResource("3_evdiu")
+text = "<"
+
+[node name="PlayerKeys" type="Label" parent="PageContainer/MarginContainer/VBoxContainerGeneral/HBoxContainer"]
+layout_mode = 2
+text = "PLAYER 1"
+label_settings = ExtResource("1_12ru7")
+
+[node name="ButtonRight" type="Button" parent="PageContainer/MarginContainer/VBoxContainerGeneral/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_h1blc")
+theme_type_variation = &"FlatButton"
+theme_override_styles/normal = ExtResource("3_evdiu")
+theme_override_styles/pressed = ExtResource("3_evdiu")
+theme_override_styles/hover = ExtResource("3_evdiu")
+theme_override_styles/disabled = ExtResource("3_evdiu")
+theme_override_styles/focus = ExtResource("3_evdiu")
+text = ">"
+
+[node name="PanelContainer" type="PanelContainer" parent="PageContainer/MarginContainer/VBoxContainerGeneral"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_q1f1a")
+
+[node name="VBoxContainerP1" type="VBoxContainer" parent="PageContainer/MarginContainer/VBoxContainerGeneral/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="VBoxContainerP2" type="VBoxContainer" parent="PageContainer/MarginContainer/VBoxContainerGeneral/PanelContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="VBoxContainerP3" type="VBoxContainer" parent="PageContainer/MarginContainer/VBoxContainerGeneral/PanelContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="VBoxContainerP4" type="VBoxContainer" parent="PageContainer/MarginContainer/VBoxContainerGeneral/PanelContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="back_menu" type="Button" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 232.0
+offset_right = 104.0
+offset_bottom = 249.0
+size_flags_horizontal = 0
+theme = SubResource("Theme_n8f4w")
+theme_type_variation = &"FlatButton"
+theme_override_styles/normal = ExtResource("6_fya8w")
+theme_override_styles/pressed = ExtResource("6_fya8w")
+theme_override_styles/hover = ExtResource("6_fya8w")
+theme_override_styles/disabled = ExtResource("6_fya8w")
+theme_override_styles/focus = ExtResource("6_fya8w")
+text = "BACK TO MENU"
+
+[node name="reset_keys" type="Button" parent="."]
+layout_mode = 0
+offset_left = 208.0
+offset_top = 232.0
+offset_right = 333.0
+offset_bottom = 249.0
+size_flags_horizontal = 0
+theme = SubResource("Theme_n8f4w")
+theme_type_variation = &"FlatButton"
+theme_override_styles/normal = ExtResource("6_fya8w")
+theme_override_styles/pressed = ExtResource("6_fya8w")
+theme_override_styles/hover = ExtResource("6_fya8w")
+theme_override_styles/disabled = ExtResource("6_fya8w")
+theme_override_styles/focus = ExtResource("6_fya8w")
+text = "RESET TO DEFAULT"

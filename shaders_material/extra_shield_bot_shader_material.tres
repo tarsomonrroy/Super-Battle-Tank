@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dk8brke7brir1"]
+
+[ext_resource type="Shader" uid="uid://ch2agukjl534q" path="res://scenes/enemies/pallete_swap.gdshader" id="1_8cgxk"]
+
+[resource]
+shader = ExtResource("1_8cgxk")
+shader_parameter/palette_array_size = 3
+shader_parameter/input_palette_array = PackedColorArray(0, 0.25882354, 0.29411766, 1, 0.6784314, 0.6784314, 0.6784314, 1, 1, 1, 1, 1)
+shader_parameter/output_palette_array = PackedColorArray(0, 0.1764706, 0.4117647, 1, 0, 0.5882353, 0.6117647, 1, 1, 1, 1, 1)

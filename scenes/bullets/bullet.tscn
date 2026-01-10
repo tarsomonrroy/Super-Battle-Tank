@@ -1,0 +1,142 @@
+[gd_scene load_steps=15 format=3 uid="uid://c1qkudjk0jncq"]
+
+[ext_resource type="Texture2D" uid="uid://cd67n03gum7yf" path="res://sprites/bullet.png" id="1_2as5g"]
+[ext_resource type="Script" uid="uid://bt48cxgec6fvf" path="res://scenes/bullets/bullet.gd" id="1_j5eos"]
+[ext_resource type="Texture2D" uid="uid://bgh0y65aitc1c" path="res://sprites/bullet_trail.png" id="3_lj7gv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j5eos"]
+size = Vector2(4.5, 4.5)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0td6m"]
+atlas = ExtResource("1_2as5g")
+region = Rect2(8, 0, 4, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j5eos"]
+atlas = ExtResource("1_2as5g")
+region = Rect2(16, 0, 4, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oklhc"]
+atlas = ExtResource("1_2as5g")
+region = Rect2(12, 0, 4, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xfqhp"]
+atlas = ExtResource("1_2as5g")
+region = Rect2(4, 0, 4, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sboi5"]
+atlas = ExtResource("1_2as5g")
+region = Rect2(0, 0, 4, 4)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_in74g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0td6m")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j5eos")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oklhc")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xfqhp")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sboi5")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0td6m"]
+size = Vector2(2, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oklhc"]
+size = Vector2(2, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xfqhp"]
+size = Vector2(2, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sboi5"]
+size = Vector2(2, 2)
+
+[node name="Bullet" type="Area2D" groups=["Bullet"]]
+z_index = 5
+collision_layer = 32
+collision_mask = 1403
+monitoring = false
+script = ExtResource("1_j5eos")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_j5eos")
+debug_color = Color(0.31099954, 0.40817174, 0.53311706, 0.41960785)
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2, -2)
+sprite_frames = SubResource("SpriteFrames_in74g")
+animation = &"up"
+autoplay = "idle"
+centered = false
+
+[node name="AreaLeftUp" type="Area2D" parent="."]
+position = Vector2(-2.5, -2.5)
+
+[node name="Collision" type="CollisionShape2D" parent="AreaLeftUp"]
+shape = SubResource("RectangleShape2D_0td6m")
+debug_color = Color(0.8080265, 0.29454765, 0, 0.41960785)
+
+[node name="AreaLeftDown" type="Area2D" parent="."]
+position = Vector2(-2.5, 2.5)
+
+[node name="Collision" type="CollisionShape2D" parent="AreaLeftDown"]
+shape = SubResource("RectangleShape2D_oklhc")
+debug_color = Color(0.8080265, 0.29454765, 0, 0.41960785)
+
+[node name="AreaRightUp" type="Area2D" parent="."]
+position = Vector2(2.5, -2.5)
+
+[node name="Collision" type="CollisionShape2D" parent="AreaRightUp"]
+shape = SubResource("RectangleShape2D_xfqhp")
+debug_color = Color(0.9012202, 0.073242985, 9.62615e-08, 0.41960785)
+
+[node name="AreaRightDown" type="Area2D" parent="."]
+position = Vector2(2.5, 2.5)
+
+[node name="Collision" type="CollisionShape2D" parent="AreaRightDown"]
+shape = SubResource("RectangleShape2D_sboi5")
+debug_color = Color(0.9012202, 0.073242985, 9.62615e-08, 0.41960785)
+
+[node name="BulletTrail" type="CPUParticles2D" parent="."]
+position = Vector2(-1, -0.5)
+scale = Vector2(0.25145987, 0.31810266)
+emitting = false
+amount = 5
+texture = ExtResource("3_lj7gv")
+lifetime = 0.05
+speed_scale = 0.2
+gravity = Vector2(0, 0)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

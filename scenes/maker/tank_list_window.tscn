@@ -1,0 +1,67 @@
+[gd_scene load_steps=5 format=3 uid="uid://cdp255njvi8rg"]
+
+[ext_resource type="Script" uid="uid://blx13wjaudnqc" path="res://scenes/maker/tank_list_window.gd" id="1_02b4c"]
+[ext_resource type="LabelSettings" uid="uid://bb2u8lhx0w2up" path="res://fonts/batcity_settings.tres" id="1_h80a8"]
+[ext_resource type="FontFile" uid="uid://b56h7p1fur2pf" path="res://fonts/batcity.otf" id="10_bcjfr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lkwct"]
+bg_color = Color(0, 0, 0, 1)
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[node name="Tank List Window" type="PanelContainer"]
+self_modulate = Color(0, 0, 0, 1)
+z_index = 31
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 312.0
+offset_bottom = 232.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lkwct")
+script = ExtResource("1_02b4c")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_top = 9
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "BOTS TYPE ORDER"
+label_settings = ExtResource("1_h80a8")
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BotListContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="CancelButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_bcjfr")
+text = "CANCEL"
+
+[node name="SaveButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_bcjfr")
+theme_override_font_sizes/font_size = 16
+text = "SAVE"

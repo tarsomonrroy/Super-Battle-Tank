@@ -1,0 +1,11 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://cgdggutjnoqh1"]
+
+[ext_resource type="FontFile" uid="uid://bvi2edo7cpovj" path="res://fonts/True_Battle_City.ttf" id="1_66kmu"]
+
+[resource]
+font = ExtResource("1_66kmu")
+font_size = 4
+font_color = Color(0.7607843, 0.73333335, 0, 1)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(0, 1)

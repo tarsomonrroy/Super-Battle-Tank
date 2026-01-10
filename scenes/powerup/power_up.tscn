@@ -1,0 +1,167 @@
+[gd_scene load_steps=16 format=3 uid="uid://x1i7ns0fsmjb"]
+
+[ext_resource type="Script" uid="uid://c740kkvbkhyug" path="res://scenes/powerup/power_up.gd" id="1_8duvp"]
+[ext_resource type="Texture2D" uid="uid://c32u8x0jg47ll" path="res://sprites/powerups.png" id="1_qu2tc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8duvp"]
+size = Vector2(16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8duvp"]
+atlas = ExtResource("1_qu2tc")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qtv6r"]
+atlas = ExtResource("1_qu2tc")
+region = Rect2(112, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oqqta"]
+atlas = ExtResource("1_qu2tc")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ijk4"]
+atlas = ExtResource("1_qu2tc")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uclxf"]
+atlas = ExtResource("1_qu2tc")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_but2h"]
+atlas = ExtResource("1_qu2tc")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vob4i"]
+atlas = ExtResource("1_qu2tc")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tjqgo"]
+atlas = ExtResource("1_qu2tc")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qtv6r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8duvp")
+}],
+"loop": true,
+"name": &"ammo",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qtv6r")
+}],
+"loop": true,
+"name": &"boat",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oqqta")
+}],
+"loop": true,
+"name": &"clock",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ijk4")
+}],
+"loop": true,
+"name": &"granade",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uclxf")
+}],
+"loop": true,
+"name": &"helmet",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_but2h")
+}],
+"loop": true,
+"name": &"life",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vob4i")
+}],
+"loop": true,
+"name": &"shovel",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tjqgo")
+}],
+"loop": true,
+"name": &"star",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_4ijk4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_oqqta"]
+resource_name = "flicking"
+length = 0.4
+loop_mode = 2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_but2h"]
+_data = {
+&"RESET": SubResource("Animation_4ijk4"),
+&"flicking": SubResource("Animation_oqqta")
+}
+
+[node name="Power Up" type="Area2D" groups=["Powerups"]]
+visible = false
+collision_layer = 128
+collision_mask = 1176
+monitoring = false
+script = ExtResource("1_8duvp")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8duvp")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_qtv6r")
+animation = &"ammo"
+autoplay = "helmet"
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_but2h")
+}
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

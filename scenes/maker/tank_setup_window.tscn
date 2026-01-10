@@ -1,0 +1,190 @@
+[gd_scene load_steps=13 format=3 uid="uid://co3jwhfq8nudy"]
+
+[ext_resource type="Script" uid="uid://3ksd3dowto4h" path="res://scenes/maker/tank_setup_window.gd" id="1_2hccx"]
+[ext_resource type="LabelSettings" uid="uid://bb2u8lhx0w2up" path="res://fonts/batcity_settings.tres" id="2_23h3q"]
+[ext_resource type="LabelSettings" uid="uid://bfp775vrse8n5" path="res://fonts/batcity_settings_small.tres" id="3_3g40y"]
+[ext_resource type="Theme" uid="uid://dwuky0cox5ota" path="res://fonts/spinbox_theme.tres" id="4_jgj15"]
+[ext_resource type="Texture2D" uid="uid://bbao27m1e062w" path="res://sprites/arrow/up.png" id="5_c6v5x"]
+[ext_resource type="Texture2D" uid="uid://cse83j7dkdyuv" path="res://sprites/arrow/pressed_up.png" id="6_wkc8h"]
+[ext_resource type="Texture2D" uid="uid://cnj4bfdd4glg6" path="res://sprites/arrow/disabled_up.png" id="7_fjilx"]
+[ext_resource type="Texture2D" uid="uid://dmjn8rpll2u5n" path="res://sprites/arrow/down.png" id="8_4b01f"]
+[ext_resource type="Texture2D" uid="uid://c0w701quf8028" path="res://sprites/arrow/pressed_down.png" id="9_dwutg"]
+[ext_resource type="Texture2D" uid="uid://cewip2vo7a0sf" path="res://sprites/arrow/disabled_down.png" id="10_y61oh"]
+[ext_resource type="FontFile" uid="uid://b56h7p1fur2pf" path="res://fonts/batcity.otf" id="11_j0sc4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lkwct"]
+bg_color = Color(0, 0, 0, 1)
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[node name="Tank Setup Window" type="PanelContainer"]
+self_modulate = Color(0, 0, 0, 1)
+z_index = 32
+offset_left = 16.0
+offset_top = 40.0
+offset_right = 320.0
+offset_bottom = 216.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lkwct")
+script = ExtResource("1_2hccx")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_top = 9
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "BOTS QUICK SETUP"
+label_settings = ExtResource("2_23h3q")
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="BotListContainer1" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BotListContainer1"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BotListContainer1/HBoxContainer"]
+layout_mode = 2
+text = "TYPE 1:"
+label_settings = ExtResource("3_3g40y")
+
+[node name="TotalBotsSpin1" type="SpinBox" parent="MarginContainer/VBoxContainer/BotListContainer1/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_jgj15")
+theme_override_icons/up = ExtResource("5_c6v5x")
+theme_override_icons/up_hover = ExtResource("5_c6v5x")
+theme_override_icons/up_pressed = ExtResource("6_wkc8h")
+theme_override_icons/up_disabled = ExtResource("7_fjilx")
+theme_override_icons/down = ExtResource("8_4b01f")
+theme_override_icons/down_hover = ExtResource("8_4b01f")
+theme_override_icons/down_pressed = ExtResource("9_dwutg")
+theme_override_icons/down_disabled = ExtResource("10_y61oh")
+value = 20.0
+alignment = 1
+update_on_text_changed = true
+
+[node name="BotListContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BotListContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BotListContainer2/HBoxContainer"]
+layout_mode = 2
+text = "TYPE 2:"
+label_settings = ExtResource("3_3g40y")
+
+[node name="TotalBotsSpin2" type="SpinBox" parent="MarginContainer/VBoxContainer/BotListContainer2/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_jgj15")
+theme_override_icons/up = ExtResource("5_c6v5x")
+theme_override_icons/up_hover = ExtResource("5_c6v5x")
+theme_override_icons/up_pressed = ExtResource("6_wkc8h")
+theme_override_icons/up_disabled = ExtResource("7_fjilx")
+theme_override_icons/down = ExtResource("8_4b01f")
+theme_override_icons/down_hover = ExtResource("8_4b01f")
+theme_override_icons/down_pressed = ExtResource("9_dwutg")
+theme_override_icons/down_disabled = ExtResource("10_y61oh")
+alignment = 1
+update_on_text_changed = true
+
+[node name="BotListContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BotListContainer3"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BotListContainer3/HBoxContainer"]
+layout_mode = 2
+text = "TYPE 3:"
+label_settings = ExtResource("3_3g40y")
+
+[node name="TotalBotsSpin3" type="SpinBox" parent="MarginContainer/VBoxContainer/BotListContainer3/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_jgj15")
+theme_override_icons/up = ExtResource("5_c6v5x")
+theme_override_icons/up_hover = ExtResource("5_c6v5x")
+theme_override_icons/up_pressed = ExtResource("6_wkc8h")
+theme_override_icons/up_disabled = ExtResource("7_fjilx")
+theme_override_icons/down = ExtResource("8_4b01f")
+theme_override_icons/down_hover = ExtResource("8_4b01f")
+theme_override_icons/down_pressed = ExtResource("9_dwutg")
+theme_override_icons/down_disabled = ExtResource("10_y61oh")
+alignment = 1
+update_on_text_changed = true
+
+[node name="BotListContainer4" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BotListContainer4"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BotListContainer4/HBoxContainer"]
+layout_mode = 2
+text = "TYPE 4:"
+label_settings = ExtResource("3_3g40y")
+
+[node name="TotalBotsSpin4" type="SpinBox" parent="MarginContainer/VBoxContainer/BotListContainer4/HBoxContainer"]
+z_index = 31
+layout_mode = 2
+theme = ExtResource("4_jgj15")
+theme_override_icons/up = ExtResource("5_c6v5x")
+theme_override_icons/up_hover = ExtResource("5_c6v5x")
+theme_override_icons/up_pressed = ExtResource("6_wkc8h")
+theme_override_icons/up_disabled = ExtResource("7_fjilx")
+theme_override_icons/down = ExtResource("8_4b01f")
+theme_override_icons/down_hover = ExtResource("8_4b01f")
+theme_override_icons/down_pressed = ExtResource("9_dwutg")
+theme_override_icons/down_disabled = ExtResource("10_y61oh")
+alignment = 1
+update_on_text_changed = true
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="CancelButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("11_j0sc4")
+text = "CANCEL"
+
+[node name="SaveButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("11_j0sc4")
+theme_override_font_sizes/font_size = 16
+disabled = true
+text = "SAVE"
+
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/BotListContainer1/HBoxContainer/TotalBotsSpin1" to="." method="_on_spin_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/BotListContainer2/HBoxContainer/TotalBotsSpin2" to="." method="_on_spin_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/BotListContainer3/HBoxContainer/TotalBotsSpin3" to="." method="_on_spin_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/BotListContainer4/HBoxContainer/TotalBotsSpin4" to="." method="_on_spin_changed"]

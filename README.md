@@ -54,6 +54,26 @@ Define the level name, bot types, total number of bots and spawn interval to sav
 
 Custom Levels directory: "C:\Users\UserName\AppData\Roaming\Godot\app_userdata\Super Battle City\levels"
 
+## Game Bonus
+
+Power-ups offer advantages to players and bots:
+
+**Helmet**: Applies invincibility to the tank that picked up the power-up. Temporary effect.
+
+**Star**: Increases the attack power of the player or all active bots.
+
+**Ammo**: Energizes player bullets or improves armor and increases the speed of all active bots.
+
+**Life**: Grants an extra life to the player or adds +3 shield points to all active bots.
+
+**Clock**: Paralyzes all bots or players in place. Temporary effect.
+
+**Grenade**: Kills all bots or players on the map.
+
+**Shovel**: Protects the base area with metal or removes its current protections. Temporary effect.
+
+**Boat**: Provides a boat for the player or bot to travel on water, in addition to offering a special shield point.
+
 ## Contribution
 Feel free to criticize my fangame as long as you remain calm and respectful, make suggestions, point out errors and offer solutions. It's my first fangame and Godot project, so it may have a bug or two, some poorly written code, or ways to improve it.
 

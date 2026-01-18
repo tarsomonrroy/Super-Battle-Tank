@@ -10,12 +10,15 @@ var freeplay_to_campaign: bool = false
 var auto_fire: bool = false
 var language: String = "english"
 
+var first_start: bool = true
+
 var keybinds_p1: Dictionary = {}
 var keybinds_p2: Dictionary = {}
 var keybinds_p3: Dictionary = {}
 var keybinds_p4: Dictionary = {}
 
 func _ready() -> void:
+	first_start = is_first_run()
 	_load_controller_database()
 	load_settings()
 	var connected_inputs = Input.get_connected_joypads()
@@ -156,3 +159,6 @@ func _parse_event_from_text(key_text: String, device_id: int = -1) -> InputEvent
 		event.device = device_id
 
 	return event
+
+func is_first_run() -> bool:
+	return not FileAccess.file_exists(OPTIONS_FILE)

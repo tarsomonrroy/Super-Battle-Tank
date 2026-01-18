@@ -44,6 +44,8 @@ extends Node2D
 @onready var initial_delay_timer: Timer = $InitialDelayTimer
 @onready var repeat_timer: Timer = $RepeatTimer
 
+var menu_started: bool = false
+
 var held_direction: int = 0
 
 var level_select_list: Array = []
@@ -89,61 +91,64 @@ func start_menu(skip_intro: bool, start_in: int = 1):
 
 func _process(_delta: float) -> void:
 	if not control_active:
+		if menu_started:
+			return
 		if Input.is_action_just_pressed("game1_pause") or Input.is_action_just_pressed("menu_accept"):
 			start_menu(true, 1)
 		return
-
-	elif current_page == page_6:
-		var just_pressed_direction = 0
-		if Input.is_action_just_pressed("game1_right") or Input.is_action_just_pressed("menu_right"):
-			just_pressed_direction = 1
-		elif Input.is_action_just_pressed("game1_left") or Input.is_action_just_pressed("menu_left"):
-			just_pressed_direction = -1
-		
-		if just_pressed_direction != 0:
-			held_direction = just_pressed_direction
-			_move_level_selection(held_direction)
-			initial_delay_timer.start()
-			repeat_timer.stop()
-		
-		var is_held_button_still_pressed = false
-		if held_direction == 1 and (Input.is_action_pressed("game1_right") or Input.is_action_pressed("menu_right")):
-			is_held_button_still_pressed = true
-		elif held_direction == -1 and (Input.is_action_pressed("game1_left") or Input.is_action_pressed("menu_left")):
-			is_held_button_still_pressed = true
-
-		if held_direction != 0 and not is_held_button_still_pressed:
-			held_direction = 0
-			initial_delay_timer.stop()
-			repeat_timer.stop()
-
-		if Input.is_action_just_pressed("game1_pause") or Input.is_action_just_pressed("menu_accept"):
-			control_active = false
-			_activate_level_selection()
-		elif Input.is_action_just_pressed("game1_exit") or Input.is_action_just_pressed("menu_back"):
-			change_page(previous_page_index)
-
 	else:
-		if current_page == page_7:
-			if Input.is_action_just_pressed("game1_left") or Input.is_action_just_pressed("menu_left"):
-				_move_selection(-1)
-			elif Input.is_action_just_pressed("game1_right") or Input.is_action_just_pressed("menu_right"):
-				_move_selection(1)
-		else:
-			if Input.is_action_just_pressed("game1_up") or Input.is_action_just_pressed("menu_up"):
-				_move_selection(-1)
-			elif Input.is_action_just_pressed("game1_down") or Input.is_action_just_pressed("menu_down"):
-				_move_selection(1)
+		if current_page == page_6:
+			var just_pressed_direction = 0
+			if Input.is_action_just_pressed("game1_right") or Input.is_action_just_pressed("menu_right"):
+				just_pressed_direction = 1
+			elif Input.is_action_just_pressed("game1_left") or Input.is_action_just_pressed("menu_left"):
+				just_pressed_direction = -1
+			
+			if just_pressed_direction != 0:
+				held_direction = just_pressed_direction
+				_move_level_selection(held_direction)
+				initial_delay_timer.start()
+				repeat_timer.stop()
+			
+			var is_held_button_still_pressed = false
+			if held_direction == 1 and (Input.is_action_pressed("game1_right") or Input.is_action_pressed("menu_right")):
+				is_held_button_still_pressed = true
+			elif held_direction == -1 and (Input.is_action_pressed("game1_left") or Input.is_action_pressed("menu_left")):
+				is_held_button_still_pressed = true
 
-		if Input.is_action_just_pressed("game1_pause") or Input.is_action_just_pressed("menu_accept"):
-			_activate_current_option()
-		elif Input.is_action_just_pressed("game1_exit") or Input.is_action_just_pressed("menu_back"):
-			_back_current_menu()
-	
-	if Input.is_action_just_pressed("game1_shoot") or Input.is_action_just_pressed("menu_action"):
-		if hi_score_timer.is_inside_tree():
-			hi_score_timer.start()
-		_update_hi_score_texts(1)
+			if held_direction != 0 and not is_held_button_still_pressed:
+				held_direction = 0
+				initial_delay_timer.stop()
+				repeat_timer.stop()
+
+			if Input.is_action_just_pressed("game1_pause") or Input.is_action_just_pressed("menu_accept"):
+				control_active = false
+				_activate_level_selection()
+			elif Input.is_action_just_pressed("game1_exit") or Input.is_action_just_pressed("menu_back"):
+				SoundManager.play_sound("menu_blocked")
+				change_page(previous_page_index)
+
+		else:
+			if current_page == page_7:
+				if Input.is_action_just_pressed("game1_left") or Input.is_action_just_pressed("menu_left"):
+					_move_selection(-1)
+				elif Input.is_action_just_pressed("game1_right") or Input.is_action_just_pressed("menu_right"):
+					_move_selection(1)
+			else:
+				if Input.is_action_just_pressed("game1_up") or Input.is_action_just_pressed("menu_up"):
+					_move_selection(-1)
+				elif Input.is_action_just_pressed("game1_down") or Input.is_action_just_pressed("menu_down"):
+					_move_selection(1)
+
+			if Input.is_action_just_pressed("game1_pause") or Input.is_action_just_pressed("menu_accept"):
+				_activate_current_option()
+			elif Input.is_action_just_pressed("game1_exit") or Input.is_action_just_pressed("menu_back"):
+				_back_current_menu()
+		
+		if Input.is_action_just_pressed("game1_shoot") or Input.is_action_just_pressed("menu_action"):
+			if hi_score_timer.is_inside_tree():
+				hi_score_timer.start()
+			_update_hi_score_texts(1)
 
 func _on_initial_delay_timeout() -> void:
 	if held_direction == 0:
@@ -201,6 +206,7 @@ func _on_animation_finished(_anim_name: StringName) -> void:
 	_update_hi_score_texts(0)
 	_update_hi_score()
 	control_active = true
+	menu_started = true
 	change_page(start_page)
 
 func _on_button_pressed(button_name: String) -> void:
@@ -225,6 +231,7 @@ func _on_button_pressed(button_name: String) -> void:
 
 		# Page 3
 		"Campaign":
+			control_active = false
 			to_level_scene(Global.GamePlay.CAMPAIGN, "level_1")
 
 		"Freeplay":
@@ -276,6 +283,7 @@ func _on_button_pressed(button_name: String) -> void:
 
 		# Page 5
 		"NewConstruction":
+			control_active = false
 			to_maker_scene()
 
 		"LoadConstruction":
@@ -359,17 +367,21 @@ func to_maker_scene(filename: String = ""):
 
 func _move_selection(direction: int) -> void:
 	current_index = wrapi(current_index + direction, 0, current_page_buttons.size())
+	SoundManager.play_sound("menu_select")
 	_update_cursor_position()
 
 func _activate_current_option() -> void:
 	var button: Button = current_page_buttons[current_index]
 	button.emit_signal("pressed")
+	SoundManager.play_sound("menu_accept")
 	_update_cursor_position()
 
 func _back_current_menu() -> void:
 	if current_page == page_4:
 		SettingsManager.save_settings()
-	change_page(1)
+	if current_page != page_1:
+		SoundManager.play_sound("menu_blocked")
+		change_page(1)
 
 func change_page(page: int):
 	control_active = false
@@ -425,6 +437,7 @@ func change_page(page: int):
 		start_level_selection()
 	else:
 		_update_cursor_position()
+
 	control_active = true
 
 func _update_cursor_position() -> void:
@@ -529,12 +542,14 @@ func _move_level_selection(direction: int):
 func _activate_level_selection():
 	if level_select_list.is_empty():
 		control_active = true
+		SoundManager.play_sound("menu_blocked")
 		return
 
 	var levelname: String = level_select_list[level_select_index]
 
 	if not validate_level_file(levelname):
 		page6_error.modulate = Color(1.0, 1.0, 1.0, 1.0)
+		SoundManager.play_sound("menu_blocked")
 		return
 
 	if Global.current_game_mode == Global.GameMode.PLAY:

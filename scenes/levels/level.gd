@@ -51,6 +51,8 @@ var spawn_points: Array = []
 @export var spawn_point3: Vector2 = Vector2(264.0, 32.0)
 @export var spawn_order: int = 1
 
+var has_water_tiles: bool = false
+
 var spawn_interval: float = 3.5
 var max_active_enemies: int = 4
 var total_bots_in_level: int = 20
@@ -430,7 +432,15 @@ func upgrade_active_bots():
 		return
 	for bot in bot_arr:
 		if bot.is_in_group("Enemies") or bot.is_in_group("EnemiesDisabled"):
-			bot.toggle_cut_tree()
+			bot.upgrade_armor()
+
+func arms_active_bots():
+	var bot_arr:Array = enemy_container.get_children()
+	if bot_arr.is_empty():
+		return
+	for bot in bot_arr:
+		if bot.is_in_group("Enemies") or bot.is_in_group("EnemiesDisabled"):
+			bot.add_star()
 
 func protect_active_bots():
 	var bot_arr:Array = enemy_container.get_children()
@@ -663,7 +673,19 @@ func load_level(levelname: String) -> bool:
 		base_area_position = "down"
 	
 	spawn_points = [spawn_point1, spawn_point2, spawn_point3]
+	check_if_level_has_water()
 	return true
+
+func check_if_level_has_water() -> void:
+	has_water_tiles = false
+	var used_cells := terrain.get_used_cells()
+	for cell_pos in used_cells:
+		var tile_data := terrain.get_cell_tile_data(cell_pos)
+		if tile_data:
+			var tile_type = tile_data.get_custom_data("Type")
+			if tile_type == "water":
+				has_water_tiles = true
+				return
 
 func goto_menu():
 	LoadingScreen.play_transition_to_scene("res://scenes/menu/main_menu.tscn", "")

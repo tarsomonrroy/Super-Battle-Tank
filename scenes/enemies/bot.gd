@@ -17,6 +17,8 @@ signal bot_died
 @onready var turn_timer: Timer = $TurnTimer
 @onready var pallete_timer: Timer = $PalleteTimer
 
+var base_node: Node2D = null
+
 var bots_group_node: Node2D = null
 
 const TILE_SIZE: float = 8.0
@@ -70,6 +72,7 @@ var SHIELD_LOW_PALLETE: Material = preload("res://shaders_material/low_shield_bo
 
 func _ready() -> void:
 	bots_group_node = get_parent()
+	base_node = get_tree().get_first_node_in_group("Base")
 
 func generate_bot(state: int = 1, special: bool = false, reinforcement: bool = false):
 	self.bot_state = state
@@ -208,17 +211,34 @@ func tank_shoot():
 	bullet.position = global_position + get_offset()
 	bullet.bullet_data("bot", cur_state, power)
 
+func get_direction_to_base() -> String:
+	if base_node == null:
+		return "down"
+	var dir = (base_node.global_position - global_position)
+	if abs(dir.x) > abs(dir.y):
+		return "right" if dir.x > 0 else "left"
+	else:
+		return "down" if dir.y > 0 else "up"
+
 func tank_turn():
-	var choices = {}
-	match tank_direction:
-		"up":
-			choices = {"left": 0.5, "right": 0.5, "down": 0.4}
-		"down":
-			choices = {"left": 0.5, "right": 0.5, "up": 0.4}
-		"left":
-			choices = {"up": 0.4, "down": 0.5, "right": 0.4}
-		"right":
-			choices = {"up": 0.4, "down": 0.5, "left": 0.4}
+	var preferred_dir = get_direction_to_base()
+	var choices = {
+		"up": 0.4,
+		"down": 0.4,
+		"left": 0.4,
+		"right": 0.4
+	}
+	choices[preferred_dir] += 0.2
+
+	#match tank_direction:
+		#"up":
+			#choices = {"left": 0.5, "right": 0.5, "down": 0.4}
+		#"down":
+			#choices = {"left": 0.5, "right": 0.5, "up": 0.4}
+		#"left":
+			#choices = {"up": 0.4, "down": 0.5, "right": 0.4}
+		#"right":
+			#choices = {"up": 0.4, "down": 0.5, "left": 0.4}
 
 	var free_dirs: Array = get_free_directions()
 	var brick_dirs: Array = get_brick_directions()
@@ -392,12 +412,12 @@ func apply_invencibility(time: float):
 	is_invencible = true
 	invencible_timer.start(time)
 
-func add_star(_star:bool = false):
+func add_star():
 	power = 4
 	shield += 2
 	verify_shader_material()
 
-func toggle_cut_tree():
+func upgrade_armor():
 	if updated_speed: return
 	updated_speed = true
 	speed += 10.0
@@ -423,11 +443,21 @@ func _on_spawn_animation_finished() -> void:
 	check_collisions()
 	spawn.visible = false
 	sprite.visible = true
-	cur_state = "down"
+	tank_direction = get_spawn_direction_to_base()
+	cur_state = tank_direction
 	sprite.play(cur_state + "_" + str(bot_state))
 	collision.disabled = false
 	start_ai_actions()
 	apply_invencibility(1.0)
+
+func get_spawn_direction_to_base() -> String:
+	if base_node == null:
+		return "down"
+	var dir = base_node.global_position - global_position
+	if abs(dir.x) > abs(dir.y):
+		return "right" if dir.x > 0 else "left"
+	else:
+		return "down" if dir.y > 0 else "up"
 
 func _on_invencible_timeout() -> void:
 	invencible.visible = false

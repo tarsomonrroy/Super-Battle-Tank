@@ -6,12 +6,14 @@ var current_maker_mode: MakerMode = MakerMode.TILE
 
 # Gameplay
 @onready var terrain: TileMapLayer = $Terrain
+@onready var barrier: TileMapLayer = $Barrier
 @onready var player_base: StaticBody2D = $"Player Base"
-@onready var warning: Label = $HUD/Warning
-@onready var warning_timer: Timer = $WarningTimer
+@onready var exit_panel: PanelContainer = $ExitPanel
 
 var spawn_interval: float = 2.5
 var total_bots_in_level: int = 20
+
+var confirmed_exit: bool = false
 
 var base_area_position: String = "down"
 var base_position: Dictionary = {
@@ -137,24 +139,44 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if current_mode == 1 and not in_popup:
-		match current_maker_mode:
-			MakerMode.TILE:
-				_handle_tile_input()
-			MakerMode.BASE:
-				_handle_base_input()
-			MakerMode.SPAWNER:
-				_handle_spawn_input()
+		if not confirmed_exit:
+			match current_maker_mode:
+				MakerMode.TILE:
+					_handle_tile_input()
+				MakerMode.BASE:
+					_handle_base_input()
+				MakerMode.SPAWNER:
+					_handle_spawn_input()
 
 		# Salvar
 		if Input.is_action_just_pressed("menu_accept"):
-			save_level_window.show_popup(level_name, total_bots_in_level, spawn_interval, bot_list)
-			in_popup = true
+			if confirmed_exit:
+				back_editor()
+			else:
+				save_level_window.show_popup(level_name, total_bots_in_level, spawn_interval, bot_list)
+				in_popup = true
 
 		# Sair
 		if Input.is_action_just_pressed("menu_back"):
-			MenuState.skip_intro = true
-			MenuState.start_in = 5
-			goto_menu()
+			if confirmed_exit:
+				exit_game()
+			else:
+				try_exit()
+
+func try_exit():
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	exit_panel.visible = true
+	confirmed_exit = true
+
+func back_editor():
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	exit_panel.visible = false
+	confirmed_exit = false
+
+func exit_game():
+	MenuState.skip_intro = true
+	MenuState.start_in = 5
+	goto_menu()
 
 func _handle_tile_input():
 	maker_cursor.visible = true
@@ -183,12 +205,12 @@ func _handle_tile_input():
 	
 	# Mouse Just Pressed
 	if Input.is_action_just_pressed("game_build"):
-		if not is_valid_drawing_location(map_coords):
+		if not is_valid_short_location(map_coords):
 			SoundManager.play_sound("editor_error")
 			return
 
 	elif Input.is_action_just_pressed("game_destroy"):
-		if not is_valid_drawing_location(map_coords):
+		if not is_valid_short_location(map_coords):
 			SoundManager.play_sound("editor_error")
 			return
 
@@ -301,10 +323,20 @@ func is_valid_drawing_location(map_coords: Vector2i) -> bool:
 	# Margin
 	if not MAKER_BOUNDARY.has_point(map_coords):
 		return false
+	if not is_valid_short_location(map_coords):
+		return false
+	# Free
+	return true
+
+func is_valid_short_location(map_coords: Vector2i) -> bool:
 	# Spawns
 	for zone in exclusion_zones:
 		if zone.has_point(map_coords):
 			return false
+	# Barrier
+	var source_id = barrier.get_cell_source_id(map_coords)
+	if source_id != -1:
+		return false
 	# Free
 	return true
 
@@ -317,8 +349,6 @@ func _is_valid_base_location(new_position_key: String) -> bool:
 		var spawn_rect = Rect2i(spawn_tile_pos, Vector2i(2, 2))
 
 		if proposed_base_rect.intersects(spawn_rect):
-			warning.visible = true
-			warning_timer.start()
 			return false
 
 	return true
@@ -333,7 +363,7 @@ func get_filepath(path_name: String) -> String:
 		var err = DirAccess.make_dir_recursive_absolute(dir_path)
 		if err != OK:
 			print("ERRO CRÍTICO: Não foi possível criar o diretório de save: ", dir_path)
-	return dir_path + path_name + ".bcd"
+	return dir_path + path_name + ".json"
 
 func _on_save_cancelled():
 	in_popup = false
@@ -579,6 +609,3 @@ func _on_hud_icon_pressed(icon_node: Node2D, mode: MakerMode) -> void:
 	current_maker_mode = mode
 	current_item_selected = icon_node
 	option_selected.global_position = current_item_selected.global_position
-
-func _on_warning_timeout() -> void:
-	warning.visible = false

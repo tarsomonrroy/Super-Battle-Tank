@@ -28,10 +28,14 @@ func generate_powerup():
 	visible = true
 
 func _get_powerup() -> String:
-	var powerups: Array
-	powerups = sprite.sprite_frames.get_animation_names()
+	var powerups: Array = sprite.sprite_frames.get_animation_names()
+
+	if not level.has_water_tiles:
+		powerups.erase("boat")
+
 	if powerups.size() > 0:
 		return powerups.pick_random()
+
 	return ""
 
 func _move_to_random():
@@ -90,7 +94,10 @@ func apply_effect(body: Node2D, is_bot: bool):
 		"helmet":
 			body.apply_invencibility(12.0)
 		"star":
-			body.add_star()
+			if is_bot:
+				level.arms_active_bots()
+			else:
+				body.add_star()
 		"ammo":
 			if is_bot:
 				level.upgrade_active_bots()

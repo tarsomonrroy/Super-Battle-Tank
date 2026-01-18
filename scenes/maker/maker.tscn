@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=4 uid="uid://d2gmq1t76bcph"]
+[gd_scene load_steps=46 format=4 uid="uid://d2gmq1t76bcph"]
 
 [ext_resource type="Script" uid="uid://dx5lf8xjc3v1o" path="res://scenes/maker/maker.gd" id="1_llvn3"]
 [ext_resource type="Texture2D" uid="uid://bvs1t1omydjqo" path="res://sprites/option_selected.png" id="2_sfvha"]
@@ -13,16 +13,13 @@
 [ext_resource type="Texture2D" uid="uid://1krni5ns08dn" path="res://sprites/icon_left.png" id="7_kv6oy"]
 [ext_resource type="Texture2D" uid="uid://c2qum1o3s6cj5" path="res://sprites/spawn_point.png" id="7_sfvha"]
 [ext_resource type="PackedScene" uid="uid://bkh13hvw8pygp" path="res://scenes/maker/maker_cursor.tscn" id="8_biqfn"]
+[ext_resource type="LabelSettings" uid="uid://bb2u8lhx0w2up" path="res://fonts/batcity_settings.tres" id="14_qvgvm"]
+[ext_resource type="LabelSettings" uid="uid://bfp775vrse8n5" path="res://fonts/batcity_settings_small.tres" id="15_jvaop"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_sfvha"]
 font = ExtResource("3_y3jvc")
 font_size = 8
 font_color = Color(0, 0, 0, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_kv6oy"]
-font = ExtResource("3_y3jvc")
-font_size = 8
-font_color = Color(0.7294118, 0.23529412, 0.11764706, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iu45a"]
 atlas = ExtResource("3_kjdq4")
@@ -273,6 +270,9 @@ pattern_3 = SubResource("TileMapPattern_rmjfq")
 pattern_4 = SubResource("TileMapPattern_7pb6i")
 pattern_5 = SubResource("TileMapPattern_xfk5q")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4e1vq"]
+bg_color = Color(0, 0, 0, 0.8392157)
+
 [node name="Maker" type="Node2D"]
 script = ExtResource("1_llvn3")
 
@@ -297,16 +297,6 @@ label_settings = SubResource("LabelSettings_sfvha")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
-
-[node name="Warning" type="Label" parent="HUD"]
-visible = false
-offset_top = 240.0
-offset_right = 336.0
-offset_bottom = 259.0
-text = "IT IS NOT POSSIBLE TO MOVE THE BASE"
-label_settings = SubResource("LabelSettings_kv6oy")
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="TileBlock" type="AnimatedSprite2D" parent="HUD"]
 position = Vector2(28, 64)
@@ -601,9 +591,39 @@ position = Vector2(264, 32)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="WarningTimer" type="Timer" parent="."]
-wait_time = 3.0
-one_shot = true
+[node name="ExitPanel" type="PanelContainer" parent="."]
+visible = false
+z_index = 50
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 344.0
+offset_bottom = 264.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4e1vq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ExitPanel"]
+layout_mode = 2
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="ExitPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 10
+
+[node name="Title" type="Label" parent="ExitPanel/VBoxContainer/MarginContainer"]
+layout_mode = 2
+text = "EXIT EDITOR MODE?"
+label_settings = ExtResource("14_qvgvm")
+horizontal_alignment = 1
+
+[node name="Option1" type="Label" parent="ExitPanel/VBoxContainer"]
+layout_mode = 2
+text = "PRESS SELECT TO EXIT"
+label_settings = ExtResource("15_jvaop")
+horizontal_alignment = 1
+
+[node name="Option2" type="Label" parent="ExitPanel/VBoxContainer"]
+layout_mode = 2
+text = "PRESS ENTER TO BACK EDITOR"
+label_settings = ExtResource("15_jvaop")
+horizontal_alignment = 1
 
 [connection signal="timeout" from="SaveMessageTimer" to="." method="_on_save_message_timeout"]
-[connection signal="timeout" from="WarningTimer" to="." method="_on_warning_timeout"]

@@ -65,9 +65,11 @@ func _physics_process(delta: float):
 		sprite.pause()
 		return
 	
-	var input_vector = Vector2.ZERO
+	var move_input := Vector2.ZERO
+	var aim_input := Vector2.ZERO
+	aim_input = get_input_vector()
 	if not is_frozen:
-		input_vector = get_input_vector()
+		move_input = aim_input
 
 	check_floor_type()
 
@@ -75,10 +77,9 @@ func _physics_process(delta: float):
 	if Global.get_cut_tree_state(player_id): bonus_speed += 5.0
 	if Global.get_stars(player_id) == 5: bonus_speed += 5.0
 
-	movement_component.handle_movement(input_vector, delta, bonus_speed)
-
-	if input_vector != Vector2.ZERO:
-		update_rotation_and_animation(input_vector)
+	movement_component.handle_movement(move_input, delta, bonus_speed)
+	if aim_input != Vector2.ZERO:
+		update_rotation_and_animation(aim_input)
 		handle_move_sound()
 	else:
 		sprite.pause()
@@ -204,9 +205,14 @@ func receive_hit(is_fatal: bool = false):
 	if not operating: return
 
 	if on_boat and not is_fatal:
+		if is_on_water:
+			receive_hit(true)
+			return
+
 		toggle_boat(false)
 		SoundManager.play_sound("down_star")
 		apply_invencibility(1.0)
+		return
 
 	elif Global.get_stars(player_id) > 2 and not is_fatal:
 		level.player_hitted = true
@@ -216,6 +222,7 @@ func receive_hit(is_fatal: bool = false):
 		SoundManager.play_sound("down_star")
 		apply_invencibility(1.0)
 		sprite.play(cur_state + "_" + stars_to_anim())
+		return
 
 	else:
 		operating = false
@@ -249,6 +256,7 @@ func receive_hit(is_fatal: bool = false):
 		set_collision_layer_value(4, false)
 		set_collision_mask_value(4, false)
 		set_collision_mask_value(5, false)
+		return
 
 func generate_explosion():
 	var explosion = EXPLOSION_SCENE.instantiate()
@@ -285,6 +293,7 @@ func toggle_boat(enable: bool):
 func is_freeze(enable: bool = true):
 	if enable:
 		is_frozen = true
+		movement_component.stop_immediately()
 		flick_animation.play("flick")
 		freeze_player_timer.start(8.0)
 	else:

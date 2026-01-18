@@ -1,3 +1,6 @@
-res://scenes/intro.tscn
+res://scenes/menu/main_menu.tscn
 res://scenes/enemies/pallete_swap.gdshader
-res://scenes/intro.gd
+res://scenes/menu/main_menu.gd
+res://scenes/enemies/bot.gd
+res://scenes/levels/level.gd
+res://scenes/powerup/power_up.gd

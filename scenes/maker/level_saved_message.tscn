@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://u11d7swkevpg"]
+[gd_scene format=3 uid="uid://u11d7swkevpg"]
 
 [ext_resource type="LabelSettings" uid="uid://bfp775vrse8n5" path="res://fonts/batcity_settings_small.tres" id="1_6a8lt"]
 
@@ -15,7 +15,7 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 corner_detail = 20
 
-[node name="Level Saved Message" type="Control"]
+[node name="Level Saved Message" type="Control" unique_id=264835772]
 z_index = 30
 layout_mode = 3
 anchors_preset = 15
@@ -24,26 +24,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = 48.0
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1871994343]
+layout_mode = 1
+offset_left = 104.0
 offset_top = 88.0
-offset_right = 288.0
+offset_right = 344.0
 offset_bottom = 168.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_vqnbx")
 
-[node name="Label" type="Label" parent="PanelContainer"]
-layout_mode = 2
+[node name="Title" type="Label" parent="." unique_id=1995761254]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 120.0
+offset_right = 342.0
+offset_bottom = 128.0
 text = "LEVEL SAVED SUCCESSFULLY!"
 label_settings = ExtResource("1_6a8lt")
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="."]
+[node name="Message" type="Label" parent="." unique_id=341582690]
 layout_mode = 0
-offset_left = 48.0
-offset_top = 152.0
-offset_right = 286.0
-offset_bottom = 160.0
+offset_left = 104.0
+offset_top = 144.0
+offset_right = 344.0
+offset_bottom = 152.0
 text = "press back to exit"
 label_settings = ExtResource("1_6a8lt")
 horizontal_alignment = 1

@@ -9,6 +9,7 @@ extends Control
 @onready var button_right: Button = $PageContainer/MarginContainer/VBoxContainerGeneral/HBoxContainer/ButtonRight
 @onready var back_menu: Button = $back_menu
 @onready var reset_keys: Button = $reset_keys
+@onready var virtual_controls: Button = $virtual_controls
 
 @onready var input_button_scene = preload("res://scenes/menu/keybind_option.tscn")
 
@@ -28,11 +29,14 @@ var input_actions: Dictionary = {
 }
 
 func _ready() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if OS.get_name() != "Android":
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		virtual_controls.visible = false
 	button_left.pressed.connect(_change_player_keys.bind(-1))
 	button_right.pressed.connect(_change_player_keys.bind(1))
 	back_menu.pressed.connect(_back_to_menu)
 	reset_keys.pressed.connect(_reset_to_default)
+	virtual_controls.pressed.connect(_to_mobile_options)
 	_change_player_keys(0)
 	_create_action_list(false)
 
@@ -72,7 +76,7 @@ func _on_input_button_pressed(container: MarginContainer, action: String):
 		is_remapping = true
 		action_to_remap = action
 		keybind_container = container
-		var msg = Global.get_translated_text("PRESS ANY KEY...")
+		var msg = GameTranslation.get_translated_text("PRESS ANY KEY...")
 		container.find_child("LabelInput").text = msg
 
 func _input(event: InputEvent):
@@ -150,6 +154,9 @@ func _back_to_menu():
 	MenuState.skip_intro = true
 	MenuState.start_in = 4
 	get_tree().change_scene_to_file("res://scenes/menu/main_menu.tscn")
+
+func _to_mobile_options():
+	get_tree().change_scene_to_file("res://scenes/mobile/mobile_options.tscn")
 
 func _save_keybinds(player: int):
 	var binds: Dictionary = {}

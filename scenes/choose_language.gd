@@ -15,12 +15,22 @@ func _ready():
 	options = [
 		$english,
 		$espanol,
-		$portugues
+		$portugues,
+		$francais,
+		$deutsch,
+		$italiano,
+		$nederlands,
+		$magyar,
+		$turk,
+		$русский,
+		$ελληνικά,
+		$bahasaindonesia,
 	]
 	update_focus()
 
 func open():
 	visible = true
+	MobileControl.control_mode("menu")
 	current_index = 0
 	update_focus()
 	can_input = false
@@ -32,15 +42,15 @@ func _process(_delta):
 	if not can_input:
 		return
 
-	if Input.is_action_just_pressed("menu_down"):
+	if Input.is_action_just_pressed("menu_down") or Input.is_action_just_pressed("game1_down"):
 		current_index = (current_index + 1) % options.size()
 		update_focus()
 
-	elif Input.is_action_just_pressed("menu_up"):
+	elif Input.is_action_just_pressed("menu_up") or Input.is_action_just_pressed("game1_up"):
 		current_index = (current_index - 1 + options.size()) % options.size()
 		update_focus()
 
-	elif Input.is_action_just_pressed("menu_accept"):
+	elif Input.is_action_just_pressed("menu_accept") or Input.is_action_just_pressed("game1_pause"):
 		select_language()
 
 func update_focus():
@@ -49,6 +59,7 @@ func update_focus():
 
 func select_language():
 	can_input = false
+	MobileControl.control_mode("hidden")
 	var lang_name := options[current_index].name
 	emit_signal("language_selected", lang_name)
 	anim.play("language_out")

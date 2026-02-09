@@ -315,7 +315,7 @@ func check_chunks(arr: Dictionary, coord: Vector2, tilemap: TileMapLayer) -> Arr
 	for dir in arr.keys():
 		var offset = arr[dir] * TILE_SIZE
 		var check_pos = (global_position + coord) + offset
-		var map_coords = tilemap.local_to_map(check_pos)
+		var map_coords = tilemap.local_to_map(check_pos) - Vector2i(7, 0)
 		var tile_data = tilemap.get_cell_tile_data(map_coords)
 		if tile_data:
 			var type = tile_data.get_custom_data("Type")

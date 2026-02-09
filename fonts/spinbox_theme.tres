@@ -1,6 +1,6 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dwuky0cox5ota"]
+[gd_resource type="Theme" format=3 uid="uid://dwuky0cox5ota"]
 
-[ext_resource type="FontFile" uid="uid://26exc3m7fowv" path="res://fonts/retro.ttf" id="1_p5r15"]
+[ext_resource type="FontFile" uid="uid://bvi2edo7cpovj" path="res://fonts/Super_Battle_City.ttf" id="1_p5r15"]
 
 [resource]
 default_font = ExtResource("1_p5r15")

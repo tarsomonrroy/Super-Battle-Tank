@@ -17,10 +17,10 @@ extends Control
 @onready var starP4: AnimatedSprite2D = $StarsP4/Star
 @onready var valueP4: Label = $StarsP4/Value
 
-@onready var scoreP1: Label = $ScoreP1/Score
-@onready var scoreP2: Label = $ScoreP2/Score
-@onready var scoreP3: Label = $ScoreP3/Score
-@onready var scoreP4: Label = $ScoreP4/Score
+@onready var scoreP1: Label = $ScoreP1/HBoxContainer/Score
+@onready var scoreP2: Label = $ScoreP2/HBoxContainer/Score
+@onready var scoreP3: Label = $ScoreP3/HBoxContainer/Score
+@onready var scoreP4: Label = $ScoreP4/HBoxContainer/Score
 
 @onready var life_hud_p1: Node2D = $LifeHudP1
 @onready var life_hud_p2: Node2D = $LifeHudP2
@@ -32,9 +32,9 @@ extends Control
 @onready var stars_hud_p3: Node2D = $StarsP3
 @onready var stars_hud_p4: Node2D = $StarsP4
 
-@onready var score_hud_p2: Node2D = $ScoreP2
-@onready var score_hud_p3: Node2D = $ScoreP3
-@onready var score_hud_p4: Node2D = $ScoreP4
+@onready var score_hud_p2: Control = $ScoreP2
+@onready var score_hud_p3: Control = $ScoreP3
+@onready var score_hud_p4: Control = $ScoreP4
 
 @onready var level: Label = $Level
 @onready var revives: Label = $Revives
@@ -91,19 +91,19 @@ func toggle_hud_itens():
 
 func define_hud_layout():
 	if players == 1:
-		life_hud_p1.position = Vector2(24.0, 104.0)
-		stars_hud_p1.position = Vector2(24.0, 136.0)
+		life_hud_p1.position = Vector2(88.0, 104.0)
+		stars_hud_p1.position = Vector2(88.0, 136.0)
 
 	elif players == 2:
-		life_hud_p1.position = Vector2(24.0, 104.0)
-		stars_hud_p1.position = Vector2(24.0, 136.0)
+		life_hud_p1.position = Vector2(88.0, 104.0)
+		stars_hud_p1.position = Vector2(88.0, 136.0)
 
-		life_hud_p2.position = Vector2(296.0, 104.0)
-		stars_hud_p2.position = Vector2(296.0, 136.0)
+		life_hud_p2.position = Vector2(344.0, 104.0)
+		stars_hud_p2.position = Vector2(344.0, 136.0)
 
 	elif players == 3:
-		life_hud_p3.position = Vector2(296.0, 104.0)
-		stars_hud_p3.position = Vector2(296.0, 136.0)
+		life_hud_p3.position = Vector2(344.0, 104.0)
+		stars_hud_p3.position = Vector2(344.0, 136.0)
 
 func update_p1_lifes_label(value):
 	lifesP1.text = format_number(value)

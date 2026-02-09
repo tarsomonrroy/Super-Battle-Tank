@@ -2,7 +2,8 @@ extends CanvasLayer
 
 @onready var level: Node2D = $".."
 @onready var enable_pause_timer: Timer = $EnablePauseTimer
-@onready var message: Label = $PanelContainer/Message
+@onready var message: Label = $PanelContainer/VBoxContainer/Message
+@onready var warning: Label = $PanelContainer/VBoxContainer/Warning
 
 var in_transition: bool = true
 var enable_pause: bool = true
@@ -36,10 +37,19 @@ func _process(_delta: float) -> void:
 					try_exit()
 				break
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		if not in_pause:
+			active_pause()
+		else:
+			disable_pause()
+
 func active_pause():
 	in_pause = true
 	message.text = "PAUSE"
 	confirmed_exit = false
+	MobileControl.control_mode("pause")
+	MobileControl.change_sprite_buttons("pause")
 	get_tree().paused = true
 	show()
 	SoundManager.play_sound("pause_game")
@@ -48,20 +58,24 @@ func active_pause():
 
 func disable_pause():
 	in_pause = false
+	MobileControl.control_mode("play")
+	MobileControl.change_sprite_buttons("play")
 	get_tree().paused = false
+	warning.visible = false
 	hide()
 	enable_pause = false
 	enable_pause_timer.start()
 
 func try_exit():
-	var msg1 = Global.get_translated_text("EXIT THE GAME?")
-	var msg2 = Global.get_translated_text("PRESS SELECT AGAIN...")
-	message.text = msg1 + "\n" + msg2
+	message.text = GameTranslation.get_translated_text("EXIT THE GAME?")
+	warning.text = GameTranslation.get_translated_text("PRESS SELECT AGAIN...")
+	warning.visible = true
 	confirmed_exit = true
 
 func exit_game():
 	SoundManager.stop_all_sounds()
 	in_pause = false
+	MobileControl.control_mode("hidden")
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://scenes/menu/main_menu.tscn")
 

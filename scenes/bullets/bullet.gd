@@ -144,7 +144,7 @@ func tile_action(collisor: TileMapLayer, pos: Vector2):
 	var source_id = collisor.get_cell_source_id(map_coords)
 	var type = tile_data.get_custom_data("Type")
 
-	if bullet_power >= 4 or cut_tree:
+	if bullet_power >= 4:
 		if type.begins_with("brick"):
 			collisor.set_cell(map_coords, -1)
 			if shooter == "player":
@@ -205,18 +205,24 @@ func change_speed():
 	match bullet_power:
 		1:
 			speed_velocity = 135.0
-		2, 3:
+			if cut_tree:
+				speed_velocity += 35.0
+		2:
 			speed_velocity = 200.0
 			if cut_tree:
-				speed_velocity += 10.0
+				speed_velocity += 20.0
+		3:
+			speed_velocity = 200.0
+			if cut_tree:
+				speed_velocity += 30.0
 		4:
 			speed_velocity = 200.0
 			if cut_tree:
-				speed_velocity += 25.0
+				speed_velocity += 40.0
 		5:
-			speed_velocity = 235.0
+			speed_velocity = 250.0
 			if cut_tree:
-				speed_velocity += 15.0
+				speed_velocity += 25.0
 
 func change_collision():
 	match shooter:

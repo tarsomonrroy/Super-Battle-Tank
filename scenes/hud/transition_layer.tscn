@@ -1,7 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://chkeg273do4p8"]
+[gd_scene format=3 uid="uid://chkeg273do4p8"]
 
 [ext_resource type="Script" uid="uid://hf5nvk7ua5iu" path="res://scenes/hud/transition_layer.gd" id="1_x1l5h"]
-[ext_resource type="FontFile" uid="uid://bvi2edo7cpovj" path="res://fonts/True_Battle_City.ttf" id="2_aupnp"]
+[ext_resource type="FontFile" uid="uid://bvi2edo7cpovj" path="res://fonts/Super_Battle_City.ttf" id="2_aupnp"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_lvf0i"]
 font = ExtResource("2_aupnp")
@@ -160,22 +160,22 @@ _data = {
 &"open": SubResource("Animation_aupnp")
 }
 
-[node name="Transition Layer" type="CanvasLayer"]
+[node name="Transition Layer" type="CanvasLayer" unique_id=2059224221]
 layer = 100
 script = ExtResource("1_x1l5h")
 
-[node name="ColorTop" type="ColorRect" parent="."]
+[node name="ColorTop" type="ColorRect" parent="." unique_id=482589676]
 offset_top = -128.0
-offset_right = 336.0
+offset_right = 448.0
 color = Color(0.6862745, 0.6862745, 0.6862745, 1)
 
-[node name="ColorBottom" type="ColorRect" parent="."]
+[node name="ColorBottom" type="ColorRect" parent="." unique_id=965197828]
 offset_top = 256.0
-offset_right = 336.0
-offset_bottom = 384.00012
+offset_right = 448.0
+offset_bottom = 384.00006
 color = Color(0.6862745, 0.6862745, 0.6862745, 1)
 
-[node name="LevelName" type="Label" parent="."]
+[node name="LevelName" type="Label" parent="." unique_id=1747735612]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 8
 anchor_left = 0.5
@@ -194,7 +194,8 @@ label_settings = SubResource("LabelSettings_lvf0i")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LevelRound" type="Label" parent="."]
+[node name="LevelRound" type="Label" parent="." unique_id=1810198186]
+modulate = Color(1, 1, 1, 0)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -212,7 +213,5 @@ label_settings = SubResource("LabelSettings_lvf0i")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_aupnp")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=73354988]
+libraries/ = SubResource("AnimationLibrary_aupnp")

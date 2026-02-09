@@ -12,8 +12,25 @@ extends Node
 var in_game_over: bool = false
 var audio_players: Array[AudioStreamPlayer]
 
+var p1_moving: bool = false
+var p2_moving: bool = false
+var p3_moving: bool = false
+var p4_moving: bool = false
+
 func _ready():
 	find_audio_players(audios)
+
+func player_state_moving(player: int, state: bool):
+	match player:
+		1: p1_moving = state
+		2: p2_moving = state
+		3: p3_moving = state
+		4: p4_moving = state
+
+	if p1_moving or p2_moving or p3_moving or p4_moving:
+		play_sound("player_moving")
+	else:
+		stop_sound("player_moving")
 
 func find_audio_players(node: Node):
 	for child in node.get_children():
@@ -23,7 +40,7 @@ func find_audio_players(node: Node):
 			find_audio_players(child)
 
 ## Play a sound in "res://sounds/" by [param name]
-func play_sound(sound_name: String):
+func play_sound(sound_name: String, volume: float = 0.0):
 	var stop_sounds = false
 	if in_game_over:
 		stop_sounds = true
@@ -74,15 +91,16 @@ func play_sound(sound_name: String):
 	
 	var sound: AudioStream = load("res://sounds/" + sound_name + ".wav")
 	if sound == null:
-		push_warning("Nenhum AudioStream ", sound_name, " foi encontrado.")
+		#push_warning("Nenhum AudioStream ", sound_name, " foi encontrado.")
 		return
 
 	var player: AudioStreamPlayer = find_idle_player()
 	if not player:
-		push_warning("Nenhum AudioStream ", sound_name, " foi encontrado.")
+		#push_warning("Nenhum AudioStream ", sound_name, " foi encontrado.")
 		return
 
 	player.stream = sound
+	player.volume_db = volume
 	player.play()
 
 ## Stop the sound [color=yellow] enemy_moving-player_moving[/color] by [param name]

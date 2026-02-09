@@ -1,9 +1,9 @@
-[gd_scene load_steps=46 format=4 uid="uid://d2gmq1t76bcph"]
+[gd_scene format=4 uid="uid://d2gmq1t76bcph"]
 
 [ext_resource type="Script" uid="uid://dx5lf8xjc3v1o" path="res://scenes/maker/maker.gd" id="1_llvn3"]
 [ext_resource type="Texture2D" uid="uid://bvs1t1omydjqo" path="res://sprites/option_selected.png" id="2_sfvha"]
 [ext_resource type="Texture2D" uid="uid://dwawlnhyh5vj6" path="res://sprites/terrain.png" id="3_kjdq4"]
-[ext_resource type="FontFile" uid="uid://cwbnydkueulh7" path="res://fonts/battle_city.otf" id="3_y3jvc"]
+[ext_resource type="LabelSettings" uid="uid://dlu2d5m077to" path="res://fonts/small_black_font.tres" id="3_qvgvm"]
 [ext_resource type="Script" uid="uid://doiawk6t1lsou" path="res://scenes/terrain/tile_map.gd" id="4_48tic"]
 [ext_resource type="Script" uid="uid://bfeua3l2o05cc" path="res://scenes/maker/tile_block.gd" id="5_iu45a"]
 [ext_resource type="Texture2D" uid="uid://cc3862r18228" path="res://sprites/base_eagle.png" id="5_kv6oy"]
@@ -15,11 +15,6 @@
 [ext_resource type="PackedScene" uid="uid://bkh13hvw8pygp" path="res://scenes/maker/maker_cursor.tscn" id="8_biqfn"]
 [ext_resource type="LabelSettings" uid="uid://bb2u8lhx0w2up" path="res://fonts/batcity_settings.tres" id="14_qvgvm"]
 [ext_resource type="LabelSettings" uid="uid://bfp775vrse8n5" path="res://fonts/batcity_settings_small.tres" id="15_jvaop"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_sfvha"]
-font = ExtResource("3_y3jvc")
-font_size = 8
-font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iu45a"]
 atlas = ExtResource("3_kjdq4")
@@ -273,39 +268,43 @@ pattern_5 = SubResource("TileMapPattern_xfk5q")
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4e1vq"]
 bg_color = Color(0, 0, 0, 0.8392157)
 
-[node name="Maker" type="Node2D"]
+[node name="Maker" type="Node2D" unique_id=518843507]
 script = ExtResource("1_llvn3")
 
-[node name="HUD" type="Node2D" parent="."]
+[node name="HUD" type="Node2D" parent="." unique_id=323074627]
+position = Vector2(56, 0)
 
-[node name="interface_bg" type="ColorRect" parent="HUD"]
-offset_right = 336.0
+[node name="interface_bg" type="ColorRect" parent="HUD" unique_id=1801248446]
+offset_left = -56.0
+offset_right = 392.0
 offset_bottom = 256.0
 color = Color(0.2526042, 0.2526042, 0.2526042, 1)
 
-[node name="OptionSelected" type="Sprite2D" parent="HUD"]
-position = Vector2(28, 64)
+[node name="OptionSelected" type="Sprite2D" parent="HUD" unique_id=1205003792]
+position = Vector2(0, 64)
 scale = Vector2(2, 2)
 texture = ExtResource("2_sfvha")
 
-[node name="Block" type="Label" parent="HUD"]
+[node name="Block" type="Label" parent="HUD" unique_id=1711248553]
+offset_left = -48.0
 offset_top = 32.0
-offset_right = 56.0
+offset_right = 48.0
 offset_bottom = 51.0
-text = "CURRENT BLOCK"
-label_settings = SubResource("LabelSettings_sfvha")
+text = "CURRENT
+BLOCK"
+label_settings = ExtResource("3_qvgvm")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="TileBlock" type="AnimatedSprite2D" parent="HUD"]
-position = Vector2(28, 64)
+[node name="TileBlock" type="AnimatedSprite2D" parent="HUD" unique_id=1263298528]
+position = Vector2(0, 64)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_qvgvm")
 animation = &"brick"
 script = ExtResource("5_iu45a")
 
-[node name="IconButton" type="Button" parent="HUD/TileBlock"]
+[node name="IconButton" type="Button" parent="HUD/TileBlock" unique_id=1963933816]
 offset_left = -4.0
 offset_top = -4.0
 offset_right = 4.0
@@ -317,23 +316,24 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_qvgvm")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jvaop")
 flat = true
 
-[node name="Base" type="Label" parent="HUD"]
-offset_left = 280.0
-offset_top = 32.0
-offset_right = 336.0
-offset_bottom = 51.0
-text = "PLAYER BASE"
-label_settings = SubResource("LabelSettings_sfvha")
+[node name="Base" type="Label" parent="HUD" unique_id=2034575257]
+offset_left = 288.0
+offset_top = 44.0
+offset_right = 384.0
+offset_bottom = 63.0
+text = "PLAYER
+BASE"
+label_settings = ExtResource("3_qvgvm")
 horizontal_alignment = 1
 vertical_alignment = 2
 autowrap_mode = 3
 
-[node name="PlayerBase" type="AnimatedSprite2D" parent="HUD"]
-position = Vector2(308, 64)
+[node name="PlayerBase" type="AnimatedSprite2D" parent="HUD" unique_id=1967922192]
+position = Vector2(336, 76)
 sprite_frames = SubResource("SpriteFrames_4e1vq")
 animation = &"base"
 
-[node name="IconButton" type="Button" parent="HUD/PlayerBase"]
+[node name="IconButton" type="Button" parent="HUD/PlayerBase" unique_id=1463974826]
 offset_left = -8.0
 offset_top = -8.0
 offset_right = 8.0
@@ -345,22 +345,24 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_qvgvm")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jvaop")
 flat = true
 
-[node name="Base2" type="Label" parent="HUD"]
+[node name="Spawn" type="Label" parent="HUD" unique_id=509850649]
+offset_left = -48.0
 offset_top = 88.0
-offset_right = 56.0
+offset_right = 48.0
 offset_bottom = 107.0
-text = "MOVE SPAWNS"
-label_settings = SubResource("LabelSettings_sfvha")
+text = "MOVE
+SPAWNS"
+label_settings = ExtResource("3_qvgvm")
 horizontal_alignment = 1
 vertical_alignment = 2
 autowrap_mode = 3
 
-[node name="SelectSpawns" type="Sprite2D" parent="HUD"]
-position = Vector2(28, 120)
+[node name="SelectSpawns" type="Sprite2D" parent="HUD" unique_id=406700641]
+position = Vector2(0, 120)
 scale = Vector2(1.23, 1.23)
 texture = ExtResource("7_kv6oy")
 
-[node name="IconButton" type="Button" parent="HUD/SelectSpawns"]
+[node name="IconButton" type="Button" parent="HUD/SelectSpawns" unique_id=1030809596]
 offset_left = -6.504065
 offset_top = -6.5040665
 offset_right = 6.504066
@@ -372,255 +374,259 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_qvgvm")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jvaop")
 flat = true
 
-[node name="SpawnBots" type="Label" parent="HUD"]
+[node name="SpawnBots" type="Label" parent="HUD" unique_id=1185981075]
+offset_left = -48.0
 offset_top = 144.0
-offset_right = 56.0
+offset_right = 48.0
 offset_bottom = 163.0
-text = "SPAWN BOT"
-label_settings = SubResource("LabelSettings_sfvha")
+text = "SPAWN
+BOT"
+label_settings = ExtResource("3_qvgvm")
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="HudBot" type="Node2D" parent="HUD"]
-position = Vector2(0, 168)
+[node name="HudBot" type="Node2D" parent="HUD" unique_id=703754834]
+position = Vector2(-32, 168)
 
-[node name="Bot1" type="Label" parent="HUD/HudBot"]
+[node name="Bot1" type="Label" parent="HUD/HudBot" unique_id=1804810565]
 offset_left = 8.0
 offset_right = 32.0
 offset_bottom = 16.0
 text = "1-"
-label_settings = SubResource("LabelSettings_sfvha")
+label_settings = ExtResource("3_qvgvm")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BotSpawn1" type="Sprite2D" parent="HUD/HudBot"]
+[node name="BotSpawn1" type="Sprite2D" parent="HUD/HudBot" unique_id=1246591945]
 modulate = Color(0.62, 1, 0.82266665, 1)
 position = Vector2(40, 8)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="Bot2" type="Label" parent="HUD/HudBot"]
+[node name="Bot2" type="Label" parent="HUD/HudBot" unique_id=1242308387]
 offset_left = 8.0
 offset_top = 24.0
 offset_right = 32.0
 offset_bottom = 40.0
 text = "2-"
-label_settings = SubResource("LabelSettings_sfvha")
+label_settings = ExtResource("3_qvgvm")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BotSpawn2" type="Sprite2D" parent="HUD/HudBot"]
+[node name="BotSpawn2" type="Sprite2D" parent="HUD/HudBot" unique_id=1181151026]
 modulate = Color(0.5019608, 0.9843137, 1, 1)
 position = Vector2(40, 32)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="Bot3" type="Label" parent="HUD/HudBot"]
+[node name="Bot3" type="Label" parent="HUD/HudBot" unique_id=1513929453]
 offset_left = 8.0
 offset_top = 48.0
 offset_right = 32.0
 offset_bottom = 64.0
 text = "3-"
-label_settings = SubResource("LabelSettings_sfvha")
+label_settings = ExtResource("3_qvgvm")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BotSpawn3" type="Sprite2D" parent="HUD/HudBot"]
+[node name="BotSpawn3" type="Sprite2D" parent="HUD/HudBot" unique_id=324446390]
 modulate = Color(0.5019608, 0.6901961, 1, 1)
 position = Vector2(40, 56)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="SpawnPlayers" type="Label" parent="HUD"]
-offset_left = 280.0
+[node name="SpawnPlayers" type="Label" parent="HUD" unique_id=1257205420]
+offset_left = 288.0
 offset_top = 96.0
-offset_right = 336.0
+offset_right = 384.0
 offset_bottom = 115.0
-text = "SPAWN PLAYER"
-label_settings = SubResource("LabelSettings_sfvha")
+text = "SPAWN
+PLAYER"
+label_settings = ExtResource("3_qvgvm")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="HudPlayers" type="Node2D" parent="HUD"]
-position = Vector2(280, 120)
+[node name="HudPlayers" type="Node2D" parent="HUD" unique_id=501841188]
+position = Vector2(312, 120)
 
-[node name="Bot1" type="Label" parent="HUD/HudPlayers"]
+[node name="Bot1" type="Label" parent="HUD/HudPlayers" unique_id=1534552092]
 offset_right = 32.0
 offset_bottom = 16.0
 text = "P1-"
-label_settings = SubResource("LabelSettings_sfvha")
+label_settings = ExtResource("3_qvgvm")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerSpawn1" type="Sprite2D" parent="HUD/HudPlayers"]
+[node name="PlayerSpawn1" type="Sprite2D" parent="HUD/HudPlayers" unique_id=675189169]
 modulate = Color(1, 0.7529412, 0.078431375, 1)
 position = Vector2(40, 8)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="Bot2" type="Label" parent="HUD/HudPlayers"]
+[node name="Bot2" type="Label" parent="HUD/HudPlayers" unique_id=899684004]
 offset_top = 24.0
 offset_right = 32.0
 offset_bottom = 40.0
 text = "P2-"
-label_settings = SubResource("LabelSettings_sfvha")
+label_settings = ExtResource("3_qvgvm")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerSpawn2" type="Sprite2D" parent="HUD/HudPlayers"]
+[node name="PlayerSpawn2" type="Sprite2D" parent="HUD/HudPlayers" unique_id=1437767687]
 modulate = Color(0, 1, 0.34901962, 1)
 position = Vector2(40, 32)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="Bot3" type="Label" parent="HUD/HudPlayers"]
+[node name="Bot3" type="Label" parent="HUD/HudPlayers" unique_id=498014762]
 offset_top = 48.0
 offset_right = 32.0
 offset_bottom = 64.0
 text = "P3-"
-label_settings = SubResource("LabelSettings_sfvha")
+label_settings = ExtResource("3_qvgvm")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerSpawn3" type="Sprite2D" parent="HUD/HudPlayers"]
+[node name="PlayerSpawn3" type="Sprite2D" parent="HUD/HudPlayers" unique_id=1589565541]
 modulate = Color(0, 0.23529412, 1, 1)
 position = Vector2(40, 56)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="Bot4" type="Label" parent="HUD/HudPlayers"]
+[node name="Bot4" type="Label" parent="HUD/HudPlayers" unique_id=1504078871]
 offset_top = 72.0
 offset_right = 32.0
 offset_bottom = 88.0
 text = "P4-"
-label_settings = SubResource("LabelSettings_sfvha")
+label_settings = ExtResource("3_qvgvm")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerSpawn4" type="Sprite2D" parent="HUD/HudPlayers"]
+[node name="PlayerSpawn4" type="Sprite2D" parent="HUD/HudPlayers" unique_id=704694223]
 modulate = Color(0.7176471, 0, 1, 1)
 position = Vector2(40, 80)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="game_bg" type="ColorRect" parent="."]
-offset_left = 64.0
+[node name="game_bg" type="ColorRect" parent="." unique_id=1138159038]
+offset_left = 120.0
 offset_top = 24.0
-offset_right = 272.0
+offset_right = 328.0
 offset_bottom = 232.0
 color = Color(0, 0, 0, 1)
 
-[node name="Terrain" type="TileMapLayer" parent="." groups=["Terrain"]]
-position = Vector2(0, 8)
+[node name="Terrain" type="TileMapLayer" parent="." unique_id=448164666 groups=["Terrain"]]
+position = Vector2(56, 8)
 tile_set = SubResource("TileSet_x42e6")
 script = ExtResource("4_48tic")
 
-[node name="Barrier" type="TileMapLayer" parent="." groups=["Terrain"]]
-position = Vector2(0, 8)
+[node name="Barrier" type="TileMapLayer" parent="." unique_id=306104877 groups=["Terrain"]]
+position = Vector2(56, 8)
 tile_map_data = PackedByteArray("AAAIABwAAQAEAAEAAAAUABwAAQAEAAEAAAAXABwAAQAEAAEAAAAiAAMAAQAEAAEAAGAiABIAAQAEAAEAAGAiABMAAQAEAAEAAGAHAAIAAQAEAAEAAFAHAAMAAQAEAAEAAFAHAAQAAQAEAAEAAFAHAAUAAQAEAAEAAFAHAAYAAQAEAAEAAFAHAAcAAQAEAAEAAFAHAAgAAQAEAAEAAFAHAAkAAQAEAAEAAFAHAAoAAQAEAAEAAFAHAAsAAQAEAAEAAFAHAAwAAQAEAAEAAFAHAA0AAQAEAAEAAFAHAA4AAQAEAAEAAFAHAA8AAQAEAAEAAFAHABAAAQAEAAEAAFAHABEAAQAEAAEAAFAHABIAAQAEAAEAAFAHABMAAQAEAAEAAFAHABQAAQAEAAEAAFAHABUAAQAEAAEAAFAHABYAAQAEAAEAAFAHABcAAQAEAAEAAFAHABgAAQAEAAEAAFAHABkAAQAEAAEAAFAHABoAAQAEAAEAAFAHABsAAQAEAAEAAFAHABwAAQADAAEAAGAJABwAAQAEAAEAAAAKABwAAQAEAAEAAAALABwAAQAEAAEAAAAMABwAAQAEAAEAAAANABwAAQAEAAEAAAAOABwAAQAEAAEAAAAPABwAAQAEAAEAAAAQABwAAQAEAAEAAAARABwAAQAEAAEAAAASABwAAQAEAAEAAAATABwAAQAEAAEAAAAVABwAAQAEAAEAAAAWABwAAQAEAAEAAAAYABwAAQAEAAEAAAAZABwAAQAEAAEAAAAaABwAAQAEAAEAAAAbABwAAQAEAAEAAAAcABwAAQAEAAEAAAAdABwAAQAEAAEAAAAeABwAAQAEAAEAAAAfABwAAQAEAAEAAAAgABwAAQAEAAEAAAAhABwAAQAEAAEAAAAiAAQAAQAEAAEAAGAiAAUAAQAEAAEAAGAiAAYAAQAEAAEAAGAiAAcAAQAEAAEAAGAiAAgAAQAEAAEAAGAiAAkAAQAEAAEAAGAiAAoAAQAEAAEAAGAiAAsAAQAEAAEAAGAiAAwAAQAEAAEAAGAiAA0AAQAEAAEAAGAiAA4AAQAEAAEAAGAiAA8AAQAEAAEAAGAiABAAAQAEAAEAAGAiABEAAQAEAAEAAGAiABQAAQAEAAEAAGAiABUAAQAEAAEAAGAiABYAAQAEAAEAAGAiABcAAQAEAAEAAGAiABgAAQAEAAEAAGAiABkAAQAEAAEAAGAiABoAAQAEAAEAAGAiABsAAQAEAAEAAGAiABwAAQADAAEAADAHAAEAAQADAAEAAAAIAAEAAQAEAAEAAAAJAAEAAQAEAAEAAAAKAAEAAQAEAAEAAAALAAEAAQAEAAEAAAAMAAEAAQAEAAEAAAANAAEAAQAEAAEAAAAOAAEAAQAEAAEAAAAPAAEAAQAEAAEAAAAQAAEAAQAEAAEAAAARAAEAAQAEAAEAAAASAAEAAQAEAAEAAAATAAEAAQAEAAEAAAAUAAEAAQAEAAEAAAAVAAEAAQAEAAEAAAAWAAEAAQAEAAEAAAAXAAEAAQAEAAEAAAAYAAEAAQAEAAEAAAAZAAEAAQAEAAEAAAAaAAEAAQAEAAEAAAAbAAEAAQAEAAEAAAAcAAEAAQAEAAEAAAAdAAEAAQAEAAEAAAAeAAEAAQAEAAEAAAAfAAEAAQAEAAEAAAAgAAEAAQAEAAEAAAAiAAIAAQAEAAEAAGAiAAEAAQADAAEAAFAhAAEAAQAEAAEAAAA=")
 tile_set = SubResource("TileSet_x42e6")
 script = ExtResource("4_48tic")
 
-[node name="Player Base" parent="." instance=ExtResource("6_nmmdl")]
+[node name="Player Base" parent="." unique_id=1310738953 instance=ExtResource("6_nmmdl")]
 visible = false
-position = Vector2(168, 224)
+position = Vector2(224, 224)
 
-[node name="Maker Cursor" parent="." instance=ExtResource("8_biqfn")]
+[node name="Maker Cursor" parent="." unique_id=1478312739 instance=ExtResource("8_biqfn")]
 z_index = 15
-position = Vector2(168, 128)
+position = Vector2(224, 128)
 animation = &"block"
 
-[node name="Save Level Window" parent="." instance=ExtResource("6_5kyq4")]
+[node name="Save Level Window" parent="." unique_id=1843716071 instance=ExtResource("6_5kyq4")]
 visible = false
 
-[node name="Level Saved Message" parent="." instance=ExtResource("7_b4lpj")]
+[node name="Level Saved Message" parent="." unique_id=347892226 instance=ExtResource("7_b4lpj")]
 visible = false
 offset_top = 8.0
 offset_bottom = 8.0
 
-[node name="SaveMessageTimer" type="Timer" parent="."]
-wait_time = 2.0
+[node name="SaveMessageTimer" type="Timer" parent="." unique_id=804222687]
 one_shot = true
 
-[node name="PlayerSpawn" type="Node2D" parent="."]
+[node name="PlayerSpawn" type="Node2D" parent="." unique_id=88717704]
 z_index = 29
+position = Vector2(56, 0)
 
-[node name="SpawnP1" type="Sprite2D" parent="PlayerSpawn"]
+[node name="SpawnP1" type="Sprite2D" parent="PlayerSpawn" unique_id=751041126]
 modulate = Color(1, 0.7529412, 0.078431375, 1)
 position = Vector2(136, 224)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="SpawnP2" type="Sprite2D" parent="PlayerSpawn"]
+[node name="SpawnP2" type="Sprite2D" parent="PlayerSpawn" unique_id=72250228]
 modulate = Color(0, 1, 0.34901962, 1)
 position = Vector2(200, 224)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="SpawnP3" type="Sprite2D" parent="PlayerSpawn"]
+[node name="SpawnP3" type="Sprite2D" parent="PlayerSpawn" unique_id=284082616]
 modulate = Color(0, 0.23529412, 1, 1)
 position = Vector2(104, 224)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="SpawnP4" type="Sprite2D" parent="PlayerSpawn"]
+[node name="SpawnP4" type="Sprite2D" parent="PlayerSpawn" unique_id=459860094]
 modulate = Color(0.7176471, 0, 1, 1)
 position = Vector2(232, 224)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="BotSpawn" type="Node2D" parent="."]
+[node name="BotSpawn" type="Node2D" parent="." unique_id=1668643668]
 z_index = 29
+position = Vector2(56, 0)
 
-[node name="BotSpawn1" type="Sprite2D" parent="BotSpawn"]
+[node name="BotSpawn1" type="Sprite2D" parent="BotSpawn" unique_id=749169788]
 modulate = Color(0.62, 1, 0.82266665, 1)
 position = Vector2(72, 32)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="BotSpawn2" type="Sprite2D" parent="BotSpawn"]
+[node name="BotSpawn2" type="Sprite2D" parent="BotSpawn" unique_id=866720058]
 modulate = Color(0.5019608, 0.9843137, 1, 1)
 position = Vector2(168, 32)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="BotSpawn3" type="Sprite2D" parent="BotSpawn"]
+[node name="BotSpawn3" type="Sprite2D" parent="BotSpawn" unique_id=133699066]
 modulate = Color(0.5019608, 0.6901961, 1, 1)
 position = Vector2(264, 32)
 scale = Vector2(2, 2)
 texture = ExtResource("7_sfvha")
 
-[node name="ExitPanel" type="PanelContainer" parent="."]
+[node name="ExitPanel" type="PanelContainer" parent="." unique_id=1463827242]
 visible = false
 z_index = 50
 offset_left = -8.0
 offset_top = -8.0
-offset_right = 344.0
+offset_right = 456.0
 offset_bottom = 264.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_4e1vq")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ExitPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ExitPanel" unique_id=370791205]
 layout_mode = 2
 alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="ExitPanel/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ExitPanel/VBoxContainer" unique_id=1333490805]
 layout_mode = 2
 theme_override_constants/margin_bottom = 10
 
-[node name="Title" type="Label" parent="ExitPanel/VBoxContainer/MarginContainer"]
+[node name="Title" type="Label" parent="ExitPanel/VBoxContainer/MarginContainer" unique_id=1235093279]
 layout_mode = 2
 text = "EXIT EDITOR MODE?"
 label_settings = ExtResource("14_qvgvm")
 horizontal_alignment = 1
 
-[node name="Option1" type="Label" parent="ExitPanel/VBoxContainer"]
+[node name="Option1" type="Label" parent="ExitPanel/VBoxContainer" unique_id=192571692]
 layout_mode = 2
 text = "PRESS SELECT TO EXIT"
 label_settings = ExtResource("15_jvaop")
 horizontal_alignment = 1
 
-[node name="Option2" type="Label" parent="ExitPanel/VBoxContainer"]
+[node name="Option2" type="Label" parent="ExitPanel/VBoxContainer" unique_id=1497927837]
 layout_mode = 2
 text = "PRESS ENTER TO BACK EDITOR"
 label_settings = ExtResource("15_jvaop")

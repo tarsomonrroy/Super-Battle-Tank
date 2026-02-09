@@ -72,18 +72,20 @@ func _physics_process(delta: float):
 		move_input = aim_input
 
 	check_floor_type()
+	movement_component.is_on_ice = is_on_ice
 
 	var bonus_speed = 0.0
-	if Global.get_cut_tree_state(player_id): bonus_speed += 5.0
-	if Global.get_stars(player_id) == 5: bonus_speed += 5.0
+	if Global.get_cut_tree_state(player_id): bonus_speed += 3.0
+	if Global.get_stars(player_id) == 5: bonus_speed += 3.0
 
 	movement_component.handle_movement(move_input, delta, bonus_speed)
-	if aim_input != Vector2.ZERO:
+	var is_moving: bool = aim_input != Vector2.ZERO
+	if is_moving:
 		update_rotation_and_animation(aim_input)
-		handle_move_sound()
+		sprite.play(cur_state + "_" + stars_to_anim())
 	else:
 		sprite.pause()
-		SoundManager.stop_sound("player_moving")
+	handle_move_sound(is_moving)
 
 	handle_shooting()
 
@@ -93,13 +95,13 @@ func _physics_process(delta: float):
 	var is_right_r = Input.is_action_just_released("game" + str(player_id) + "_right")
 	if is_up_r or is_down_r or is_left_r or is_right_r:
 		if is_on_ice:
-			SoundManager.play_sound("ice_slide")
+			SoundManager.play_sound("ice_slide", -2.0)
 
 	move_and_slide()
 
 func get_input_vector() -> Vector2:
 	var vec = Vector2.ZERO
-	if Input.is_action_pressed("game" + str(player_id) + "_up"): vec.y = -1
+	if Input.get_action_strength("game" + str(player_id) + "_up"): vec.y = -1
 	elif Input.is_action_pressed("game" + str(player_id) + "_down"): vec.y = 1
 	elif Input.is_action_pressed("game" + str(player_id) + "_left"): vec.x = -1
 	elif Input.is_action_pressed("game" + str(player_id) + "_right"): vec.x = 1
@@ -148,15 +150,16 @@ func update_rotation_and_animation(input: Vector2):
 		new_state = "down" if input.y > 0 else "up"
 	if new_state != cur_state or not sprite.is_playing():
 		cur_state = new_state
-		sprite.play(cur_state + "_" + stars_to_anim())
 
-func handle_move_sound():
-	if not is_frozen:
+func handle_move_sound(is_moving: bool):
+	if is_moving and not is_frozen:
 		if is_on_water and on_boat:
 			SoundManager.play_sound("player_water")
-			SoundManager.stop_sound("player_moving")
+			SoundManager.player_state_moving(player_id, false)
 		else:
-			SoundManager.play_sound("player_moving")
+			SoundManager.player_state_moving(player_id, true)
+	else:
+		SoundManager.player_state_moving(player_id, false)
 
 func get_offset() -> Vector2:
 	if cur_state == "up":
@@ -182,7 +185,7 @@ func get_snapped_position(pos: Vector2, snap: int = 8) -> Vector2:
 
 # collision
 func check_floor_type():
-	var map_coords = terrain_layer.local_to_map(global_position)
+	var map_coords = terrain_layer.local_to_map(global_position) - Vector2i(7, 0)
 	var positions: Array = [
 		map_coords - Vector2i(0, 1), map_coords - Vector2i(0, 2),
 		map_coords - Vector2i(1, 1), map_coords - Vector2i(1, 2)
@@ -229,7 +232,7 @@ func receive_hit(is_fatal: bool = false):
 		level.player_hitted = true
 		generate_explosion()
 		SoundManager.play_sound("player_hitted")
-		SoundManager.stop_sound("player_moving")
+		SoundManager.player_state_moving(player_id, false)
 		flick_animation.stop()
 		freeze_player_timer.stop()
 		if not hitted_by_granade:
@@ -315,7 +318,7 @@ func disable_actions():
 	var friction = ice_friction if is_on_ice else normal_friction
 	velocity = velocity.move_toward(Vector2.ZERO, friction)
 	sprite.pause()
-	SoundManager.stop_sound("player_moving")
+	SoundManager.player_state_moving(player_id, false)
 
 func spawn_player():
 	global_position = spawn_position

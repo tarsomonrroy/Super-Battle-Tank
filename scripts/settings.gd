@@ -10,6 +10,9 @@ var freeplay_to_campaign: bool = false
 var auto_fire: bool = false
 var language: String = "english"
 
+var virtual_control_visible: bool = true
+var virtual_control_visibility: float = 0.5
+
 var first_start: bool = true
 
 var keybinds_p1: Dictionary = {}
@@ -49,6 +52,8 @@ func load_settings():
 		keybinds_p2 = config.get_value("Keybinding", "keybinds_p2", {})
 		keybinds_p3 = config.get_value("Keybinding", "keybinds_p3", {})
 		keybinds_p4 = config.get_value("Keybinding", "keybinds_p4", {})
+		virtual_control_visible = config.get_value("Keybinding", "virtual_control_visible", true)
+		virtual_control_visibility = config.get_value("Keybinding", "virtual_control_visibility", 0.5)
 	else:
 		save_settings()
 		save_keybindings()
@@ -57,8 +62,10 @@ func load_settings():
 	Global.bot_use_bonus = bot_use_bonus
 	Global.freeplay_to_campaign = freeplay_to_campaign
 	Global.auto_fire = auto_fire
-	Global.language = language
-	Global.set_game_language(language)
+	GameTranslation.language = language
+	GameTranslation.set_game_language(language)
+	MobileControl.set_visibility(virtual_control_visibility)
+	MobileControl.toggle_virtual_buttons(virtual_control_visible)
 	_load_keybinds_into_inputmap()
 
 func save_settings() -> void:
@@ -67,6 +74,8 @@ func save_settings() -> void:
 	config.set_value("Gameplay", "freeplay_to_campaign", freeplay_to_campaign)
 	config.set_value("Gameplay", "auto_fire", auto_fire)
 	config.set_value("Gameplay", "language", language)
+	config.set_value("Keybinding", "virtual_control_visible", virtual_control_visible)
+	config.set_value("Keybinding", "virtual_control_visibility", virtual_control_visibility)
 	config.save(OPTIONS_FILE)
 
 func save_keybindings() -> void:

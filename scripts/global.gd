@@ -12,11 +12,8 @@ var current_level_players: int = 1
 
 var hard_mode: bool = false
 var bot_use_bonus: bool = false
-var freeplay_to_campaign: bool = false
+var freeplay_to_campaign: bool = true
 var auto_fire: bool = false
-var language: String = "english"
-var all_languages: Array = ["english", "espanol", "portugues"]
-var original_languages: Array = ["english", "español", "português"]
 
 var current_level_round: int = 1
 var level_round_data: Dictionary = {
@@ -448,23 +445,3 @@ func set_level_round_data():
 		if level_round_data["active"] >= 14:
 			return
 		level_round_data["active"] += 1
-
-func set_game_language(lang: String):
-	TranslationServer.set_locale(lang)
-
-func get_next_language():
-	var index = all_languages.find(language)
-	if index == all_languages.size() - 1:
-		index = 0
-	else:
-		index += 1
-	language = all_languages[index]
-	set_game_language(language)
-
-func get_original_language() -> String:
-	var index = all_languages.find(language)
-	return original_languages[index].to_upper()
-
-func get_translated_text(text: String) -> String:
-	var msg = TranslationServer.get_translation_object(Global.language).get_message(text)
-	return msg

@@ -18,6 +18,7 @@ extends Node2D
 @onready var language: Button = $Page4/PageContainer/VBoxContainer/Language
 @onready var page_5: Node2D = $Page5
 @onready var button_container_5: Array = $Page5/PageContainer/VBoxContainerGeneral/VBoxContainer.get_children()
+@onready var page5_message: Label = $Page5/PageContainer/VBoxContainerGeneral/ImportMessage
 @onready var page_6: Node2D = $Page6
 @onready var page6_title: Label = $Page6/PageContainer/VBoxContainer/Title
 @onready var page6_score: Label = $Page6/PageContainer/VBoxContainer/LevelScore
@@ -34,6 +35,7 @@ extends Node2D
 @onready var icon_right: Sprite2D = $IconRight
 @onready var animation: AnimationPlayer = $AnimationPlayer
 
+@onready var hi_score_container: HBoxContainer = $Menu/PanelContainer1/HBoxContainer
 @onready var hi_score_title: Label = $Menu/PanelContainer1/HBoxContainer/HiScoreTitle
 @onready var hi_score_value_1: Label = $Menu/PanelContainer1/HBoxContainer/HiScoreValue1
 @onready var hi_score_value_2: Label = $Menu/PanelContainer1/HBoxContainer/HiScoreValue2
@@ -64,18 +66,28 @@ var start_page: int = 1
 
 var extra_hiscore_title: String = ""
 
+var _js_upload_callback: JavaScriptObject
+
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	current_page = page_1
+
+	if OS.get_name() == "Web":
+		_setup_web_upload()
+
 	for container in [button_container_1, button_container_2, button_container_3, button_container_4, button_container_5, button_container_7]:
 		for i in range(container.size()):
-			var button = container[i]
-			button.pressed.connect(_on_button_pressed.bind(button.name))
+			if container[i] is Button:
+				var button: Button = container[i]
+				button.pressed.connect(_on_button_pressed.bind(button.name))
+				button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
 	SoundManager.in_game_over = false
 	Global.reset_game()
 	start_menu(MenuState.skip_intro, MenuState.start_in)
+
 	if Global.hard_mode:
-		var dff = " " + Global.get_translated_text("HARD")
+		var dff = " " + GameTranslation.get_translated_text("HARD")
 		extra_hiscore_title = dff
 		change_title()
 
@@ -150,6 +162,16 @@ func _process(_delta: float) -> void:
 				hi_score_timer.start()
 			_update_hi_score_texts(1)
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		_back_current_menu()
+
+func _unhandled_input(event):
+	if control_active or menu_started:
+		return
+	if event is InputEventScreenTouch and event.pressed:
+		start_menu(true, 1)
+
 func _on_initial_delay_timeout() -> void:
 	if held_direction == 0:
 		return
@@ -186,16 +208,16 @@ func change_title():
 	_update_hi_score()
 	match tier:
 		1:
-			var msg = Global.get_translated_text("HIGHSCORE 1P")
+			var msg = GameTranslation.get_translated_text("HIGHSCORE 1P")
 			hi_score_title.text = msg + extra_hiscore_title + " -"
 		2:
-			var msg = Global.get_translated_text("HIGHSCORE 2P")
+			var msg = GameTranslation.get_translated_text("HIGHSCORE 2P")
 			hi_score_title.text = msg + extra_hiscore_title + " -"
 		3:
-			var msg = Global.get_translated_text("HIGHSCORE 3P")
+			var msg = GameTranslation.get_translated_text("HIGHSCORE 3P")
 			hi_score_title.text = msg + extra_hiscore_title + " -"
 		4:
-			var msg = Global.get_translated_text("HIGHSCORE 4P")
+			var msg = GameTranslation.get_translated_text("HIGHSCORE 4P")
 			hi_score_title.text = msg + extra_hiscore_title + " -"
 
 func _on_animation_finished(_anim_name: StringName) -> void:
@@ -203,6 +225,9 @@ func _on_animation_finished(_anim_name: StringName) -> void:
 	icon_right.visible = true
 	hi_score_title.visible = true
 	hi_score_timer.start()
+	MobileControl.control_mode("menu")
+	MobileControl.change_sprite_buttons("okay")
+	MobileControl.change_sprite_buttons("score")
 	_update_hi_score_texts(0)
 	_update_hi_score()
 	control_active = true
@@ -274,11 +299,12 @@ func _on_button_pressed(button_name: String) -> void:
 			change_option()
 		
 		"Language":
-			Global.get_next_language()
-			SettingsManager.language = Global.language
+			GameTranslation.get_next_language()
+			SettingsManager.language = GameTranslation.language
 			change_option()
 
 		"Gamepad":
+			MobileControl.control_mode("hidden")
 			get_tree().change_scene_to_file("res://scenes/menu/keybind_menu.tscn")
 
 		# Page 5
@@ -292,6 +318,10 @@ func _on_button_pressed(button_name: String) -> void:
 			previous_page_index = 5
 			change_page(6)
 
+		"ImportConstruction":
+			_handle_import_request()
+
+		# Page 7
 		"ExitYes":
 			get_tree().quit()
 
@@ -309,40 +339,41 @@ func set_player_mode(btn_name: String):
 		"4Player":
 			players = 4
 
-	var msg = Global.get_translated_text(str(players) + " PLAYER MODE")
+	var msg = GameTranslation.get_translated_text(str(players) + " PLAYER MODE")
 	player_mode.text = msg
 
 func change_option():
-	var msg = Global.get_translated_text("HARD MODE")
+	var msg = GameTranslation.get_translated_text("HARD MODE")
 	var stt = get_on_off_state(Global.hard_mode)
-	var dff = " " + Global.get_translated_text("HARD")
+	var dff = " " + GameTranslation.get_translated_text("HARD")
 	if not Global.hard_mode: dff = ""
 	hard_mode_button.text = msg + " - " + stt
 	extra_hiscore_title = dff
 	change_title()
 
-	var msg1 = Global.get_translated_text("BOTS USE BONUS")
+	var msg1 = GameTranslation.get_translated_text("BOTS USE BONUS")
 	var stt1 = get_on_off_state(Global.bot_use_bonus)
 	bot_bonus_button.text = msg1 + " - " + stt1
 
-	var msg2 = Global.get_translated_text("FREEPLAY TO CAMPAIGN")
+	var msg2 = GameTranslation.get_translated_text("FREEPLAY TO CAMPAIGN")
 	var stt2 = get_on_off_state(Global.freeplay_to_campaign)
 	free_to_campaign_button.text = msg2 + " - " + stt2
 
-	var msg3 = Global.get_translated_text("AUTO FIRE")
+	var msg3 = GameTranslation.get_translated_text("AUTO FIRE")
 	var stt3 = get_on_off_state(Global.auto_fire)
 	auto_fire.text = msg3 + " - " + stt3
 
-	var msg4 = Global.get_translated_text("LANGUAGE")
-	language.text = msg4 + " - " + Global.get_original_language()
+	var msg4 = GameTranslation.get_translated_text("LANGUAGE")
+	language.text = msg4 + " - " + GameTranslation.get_original_language()
+	option_menu.texture = load("res://sprites/options/options_menu_" + GameTranslation.get_language_acronym() + ".png")
 
 	await get_tree().create_timer(0.001).timeout
 	_update_cursor_position()
 
 func get_on_off_state(state: bool) -> String:
 	if state:
-		return Global.get_translated_text("ON")
-	return Global.get_translated_text("OFF")
+		return GameTranslation.get_translated_text("ON")
+	return GameTranslation.get_translated_text("OFF")
 
 func to_level_scene(gameplay: Global.GamePlay, filename: String = "", level_num: int = 1):
 	Global.current_game_mode = Global.GameMode.PLAY
@@ -353,15 +384,26 @@ func to_level_scene(gameplay: Global.GamePlay, filename: String = "", level_num:
 
 	var survival_round = ""
 	if Global.current_gameplay_mode == Global.GamePlay.SURVIVAL:
-		var msg = Global.get_translated_text("ROUND")
+		var msg = GameTranslation.get_translated_text("ROUND")
 		survival_round = "\n" + msg + " " + str(Global.current_level_round)
-	LoadingScreen.play_transition_to_scene("res://scenes/levels/level.tscn", Global.current_level_name, true, survival_round)
+	MobileControl.control_mode("hidden")
+	LoadingScreen.play_transition_to_scene("res://scenes/levels/level.tscn", get_formatted_level_name(), true, survival_round)
 
 func to_maker_scene(filename: String = ""):
 	Global.current_game_mode = Global.GameMode.MAKER
 	Global.current_level_number = -1
 	Global.current_level_name = filename
+	MobileControl.control_mode("hidden")
 	LoadingScreen.play_transition_to_scene("res://scenes/maker/maker.tscn", "construction")
+
+func get_formatted_level_name() -> String:
+	var lvlnm = Global.current_level_name
+	if Global.current_gameplay_mode in [Global.GamePlay.CAMPAIGN, Global.GamePlay.FREEPLAY, Global.GamePlay.SURVIVAL]:
+		if lvlnm.begins_with("level_"):
+			var msg = GameTranslation.get_translated_text("LEVEL")
+			var nmb = lvlnm.replace("level", "")
+			return msg + nmb
+	return lvlnm
 
 #region PAGE 1 TO 5
 
@@ -390,6 +432,7 @@ func change_page(page: int):
 	icon_left.visible = true
 	icon_right.visible = true
 	option_menu.visible = page == 4
+	hi_score_container.visible = true
 	player_mode.visible = false
 	match page:
 	# Main Menu
@@ -406,6 +449,7 @@ func change_page(page: int):
 		3:
 			current_page = page_3
 			current_page_buttons = button_container_3
+			hi_score_container.visible = false
 			player_mode.visible = true
 
 	# Options Menu
@@ -425,6 +469,7 @@ func change_page(page: int):
 			icon_left.visible = false
 			icon_right.visible = false
 			if Global.current_game_mode == Global.GameMode.PLAY:
+				hi_score_container.visible = false
 				player_mode.visible = true
 
 	# Exit Menu
@@ -483,6 +528,13 @@ func scan_level_directory(custom: bool = false) -> Array:
 		var file_name = dir.get_next()
 		while file_name != "":
 			if not dir.current_is_dir() and file_name.ends_with(extension):
+				var base_name := file_name.get_slice(".", 0)
+				if base_name.is_empty():
+					file_name = dir.get_next()
+					continue
+				if base_name.strip_edges().is_empty():
+					file_name = dir.get_next()
+					continue
 				levels.append(file_name.get_slice(".", 0))
 			file_name = dir.get_next()
 
@@ -508,7 +560,7 @@ func _update_level_label():
 	level_name.text = levelname
 	if Global.current_gameplay_mode == Global.GamePlay.SURVIVAL:
 		page6_score.visible = true
-		var msg = Global.get_translated_text("SCORE:")
+		var msg = GameTranslation.get_translated_text("SCORE:")
 		page6_score.text = msg + " " + Highscore.get_level_score(level_select_list[level_select_index])
 	else:
 		page6_score.visible = false
@@ -568,29 +620,32 @@ func get_filepath(path_name: String, system: bool = false) -> String:
 		file_ext = ".json"
 	else:
 		dir_path = "user://levels/"
-		if not DirAccess.dir_exists_absolute(dir_path):
-			var err = DirAccess.make_dir_recursive_absolute(dir_path)
-			if err != OK:
-				print("ERRO CRÍTICO: Não foi possível criar o diretório de save: ", dir_path)
+		#if not DirAccess.dir_exists_absolute(dir_path):
+			#var err = DirAccess.make_dir_recursive_absolute(dir_path)
+			#if err != OK:
+				#print("ERRO CRÍTICO: Não foi possível criar o diretório de save: ", dir_path)
 		file_ext = ".bcd"
 	return dir_path + path_name + file_ext
 
-func validate_level_file(levelname: String) -> bool:
+func validate_level_file(levelname: String, is_import: bool = false) -> bool:
+	if levelname.is_empty():
+		return false
+
 	var file_path: String
 
-	if Global.current_gameplay_mode in [Global.GamePlay.CAMPAIGN, Global.GamePlay.FREEPLAY, Global.GamePlay.SURVIVAL]:
+	if Global.current_gameplay_mode in [Global.GamePlay.CAMPAIGN, Global.GamePlay.FREEPLAY, Global.GamePlay.SURVIVAL] and not is_import:
 		file_path = get_filepath(levelname, true)
 	else:
 		file_path = get_filepath(levelname) 
 
 	if not FileAccess.file_exists(file_path):
-		print("Arquivo de nível não encontrado: ", file_path)
+		#print("Arquivo de nível não encontrado: ", file_path)
 		return false
 
 	var file = FileAccess.open_encrypted_with_pass(file_path, FileAccess.READ, "battle_tank_maker")
 	
 	if not file:
-		print("Erro ao abrir arquivo criptografado. Senha errada ou arquivo corrompido.")
+		#print("Erro ao abrir arquivo criptografado. Senha errada ou arquivo corrompido.")
 		return false
 
 	var content = file.get_as_text()
@@ -598,7 +653,7 @@ func validate_level_file(levelname: String) -> bool:
 
 	var parse_result = JSON.parse_string(content)
 	if typeof(parse_result) == TYPE_NIL:
-		print("Erro ao parsear JSON do nível: ", file_path)
+		#print("Erro ao parsear JSON do nível: ", file_path)
 		return false
 
 	var all_level_data = parse_result as Dictionary
@@ -608,17 +663,119 @@ func validate_level_file(levelname: String) -> bool:
 		
 		if not level_info.has("level_name") or not level_info.has("total_bots") or\
 		not level_info.has("spawn_speed") or not level_info.has("bot_list"):
-			print("Estrutura de JSON inválida: ", file_path)
+			#print("Estrutura de JSON inválida: ", file_path)
 			return false
 	else:
-		print("Estrutura de JSON inválida: ", file_path)
+		#print("Estrutura de JSON inválida: ", file_path)
 		return false
 
 	if not all_level_data.has("tile_data"):
-		print("Estrutura de JSON inválida: ", file_path)
+		#print("Estrutura de JSON inválida: ", file_path)
 		return false
 
-	print("Nível %s verificado com sucesso!" % levelname)
+	#print("Nível %s verificado com sucesso!" % levelname)
 	return true
 
 #endregion
+
+
+
+
+func _setup_web_upload():
+	_js_upload_callback = JavaScriptBridge.create_callback(_on_web_file_loaded)
+	var js_code = """
+		var input = document.createElement('INPUT');
+		input.setAttribute('type', 'file');
+		input.setAttribute('accept', '.bcd');
+		input.setAttribute('id', 'godot_upload_input');
+		input.style.display = 'none';
+		
+		input.addEventListener('change', function(e) {
+			var file = e.target.files[0];
+			if (!file) return;
+			
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var buffer = e.target.result;
+				var u8 = new Uint8Array(buffer);
+				// Chama a função do Godot passando Nome e Dados
+				window.godot_upload_handler(file.name, u8);
+				input.value = ''; // Reseta para permitir selecionar o mesmo arquivo
+			};
+			reader.readAsArrayBuffer(file);
+		});
+		document.body.appendChild(input);
+	"""
+	JavaScriptBridge.eval(js_code)
+	var window = JavaScriptBridge.get_interface("window")
+	window.godot_upload_handler = _js_upload_callback
+
+func _handle_import_request():
+	if OS.get_name() == "Web":
+		JavaScriptBridge.eval("document.getElementById('godot_upload_input').click();")
+	else:
+		DisplayServer.file_dialog_show(
+			GameTranslation.get_translated_text("Import level..."), "*.bcd", "", false,
+			DisplayServer.FILE_DIALOG_MODE_OPEN_FILE,
+			["*.bcd ; " + GameTranslation.get_translated_text("Super Battle City Files")],
+			_on_windows_file_selected
+		)
+
+func _on_windows_file_selected(status: bool, selected_paths: PackedStringArray, _filter_index: int):
+	if status and selected_paths.size() > 0:
+		var source_path = selected_paths[0]
+		var file_content = FileAccess.get_file_as_bytes(source_path)
+		var file_name = source_path.get_file().get_slice(".", 0)
+		_finalize_import(file_name, file_content)
+
+func _on_web_file_loaded(args):
+	var file_name_w_ext = args[0]
+	var file_data = args[1]
+	var _godot_bytes = JavaScriptBridge.eval("new Uint8Array(window.godot_upload_temp_data)", true)
+	var parsed_bytes = _js_byte_array_to_packed(file_data)
+	var file_name = file_name_w_ext.split(".")[0]
+	_finalize_import(file_name, parsed_bytes)
+
+func _js_byte_array_to_packed(js_obj) -> PackedByteArray:
+	var out = PackedByteArray()
+	var size = js_obj.length
+	out.resize(size)
+	for i in range(size):
+		out[i] = js_obj[i]
+	return out
+
+func _finalize_import(level_name_raw: String, file_bytes: PackedByteArray):
+	var clean_name = level_name_raw.validate_filename()
+	var temp_path = "user://levels/temp_import.bcd"
+	var file = FileAccess.open(temp_path, FileAccess.WRITE)
+
+	if file:
+		file.store_buffer(file_bytes)
+		file.close()
+	else:
+		_show_import_feedback(GameTranslation.get_translated_text("IMPORT ERROR!"), true)
+		return
+
+	if validate_level_file("temp_import", true) and not clean_name.is_empty():
+		var final_path = get_filepath(clean_name)
+		if FileAccess.file_exists(final_path):
+			clean_name += "_" + str(Time.get_ticks_msec())
+			final_path = get_filepath(clean_name)
+		var dir = DirAccess.open("user://levels/")
+		dir.rename("temp_import.bcd", clean_name + ".bcd")
+		_show_import_feedback(GameTranslation.get_translated_text("IMPORTED") + ": " + clean_name.to_upper())
+		SoundManager.play_sound("menu_accept")
+	else:
+		DirAccess.remove_absolute(temp_path)
+		_show_import_feedback(GameTranslation.get_translated_text("INVALID LEVEL!"), true)
+		SoundManager.play_sound("menu_blocked")
+
+func _show_import_feedback(text: String, is_error: bool = false):
+	page5_message.text = text
+	page5_message.modulate = Color(1.0, 1.0, 1.0, 1.0)
+	page5_message.self_modulate = Color.RED if is_error else Color.GREEN
+
+	await get_tree().create_timer(3.0).timeout
+	page5_message.modulate = Color(1.0, 1.0, 1.0, 0.0)
+	page5_message.self_modulate = Color.WHITE
+	page5_message.text = "IMPORT..."

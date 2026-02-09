@@ -6,12 +6,14 @@ uid="uid://0jbdltb3k530"
 
 [deps]
 
-files=["res://translations/translations.portugues.translation", "res://translations/translations.espanol.translation", "res://translations/translations.english.translation"]
+files=["res://translations/translations.portugues.translation", "res://translations/translations.espanol.translation", "res://translations/translations.english.translation", "res://translations/translations.francais.translation", "res://translations/translations.deutsch.translation", "res://translations/translations.italiano.translation", "res://translations/translations.nederlands.translation", "res://translations/translations.magyar.translation", "res://translations/translations.turk.translation", "res://translations/translations.русский.translation", "res://translations/translations.ελληνικά.translation", "res://translations/translations.bahasaindonesia.translation"]
 
 source_file="res://translations/translations.csv"
-dest_files=["res://translations/translations.portugues.translation", "res://translations/translations.espanol.translation", "res://translations/translations.english.translation"]
+dest_files=["res://translations/translations.portugues.translation", "res://translations/translations.espanol.translation", "res://translations/translations.english.translation", "res://translations/translations.francais.translation", "res://translations/translations.deutsch.translation", "res://translations/translations.italiano.translation", "res://translations/translations.nederlands.translation", "res://translations/translations.magyar.translation", "res://translations/translations.turk.translation", "res://translations/translations.русский.translation", "res://translations/translations.ελληνικά.translation", "res://translations/translations.bahasaindonesia.translation"]
 
 [params]
 
 compress=true
 delimiter=0
+unescape_keys=false
+unescape_translations=true

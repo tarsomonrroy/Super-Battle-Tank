@@ -3,6 +3,7 @@ extends PanelContainer
 
 signal save_cancelled
 signal save_confirmed(save_data, levelname)
+signal export_requested(save_data, levelname)
 
 @onready var level_name_edit: LineEdit = $MarginContainer/VBoxContainer/MarginContainer1/HBoxContainer1/MarginContainer/LevelNameEdit
 @onready var total_bots_spin: SpinBox = $MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer2/MarginContainer/TotalBotsSpin
@@ -12,6 +13,7 @@ signal save_confirmed(save_data, levelname)
 @onready var setup_button: Button = $MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer2/BotSetup
 @onready var cancel_button: Button = $MarginContainer/VBoxContainer/HBoxContainer5/CancelButton
 @onready var save_button: Button = $MarginContainer/VBoxContainer/HBoxContainer5/SaveButton
+@onready var export_button: Button = $MarginContainer/VBoxContainer/HBoxContainer6/ExportButton
 
 @onready var tank_setup_window: PanelContainer = $"Tank Setup Window"
 @onready var tank_list_window: PanelContainer = $"Tank List Window"
@@ -25,6 +27,7 @@ func _ready() -> void:
 	setup_button.pressed.connect(_on_setup_pressed)
 	cancel_button.pressed.connect(_on_cancel_pressed)
 	save_button.pressed.connect(_on_save_pressed)
+	export_button.pressed.connect(_on_export_pressed)
 	level_name_edit.text_changed.connect(_validate_data)
 
 	tank_list_window.save_cancelled.connect(_cancel_active)
@@ -87,6 +90,8 @@ func _on_save_pressed():
 		_proceed_to_save()
 
 func _proceed_to_save():
+	confirm_overwrite.hide()
+	toggle_itens(true)
 	var levelname = level_name_edit.text
 	var save_data = {
 		"level_name": levelname.to_lower(),
@@ -100,13 +105,29 @@ func _proceed_to_cancel():
 	confirm_overwrite.hide()
 	toggle_itens(true)
 
+func _on_export_pressed():
+	if not _validate_data():
+		return
+
+	var levelname = level_name_edit.text
+	var save_data = {
+		"level_name": levelname.to_lower(),
+		"total_bots": int(total_bots_spin.value),
+		"spawn_speed": spawn_time_spin.value,
+		"bot_list": bot_list,
+	}
+
+	export_requested.emit(save_data, levelname)
+
 func _validate_data(_text: String = "") -> bool:
 	var level_name = level_name_edit.text
 	if level_name == "":
 		save_button.disabled = true
+		export_button.disabled = true
 		return false
 	else:
 		save_button.disabled = false
+		export_button.disabled = false
 		return true
 
 func _on_check_quick_toggled(toggled_on: bool) -> void:
@@ -130,3 +151,4 @@ func toggle_itens(state: bool = false):
 	setup_button.disabled = not state
 	cancel_button.disabled = not state
 	save_button.disabled = not state
+	export_button.disabled = not state

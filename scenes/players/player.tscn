@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://cdpkbccuhdbcp"]
+[gd_scene format=3 uid="uid://cdpkbccuhdbcp"]
 
 [ext_resource type="Script" uid="uid://crbqdwnwwq6du" path="res://scenes/players/player.gd" id="1_hvohr"]
 [ext_resource type="Texture2D" uid="uid://vmfj6hbj5xg7" path="res://sprites/boat.png" id="2_x2oxy"]
@@ -501,7 +501,7 @@ _data = {
 &"visible": SubResource("Animation_sguum")
 }
 
-[node name="Player" type="CharacterBody2D" groups=["PlayersDisabled"]]
+[node name="Player" type="CharacterBody2D" unique_id=643332679 groups=["PlayersDisabled"]]
 collision_layer = 2048
 collision_mask = 487
 motion_mode = 1
@@ -509,75 +509,73 @@ platform_on_leave = 2
 platform_floor_layers = 4294901760
 script = ExtResource("1_hvohr")
 
-[node name="Collision" type="CollisionShape2D" parent="."]
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=364916706]
 visible = false
 position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_ar57q")
 disabled = true
 debug_color = Color(0.9, 1, 0, 0.22745098)
 
-[node name="PlayerSpawnArea" type="Area2D" parent="." groups=["PlayerArea"]]
+[node name="PlayerSpawnArea" type="Area2D" parent="." unique_id=1892338056 groups=["PlayerArea"]]
 visible = false
 collision_layer = 8192
 collision_mask = 24
 input_pickable = false
 
-[node name="CollisionArea" type="CollisionShape2D" parent="PlayerSpawnArea"]
+[node name="CollisionArea" type="CollisionShape2D" parent="PlayerSpawnArea" unique_id=1321494495]
 shape = SubResource("RectangleShape2D_olb2f")
 debug_color = Color(0.3838848, 0, 0.70196074, 0.41960785)
 
-[node name="PlayerArea" type="Area2D" parent="." groups=["PlayersDisabled"]]
+[node name="PlayerArea" type="Area2D" parent="." unique_id=390770052 groups=["PlayersDisabled"]]
 visible = false
 collision_layer = 8200
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerArea" unique_id=215641798]
 shape = SubResource("RectangleShape2D_edvpf")
 debug_color = Color(0.7, 0, 0, 0.41960785)
 
-[node name="Boat" type="Sprite2D" parent="."]
+[node name="Boat" type="Sprite2D" parent="." unique_id=412466287]
 visible = false
 texture = ExtResource("2_x2oxy")
 
-[node name="Sprite" type="AnimatedSprite2D" parent="."]
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=859288166]
 visible = false
 position = Vector2(-8, -8)
 sprite_frames = SubResource("SpriteFrames_yrv7w")
 animation = &"down_1"
 centered = false
 
-[node name="Invencible" type="AnimatedSprite2D" parent="."]
+[node name="Invencible" type="AnimatedSprite2D" parent="." unique_id=1198289281]
 visible = false
 position = Vector2(0, 1)
 sprite_frames = SubResource("SpriteFrames_fwdim")
 animation = &"invencible"
 frame_progress = 0.068860434
 
-[node name="Spawn" type="AnimatedSprite2D" parent="."]
+[node name="Spawn" type="AnimatedSprite2D" parent="." unique_id=1754530520]
 visible = false
 sprite_frames = SubResource("SpriteFrames_o06r5")
 animation = &"spawn"
 frame = 12
 frame_progress = 1.0
 
-[node name="FlickAnimation" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_sguum")
-}
+[node name="FlickAnimation" type="AnimationPlayer" parent="." unique_id=1087539241]
+libraries/ = SubResource("AnimationLibrary_sguum")
 
-[node name="InvencibleTimer" type="Timer" parent="."]
+[node name="InvencibleTimer" type="Timer" parent="." unique_id=235748342]
 one_shot = true
 
-[node name="RespawnTimer" type="Timer" parent="."]
+[node name="RespawnTimer" type="Timer" parent="." unique_id=657266213]
 one_shot = true
 
-[node name="FreezePlayerTimer" type="Timer" parent="."]
+[node name="FreezePlayerTimer" type="Timer" parent="." unique_id=1209305996]
 one_shot = true
 
-[node name="MovementComponent" type="Node" parent="."]
+[node name="MovementComponent" type="Node" parent="." unique_id=1831511095]
 script = ExtResource("5_jwv1m")
 
-[node name="WeaponComponent" type="Node" parent="."]
+[node name="WeaponComponent" type="Node" parent="." unique_id=1810928773]
 script = ExtResource("6_phaeh")
 bullet_scene = ExtResource("7_yl2j2")
 

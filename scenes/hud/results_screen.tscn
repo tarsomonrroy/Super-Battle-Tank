@@ -1,10 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://bp2r8x5mqayf3"]
+[gd_scene format=3 uid="uid://bp2r8x5mqayf3"]
 
 [ext_resource type="LabelSettings" uid="uid://bb2u8lhx0w2up" path="res://fonts/batcity_settings.tres" id="1_7bb10"]
 [ext_resource type="Script" uid="uid://dfjgsmqno4ggb" path="res://scenes/hud/results_screen.gd" id="1_ib3yp"]
 [ext_resource type="LabelSettings" uid="uid://bfp775vrse8n5" path="res://fonts/batcity_settings_small.tres" id="2_ib3yp"]
 [ext_resource type="PackedScene" uid="uid://8ybwg7u5nse7" path="res://scenes/hud/player_panel.tscn" id="3_ib3yp"]
-[ext_resource type="Texture2D" uid="uid://dfoj8aoudulaq" path="res://sprites/game_over_screen.png" id="5_wx02c"]
+[ext_resource type="Texture2D" uid="uid://xdlfggnx8y70" path="res://sprites/game_over/game_over_screen_en.png" id="5_wx02c"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ib3yp"]
 
@@ -101,92 +101,99 @@ _data = {
 &"open": SubResource("Animation_wx02c")
 }
 
-[node name="Results Screen" type="CanvasLayer"]
+[node name="Results Screen" type="CanvasLayer" unique_id=739330529]
+layer = 3
 script = ExtResource("1_ib3yp")
 
-[node name="Results" type="Node2D" parent="."]
+[node name="Results" type="Node2D" parent="." unique_id=295809119]
 visible = false
 
-[node name="BgColor" type="ColorRect" parent="Results"]
-offset_right = 336.0
+[node name="BgColor" type="ColorRect" parent="Results" unique_id=1686239279]
+offset_right = 448.0
 offset_bottom = 256.0
 color = Color(0, 0, 0, 1)
 
-[node name="Title" type="Label" parent="Results"]
+[node name="Title" type="Label" parent="Results" unique_id=1368836211]
 offset_top = 16.0
-offset_right = 336.0
+offset_right = 448.0
 offset_bottom = 34.0
 text = "RESULTS"
 label_settings = ExtResource("1_7bb10")
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="LevelName" type="Label" parent="Results"]
+[node name="LevelName" type="Label" parent="Results" unique_id=1149916886]
 offset_top = 40.0
-offset_right = 336.0
+offset_right = 448.0
 offset_bottom = 48.0
 text = "LEVEL 0"
 label_settings = ExtResource("2_ib3yp")
 horizontal_alignment = 1
 
-[node name="Total Score" type="Label" parent="Results"]
+[node name="Total Score" type="Label" parent="Results" unique_id=1003273117]
 offset_top = 232.0
-offset_right = 336.0
+offset_right = 448.0
 offset_bottom = 240.0
 text = "TOTAL SCORE: 000000"
 label_settings = ExtResource("2_ib3yp")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="Results"]
+[node name="PanelContainer" type="PanelContainer" parent="Results" unique_id=1934655747]
 offset_top = 56.0
-offset_right = 336.0
+offset_right = 448.0
 offset_bottom = 232.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ib3yp")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Results/PanelContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Results/PanelContainer" unique_id=1774406590]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/separation = 80
+theme_override_constants/separation = 100
 
-[node name="Player1" parent="Results/PanelContainer/HBoxContainer" instance=ExtResource("3_ib3yp")]
+[node name="Player1" parent="Results/PanelContainer/HBoxContainer" unique_id=2136009147 instance=ExtResource("3_ib3yp")]
 layout_mode = 2
 
-[node name="Player2" parent="Results/PanelContainer/HBoxContainer" instance=ExtResource("3_ib3yp")]
+[node name="Player2" parent="Results/PanelContainer/HBoxContainer" unique_id=1061713008 instance=ExtResource("3_ib3yp")]
 visible = false
 layout_mode = 2
 
-[node name="Player3" parent="Results/PanelContainer/HBoxContainer" instance=ExtResource("3_ib3yp")]
+[node name="Player3" parent="Results/PanelContainer/HBoxContainer" unique_id=101130013 instance=ExtResource("3_ib3yp")]
 visible = false
 layout_mode = 2
 
-[node name="Player4" parent="Results/PanelContainer/HBoxContainer" instance=ExtResource("3_ib3yp")]
+[node name="Player4" parent="Results/PanelContainer/HBoxContainer" unique_id=1436262188 instance=ExtResource("3_ib3yp")]
 visible = false
 layout_mode = 2
 
-[node name="GameOverScreen" type="Sprite2D" parent="."]
+[node name="GameOverBG" type="ColorRect" parent="." unique_id=1235022257]
 visible = false
-position = Vector2(168, 128)
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 456.0
+offset_bottom = 264.0
+color = Color(0, 0, 0, 1)
+
+[node name="GameOverScreen" type="Sprite2D" parent="." unique_id=894256109]
+visible = false
+position = Vector2(224.00005, 128)
 scale = Vector2(1.3124999, 1.1428572)
 texture = ExtResource("5_wx02c")
 
-[node name="TopColor" type="ColorRect" parent="."]
+[node name="TopColor" type="ColorRect" parent="." unique_id=1393692171]
 offset_top = -128.0
-offset_right = 336.0
+offset_right = 448.0
 color = Color(0, 0, 0, 1)
 
-[node name="BottonColor" type="ColorRect" parent="."]
+[node name="BottonColor" type="ColorRect" parent="." unique_id=244823381]
 offset_top = 256.0
-offset_right = 336.0
-offset_bottom = 383.99997
+offset_right = 448.0
+offset_bottom = 383.99988
 color = Color(0, 0, 0, 1)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_wx02c")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2007396362]
+libraries/ = SubResource("AnimationLibrary_wx02c")
 
-[node name="FinishTimer" type="Timer" parent="."]
+[node name="FinishTimer" type="Timer" parent="." unique_id=392072486]
 wait_time = 2.0
 one_shot = true
 

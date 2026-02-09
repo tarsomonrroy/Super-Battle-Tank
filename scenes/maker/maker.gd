@@ -4,6 +4,9 @@ extends Node2D
 enum MakerMode { TILE, BASE, SPAWNER }
 var current_maker_mode: MakerMode = MakerMode.TILE
 
+enum TileAction { BUILD, ERASE }
+var current_tile_action: TileAction = TileAction.BUILD
+
 # Gameplay
 @onready var terrain: TileMapLayer = $Terrain
 @onready var barrier: TileMapLayer = $Barrier
@@ -16,37 +19,7 @@ var total_bots_in_level: int = 20
 var confirmed_exit: bool = false
 
 var base_area_position: String = "down"
-var base_position: Dictionary = {
-	"down": Vector2(168.0, 224.0),
-	"up": Vector2(168.0, 32.0),
-	"left": Vector2(72.0, 128.0),
-	"right": Vector2(264.0, 128.0)
-}
-var protection_area: Dictionary = {
-	"down": [
-		Vector2i(19,27), Vector2i(19,26), Vector2i(19,25), Vector2i(20,25),
-		Vector2i(21,25), Vector2i(22,25), Vector2i(22,26), Vector2i(22,27),
-	],
-	"up": [
-		Vector2i(19,2), Vector2i(19,3), Vector2i(19,4), Vector2i(20,4),
-		Vector2i(21,4), Vector2i(22,4), Vector2i(22,3), Vector2i(22,2),
-	],
-	"left": [
-		Vector2i(8,13), Vector2i(9,13), Vector2i(10,13), Vector2i(10,14),
-		Vector2i(8,16), Vector2i(9,16), Vector2i(10,16), Vector2i(10,15),
-	],
-	"right": [
-		Vector2i(31,13), Vector2i(32,13), Vector2i(33,13), Vector2i(31,14),
-		Vector2i(31,16), Vector2i(32,16), Vector2i(33,16), Vector2i(31,15),
-	],
-}
 var old_base_area_position: String = "down"
-var base_exclusion_rects: Dictionary = {
-	"down": Rect2i(19, 25, 4, 3),
-	"up": Rect2i(19, 2, 4, 3),
-	"left": Rect2i(8, 13, 3, 4),
-	"right": Rect2i(31, 13, 3, 4)
-}
 
 # HUD
 @onready var option_selected: Sprite2D = $HUD/OptionSelected
@@ -75,11 +48,17 @@ var base_exclusion_rects: Dictionary = {
 @onready var bot_spawn2: Sprite2D = $BotSpawn/BotSpawn2
 @onready var bot_spawn3: Sprite2D = $BotSpawn/BotSpawn3
 
+var pending_export_data: Dictionary = {}
+
 var all_spawn_sprites: Array[Sprite2D] = []
 
 var current_item_selected: Node2D = null
 var movable_spawn_player: int = 1
 var movable_spawn_bot: int = 1
+
+var pointer_pos: Vector2 = Vector2.ZERO
+var pointer_down: bool = false
+var pointer_just_pressed: bool = false
 
 var currently_dragged_spawn: Sprite2D = null
 var drag_start_position: Vector2 = Vector2.ZERO
@@ -108,7 +87,12 @@ const MAKER_BOUNDARY = Rect2i(8, 2, 26, 26)
 var exclusion_zones: Array[Rect2i] = []
 
 func _ready() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if OS.get_name() != "Android":
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		maker_cursor.visible = false
+	set_tile_action(true)
+	MobileControl.control_mode("build1")
+	MobileControl.change_sprite_buttons("save")
 
 	tile_block_icon.get_child(0).pressed.connect(_on_hud_icon_pressed.bind(tile_block_icon, MakerMode.TILE))
 	player_base_icon.get_child(0).pressed.connect(_on_hud_icon_pressed.bind(player_base_icon, MakerMode.BASE))
@@ -116,7 +100,7 @@ func _ready() -> void:
 	current_item_selected = tile_block_icon
 	option_selected.global_position = current_item_selected.global_position
 
-	exclusion_zones.append(base_exclusion_rects[base_area_position])
+	exclusion_zones.append(player_base.base_exclusion_rects[base_area_position])
 
 	level_number = Global.current_level_number
 	current_mode = Global.current_game_mode
@@ -129,6 +113,7 @@ func _ready() -> void:
 
 	save_level_window.save_cancelled.connect(_on_save_cancelled)
 	save_level_window.save_confirmed.connect(_on_save_confirmed)
+	save_level_window.export_requested.connect(_on_export_requested)
 
 	terrain.clear()
 	if current_mode == 1:
@@ -149,29 +134,48 @@ func _process(_delta: float) -> void:
 					_handle_spawn_input()
 
 		# Salvar
-		if Input.is_action_just_pressed("menu_accept"):
+		if Input.is_action_just_pressed("menu_accept") or Input.is_action_just_pressed("game1_pause"):
 			if confirmed_exit:
 				back_editor()
 			else:
 				save_level_window.show_popup(level_name, total_bots_in_level, spawn_interval, bot_list)
 				in_popup = true
+				MobileControl.control_mode("hidden")
 
 		# Sair
-		if Input.is_action_just_pressed("menu_back"):
+		if Input.is_action_just_pressed("menu_back") or Input.is_action_just_pressed("game1_exit"):
 			if confirmed_exit:
 				exit_game()
 			else:
 				try_exit()
+	if OS.get_name() == "Android":
+		pointer_just_pressed = false
+
+func _unhandled_input(event):
+	if OS.get_name() == "Android":
+		if event is InputEventScreenTouch:
+			pointer_pos = event.position
+			pointer_down = event.pressed
+			pointer_just_pressed = event.pressed
+
+		elif event is InputEventScreenDrag:
+			pointer_pos = event.position
 
 func try_exit():
-	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	if OS.get_name() != "Android":
+		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	exit_panel.visible = true
 	confirmed_exit = true
+	MobileControl.control_mode("build3")
+	MobileControl.change_sprite_buttons("okay")
 
 func back_editor():
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if OS.get_name() != "Android":
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	exit_panel.visible = false
 	confirmed_exit = false
+	MobileControl.change_sprite_buttons("save")
+	mobile_layout()
 
 func exit_game():
 	MenuState.skip_intro = true
@@ -179,61 +183,91 @@ func exit_game():
 	goto_menu()
 
 func _handle_tile_input():
-	maker_cursor.visible = true
-	var mouse_pos = get_global_mouse_position()
-	var map_coords = terrain.local_to_map(terrain.to_local(mouse_pos))
-	maker_cursor.global_position = terrain.to_global(terrain.map_to_local(map_coords))
+	if OS.get_name() == "Android":
+		maker_cursor.visible = false
+		var mouse_pos = pointer_pos
+		var map_coords = terrain.local_to_map(terrain.to_local(mouse_pos))
+		#maker_cursor.global_position = terrain.to_global(terrain.map_to_local(map_coords))
 
-	if is_valid_drawing_location(map_coords):
-		maker_cursor.change_sprite(current_tile_index)
-		tile_block_icon.change_sprite(current_tile_index)
+		# Touch Pressed
+		if pointer_down:
+			if not is_valid_drawing_location(map_coords):
+				return
+
+			match current_tile_action:
+				TileAction.BUILD:
+					var selected_tile_coords = available_maker_tiles[current_tile_index]
+					terrain.set_cell(map_coords, tile_source_id, selected_tile_coords)
+				TileAction.ERASE:
+					terrain.set_cell(map_coords, -1)
+			get_viewport().set_input_as_handled()
+
+		# Touch Just Pressed
+		if pointer_just_pressed:
+			if not is_valid_short_location(map_coords):
+				SoundManager.play_sound("editor_error")
+				return
+
 	else:
-		maker_cursor.change_sprite(-1)
+		maker_cursor.visible = true
+		var mouse_pos = get_global_mouse_position()
+		var map_coords = terrain.local_to_map(terrain.to_local(mouse_pos))
+		maker_cursor.global_position = terrain.to_global(terrain.map_to_local(map_coords))
 
-	# Mouse Pressed
-	if Input.is_action_pressed("game_build"):
 		if is_valid_drawing_location(map_coords):
-			var selected_tile_coords = available_maker_tiles[current_tile_index]
-			terrain.set_cell(map_coords, tile_source_id, selected_tile_coords)
+			maker_cursor.change_sprite(current_tile_index)
+		else:
+			maker_cursor.change_sprite(-1)
+		tile_block_icon.change_sprite(current_tile_index)
+		# Mouse Pressed
+		if Input.is_action_pressed("game_build"):
+			if is_valid_drawing_location(map_coords):
+				var selected_tile_coords = available_maker_tiles[current_tile_index]
+				terrain.set_cell(map_coords, tile_source_id, selected_tile_coords)
+				get_viewport().set_input_as_handled()
+
+		elif Input.is_action_pressed("game_destroy"):
+			if is_valid_drawing_location(map_coords):
+				maker_cursor.visible = false
+				terrain.set_cell(map_coords, -1)
+				get_viewport().set_input_as_handled()
+		
+		# Mouse Just Pressed
+		if Input.is_action_just_pressed("game_build"):
+			if not is_valid_short_location(map_coords):
+				SoundManager.play_sound("editor_error")
+				return
+
+		elif Input.is_action_just_pressed("game_destroy"):
+			if not is_valid_short_location(map_coords):
+				SoundManager.play_sound("editor_error")
+				return
+
+		# Change Tile
+		if Input.is_action_just_pressed("menu_right") or Input.is_action_just_pressed("game1_right"):
+			current_tile_index = (current_tile_index + 1) % available_maker_tiles.size()
 			get_viewport().set_input_as_handled()
 
-	elif Input.is_action_pressed("game_destroy"):
-		if is_valid_drawing_location(map_coords):
-			maker_cursor.visible = false
-			terrain.set_cell(map_coords, -1)
+		if Input.is_action_just_pressed("menu_left") or Input.is_action_just_pressed("game1_left"):
+			current_tile_index = (current_tile_index - 1 + available_maker_tiles.size()) % available_maker_tiles.size()
 			get_viewport().set_input_as_handled()
-	
-	# Mouse Just Pressed
-	if Input.is_action_just_pressed("game_build"):
-		if not is_valid_short_location(map_coords):
-			SoundManager.play_sound("editor_error")
-			return
 
-	elif Input.is_action_just_pressed("game_destroy"):
-		if not is_valid_short_location(map_coords):
-			SoundManager.play_sound("editor_error")
-			return
-
-	# Change Tile
-	if Input.is_action_just_pressed("menu_right"):
-		current_tile_index = (current_tile_index + 1) % available_maker_tiles.size()
-		get_viewport().set_input_as_handled()
-
-	if Input.is_action_just_pressed("menu_left"):
-		current_tile_index = (current_tile_index - 1 + available_maker_tiles.size()) % available_maker_tiles.size()
-		get_viewport().set_input_as_handled()
+		# Mobile Tile Action
+		if Input.is_action_just_pressed("game_change_build"):
+			var is_build = current_tile_action == TileAction.ERASE
+			set_tile_action(is_build)
 
 func _handle_base_input():
 	maker_cursor.visible = false
 	var target_position_key = ""
 
-	if Input.is_action_just_pressed("menu_left"):
+	if Input.is_action_just_pressed("menu_left") or Input.is_action_just_pressed("game1_left"):
 		target_position_key = "left"
-	elif Input.is_action_just_pressed("menu_right"):
+	elif Input.is_action_just_pressed("menu_right") or Input.is_action_just_pressed("game1_right"):
 		target_position_key = "right"
-	elif Input.is_action_just_pressed("menu_up"):
+	elif Input.is_action_just_pressed("menu_up") or Input.is_action_just_pressed("game1_up"):
 		target_position_key = "up"
-	elif Input.is_action_just_pressed("menu_down"):
+	elif Input.is_action_just_pressed("menu_down") or Input.is_action_just_pressed("game1_down"):
 		target_position_key = "down"
 
 	if target_position_key != "":
@@ -248,70 +282,120 @@ func _handle_base_input():
 		else:
 			get_viewport().set_input_as_handled()
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		if not confirmed_exit:
+			try_exit()
+
+func _get_snapped_pointer_pos() -> Vector2:
+	return get_snapped_position(pointer_pos, 8)
+
 func _handle_spawn_input() -> void:
 	maker_cursor.visible = false
-	var snapped_mouse_pos = _get_snapped_mouse_pos()
+	if OS.get_name() == "Android":
+		var snapped_mouse_pos = _get_snapped_pointer_pos()
+		if pointer_down and not currently_dragged_spawn:
+			if currently_dragged_spawn:
+				return
+			var mouse_pos = pointer_pos
+			for spawn_sprite in all_spawn_sprites:
+				var mouse_local_pos = spawn_sprite.to_local(mouse_pos)
+				if spawn_sprite.get_rect().has_point(mouse_local_pos):
+					currently_dragged_spawn = spawn_sprite
+					drag_start_position = currently_dragged_spawn.global_position
+					currently_dragged_spawn.modulate.a = 0.5
+					get_viewport().set_input_as_handled()
+					break
 
-	if Input.is_action_just_pressed("game_build"):
-		if currently_dragged_spawn:
-			return
-		var mouse_pos = get_global_mouse_position()
-		for spawn_sprite in all_spawn_sprites:
-			var mouse_local_pos = spawn_sprite.to_local(mouse_pos)
-			if spawn_sprite.get_rect().has_point(mouse_local_pos):
-				currently_dragged_spawn = spawn_sprite
-				drag_start_position = currently_dragged_spawn.global_position
-				currently_dragged_spawn.modulate.a = 0.5
-				get_viewport().set_input_as_handled()
-				break
+		elif pointer_down and currently_dragged_spawn:
+			currently_dragged_spawn.global_position = _get_snapped_pointer_pos()
+			get_viewport().set_input_as_handled()
 
-	elif Input.is_action_pressed("game_build") and currently_dragged_spawn:
-		currently_dragged_spawn.global_position = snapped_mouse_pos
-		get_viewport().set_input_as_handled()
+		elif not pointer_down and currently_dragged_spawn:
+			var new_pos_snapped = snapped_mouse_pos
+			if _is_valid_spawn_location(new_pos_snapped, currently_dragged_spawn):
+				var top_left_pos = new_pos_snapped - Vector2(8, 8)
+				var tile_pos = terrain.local_to_map(terrain.to_local(top_left_pos))
+				var spawn_tile_rect = Rect2i(tile_pos, Vector2i(2, 2))
+				_clear_tiles_at_rect(spawn_tile_rect)
+				currently_dragged_spawn.global_position = new_pos_snapped
+			else:
+				currently_dragged_spawn.global_position = drag_start_position
+				SoundManager.play_sound("editor_error")
+			currently_dragged_spawn.modulate.a = 1.0 
+			currently_dragged_spawn = null
+			drag_start_position = Vector2.ZERO
+			get_viewport().set_input_as_handled()
+	
+	else:
+		var snapped_mouse_pos = _get_snapped_mouse_pos()
+		if Input.is_action_just_pressed("game_build"):
+			if currently_dragged_spawn:
+				return
+			var mouse_pos = get_global_mouse_position()
+			for spawn_sprite in all_spawn_sprites:
+				var mouse_local_pos = spawn_sprite.to_local(mouse_pos)
+				if spawn_sprite.get_rect().has_point(mouse_local_pos):
+					currently_dragged_spawn = spawn_sprite
+					drag_start_position = currently_dragged_spawn.global_position
+					currently_dragged_spawn.modulate.a = 0.5
+					get_viewport().set_input_as_handled()
+					break
 
-	elif Input.is_action_just_released("game_build") and currently_dragged_spawn:
-		var new_pos_snapped = snapped_mouse_pos
-		if _is_valid_spawn_location(new_pos_snapped, currently_dragged_spawn):
-			var top_left_pos = new_pos_snapped - Vector2(8, 8)
-			var tile_pos = terrain.local_to_map(terrain.to_local(top_left_pos))
-			var spawn_tile_rect = Rect2i(tile_pos, Vector2i(2, 2))
-			_clear_tiles_at_rect(spawn_tile_rect)
-			currently_dragged_spawn.global_position = new_pos_snapped
-		else:
-			currently_dragged_spawn.global_position = drag_start_position
-			SoundManager.play_sound("editor_error")
-		currently_dragged_spawn.modulate.a = 1.0 
-		currently_dragged_spawn = null
-		drag_start_position = Vector2.ZERO
-		get_viewport().set_input_as_handled()
+		elif Input.is_action_pressed("game_build") and currently_dragged_spawn:
+			currently_dragged_spawn.global_position = snapped_mouse_pos
+			get_viewport().set_input_as_handled()
+
+		elif Input.is_action_just_released("game_build") and currently_dragged_spawn:
+			var new_pos_snapped = snapped_mouse_pos
+			if _is_valid_spawn_location(new_pos_snapped, currently_dragged_spawn):
+				var top_left_pos = new_pos_snapped - Vector2(8, 8)
+				var tile_pos = terrain.local_to_map(terrain.to_local(top_left_pos))
+				var spawn_tile_rect = Rect2i(tile_pos, Vector2i(2, 2))
+				_clear_tiles_at_rect(spawn_tile_rect)
+				currently_dragged_spawn.global_position = new_pos_snapped
+			else:
+				currently_dragged_spawn.global_position = drag_start_position
+				SoundManager.play_sound("editor_error")
+			currently_dragged_spawn.modulate.a = 1.0 
+			currently_dragged_spawn = null
+			drag_start_position = Vector2.ZERO
+			get_viewport().set_input_as_handled()
+
+func set_tile_action(build: bool) -> void:
+	current_tile_action = TileAction.BUILD if build else TileAction.ERASE
+	if build:
+		MobileControl.change_sprite_buttons("pencil")
+	else:
+		MobileControl.change_sprite_buttons("eraser")
 
 #region Base Generation
 
 func generate_base():
 	if old_base_area_position != base_area_position:
-		var old_area = protection_area.get(old_base_area_position, "down")
+		var old_area = player_base.protection_area.get(old_base_area_position, "down")
 		for block in old_area:
 			if terrain.get_cell_atlas_coords(block) == Vector2i(0,0):
 				terrain.set_cell(block, -1)
 
-		var old_rect = base_exclusion_rects[old_base_area_position]
+		var old_rect = player_base.base_exclusion_rects[old_base_area_position]
 		var index = exclusion_zones.find(old_rect)
 		if index != -1:
 			exclusion_zones.remove_at(index)
 			
-		var new_rect = base_exclusion_rects[base_area_position]
+		var new_rect = player_base.base_exclusion_rects[base_area_position]
 		if not exclusion_zones.has(new_rect):
 			exclusion_zones.append(new_rect)
 			
 		old_base_area_position = base_area_position
 
-	_clear_tiles_at_rect(base_exclusion_rects[base_area_position])
+	_clear_tiles_at_rect(player_base.base_exclusion_rects[base_area_position])
 
-	var cur_area = protection_area.get(base_area_position, "down")
+	var cur_area = player_base.protection_area.get(base_area_position, "down")
 	for block in cur_area:
 		terrain.set_cell(block, 1, Vector2i(0,0))
 
-	var base_pos = base_position.get(base_area_position, "down")
+	var base_pos = player_base.base_position.get(base_area_position, "down")
 	player_base.active_base(base_pos, base_area_position)
 
 func _clear_tiles_at_rect(tile_rect: Rect2i) -> void:
@@ -341,7 +425,7 @@ func is_valid_short_location(map_coords: Vector2i) -> bool:
 	return true
 
 func _is_valid_base_location(new_position_key: String) -> bool:
-	var proposed_base_rect = base_exclusion_rects[new_position_key]
+	var proposed_base_rect = player_base.base_exclusion_rects[new_position_key]
 
 	for spawn_sprite in all_spawn_sprites:
 		var spawn_top_left = spawn_sprite.global_position - Vector2(8, 8)
@@ -363,11 +447,12 @@ func get_filepath(path_name: String) -> String:
 		var err = DirAccess.make_dir_recursive_absolute(dir_path)
 		if err != OK:
 			print("ERRO CRÍTICO: Não foi possível criar o diretório de save: ", dir_path)
-	return dir_path + path_name + ".json"
+	return dir_path + path_name + ".bcd"
 
 func _on_save_cancelled():
 	in_popup = false
 	save_level_window.hide()
+	mobile_layout()
 
 func _on_save_confirmed(popup_data: Dictionary, levelname: String):
 	save_level_window.hide()
@@ -392,44 +477,19 @@ func get_tile_data_for_saving() -> Array:
 
 func save_level(popup_data: Dictionary, levelname: String):
 	var file_path = get_filepath(levelname)
-
-	var all_spawns_info = {
-		"base_position": base_area_position,
-		"player_1": [spawn_p1.global_position.x, spawn_p1.global_position.y],
-		"player_2": [spawn_p2.global_position.x, spawn_p2.global_position.y],
-		"player_3": [spawn_p3.global_position.x, spawn_p3.global_position.y],
-		"player_4": [spawn_p4.global_position.x, spawn_p4.global_position.y],
-		"bot_1": [bot_spawn1.global_position.x, bot_spawn1.global_position.y],
-		"bot_2": [bot_spawn2.global_position.x, bot_spawn2.global_position.y],
-		"bot_3": [bot_spawn3.global_position.x, bot_spawn3.global_position.y]
-	}
-
-	var cur_area = protection_area.get(base_area_position, "down")
-	for block in cur_area:
-		terrain.set_cell(block, -1)
-
-	var final_level_data = {
-		"level_info": popup_data,
-		"spawns_info": all_spawns_info,
-		"tile_data": get_tile_data_for_saving()
-	}
-
-	generate_base()
-
+	var final_level_data = _build_level_data_dictionary(popup_data)
 	var json_string = JSON.stringify(final_level_data, "\t")
-
 	var file = FileAccess.open_encrypted_with_pass(file_path, FileAccess.WRITE, "battle_tank_maker")
-
 	if file:
 		file.store_string(json_string)
 		file.close()
-		print("Nível criptografado salvo com sucesso em: ", file_path)
 		level_saved_message.show()
 		save_message_timer.start()
-	else:
-		print("ERRO ao salvar arquivo criptografado!")
 
 func load_level(levelname: String) -> bool:
+	if levelname.is_empty():
+		return false
+
 	var file_path: String
 
 	file_path = get_filepath(levelname) 
@@ -550,12 +610,15 @@ func generate_default_list() -> Array:
 func _on_save_message_timeout() -> void:
 	in_popup = false
 	level_saved_message.hide()
+	mobile_layout()
 
 func goto_menu():
-	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	if OS.get_name() != "Android":
+		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	MobileControl.control_mode("hidden")
 	MenuState.skip_intro = true
 	MenuState.start_in = 5
-	LoadingScreen.play_transition_to_scene("res://scenes/menu/main_menu.tscn", "")
+	LoadingScreen.play_transition_to_scene("res://scenes/menu/main_menu.tscn", "SUPER\nBATTLE\nCITY")
 
 #endregion
 
@@ -609,3 +672,89 @@ func _on_hud_icon_pressed(icon_node: Node2D, mode: MakerMode) -> void:
 	current_maker_mode = mode
 	current_item_selected = icon_node
 	option_selected.global_position = current_item_selected.global_position
+	mobile_layout()
+
+func _build_level_data_dictionary(popup_data: Dictionary) -> Dictionary:
+	var all_spawns_info = {
+		"base_position": base_area_position,
+		"player_1": [spawn_p1.global_position.x, spawn_p1.global_position.y],
+		"player_2": [spawn_p2.global_position.x, spawn_p2.global_position.y],
+		"player_3": [spawn_p3.global_position.x, spawn_p3.global_position.y],
+		"player_4": [spawn_p4.global_position.x, spawn_p4.global_position.y],
+		"bot_1": [bot_spawn1.global_position.x, bot_spawn1.global_position.y],
+		"bot_2": [bot_spawn2.global_position.x, bot_spawn2.global_position.y],
+		"bot_3": [bot_spawn3.global_position.x, bot_spawn3.global_position.y]
+	}
+	var cur_area = player_base.protection_area.get(base_area_position, "down")
+	for block in cur_area:
+		terrain.set_cell(block, -1)
+	var final_level_data = {
+		"level_info": popup_data,
+		"spawns_info": all_spawns_info,
+		"tile_data": get_tile_data_for_saving()
+	}
+	generate_base()
+	return final_level_data
+
+func _on_export_requested(popup_data: Dictionary, levelname: String):
+	var level_data = _build_level_data_dictionary(popup_data)
+	
+	if OS.get_name() == "Web":
+		_web_export(level_data, levelname)
+		_on_export_success()
+	else:
+		pending_export_data = level_data
+		DisplayServer.file_dialog_show(
+			GameTranslation.get_translated_text("Export level..."),
+			"*.bcd",
+			levelname + ".bcd",
+			false,
+			DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
+			["*.bcd ; " + GameTranslation.get_translated_text("Super Battle City Files")],
+			_on_file_dialog_result
+		)
+
+func _on_file_dialog_result(status: bool, selected_paths: PackedStringArray, _filter_index: int):
+	if status and selected_paths.size() > 0:
+		var path_to_save = selected_paths[0]
+		_finalize_windows_export(path_to_save)
+
+func _finalize_windows_export(path: String):
+	var json_string = JSON.stringify(pending_export_data, "\t")
+	var file = FileAccess.open_encrypted_with_pass(path, FileAccess.WRITE, "battle_tank_maker")
+	if file:
+		file.store_string(json_string)
+		file.close()
+		_on_export_success()
+		#OS.shell_show_in_file_manager(path)
+	else:
+		SoundManager.play_sound("editor_error")
+
+func _web_export(level_data: Dictionary, levelname: String):
+	var json_string = JSON.stringify(level_data, "\t")
+	var temp_path = "user://temp_web_export.bcd"
+	var file = FileAccess.open_encrypted_with_pass(temp_path, FileAccess.WRITE, "battle_tank_maker")
+	if file:
+		file.store_string(json_string)
+		file.close()
+		var file_read = FileAccess.open(temp_path, FileAccess.READ)
+		var buffer = file_read.get_buffer(file_read.get_length())
+		file_read.close()
+		JavaScriptBridge.download_buffer(buffer, levelname + ".bcd")
+		DirAccess.remove_absolute(temp_path)
+
+func _on_export_success():
+	save_level_window.hide()
+	in_popup = false
+	level_saved_message.show()
+	save_message_timer.start()
+
+func mobile_layout():
+	match current_maker_mode:
+		MakerMode.TILE:
+			set_tile_action(true)
+			MobileControl.control_mode("build1")
+		MakerMode.BASE:
+			MobileControl.control_mode("build2")
+		MakerMode.SPAWNER:
+			MobileControl.control_mode("build3")

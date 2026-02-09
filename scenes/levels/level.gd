@@ -68,36 +68,6 @@ var spawn_queue: Array[Dictionary] = []
 var active_enemies: Array[Node2D] = []
 
 var base_area_position: String = "down"
-var base_position: Dictionary = {
-	"down": Vector2(168.0, 224.0),
-	"up": Vector2(168.0, 32.0),
-	"left": Vector2(72.0, 128.0),
-	"right": Vector2(264.0, 128.0)
-}
-var base_exclusion_rects: Dictionary = {
-	"down": Rect2i(19, 25, 4, 3),
-	"up": Rect2i(19, 2, 4, 3),
-	"left": Rect2i(8, 13, 3, 4),
-	"right": Rect2i(31, 13, 3, 4)
-}
-var protection_area: Dictionary = {
-	"down": [
-		Vector2i(19,27), Vector2i(19,26), Vector2i(19,25), Vector2i(20,25),
-		Vector2i(21,25), Vector2i(22,25), Vector2i(22,26), Vector2i(22,27),
-	],
-	"up": [
-		Vector2i(19,2), Vector2i(19,3), Vector2i(19,4), Vector2i(20,4),
-		Vector2i(21,4), Vector2i(22,4), Vector2i(22,3), Vector2i(22,2),
-	],
-	"left": [
-		Vector2i(8,13), Vector2i(9,13), Vector2i(10,13), Vector2i(10,14),
-		Vector2i(8,16), Vector2i(9,16), Vector2i(10,16), Vector2i(10,15),
-	],
-	"right": [
-		Vector2i(31,13), Vector2i(32,13), Vector2i(33,13), Vector2i(31,14),
-		Vector2i(31,16), Vector2i(32,16), Vector2i(33,16), Vector2i(31,15),
-	],
-}
 
 var player_hitted: bool = false
 var fixed_total_bots: int = 0
@@ -113,7 +83,6 @@ func _ready() -> void:
 	current_mode = Global.current_game_mode
 	level_name = Global.current_level_name
 	game_players = Global.current_level_players
-
 	LoadingScreen.transition_finished.connect(_on_transition_finished)
 
 	game_hud.players = game_players
@@ -121,7 +90,7 @@ func _ready() -> void:
 
 	var survival_round = ""
 	if Global.current_gameplay_mode == Global.GamePlay.SURVIVAL:
-		var msg = Global.get_translated_text("ROUND")
+		var msg = GameTranslation.get_translated_text("ROUND")
 		survival_round = "\n" + msg + " " + str(Global.current_level_round)
 
 	pause_menu.visible = false
@@ -145,16 +114,16 @@ func get_formatted_level_name() -> String:
 	var lvlnm = Global.current_level_name
 	if Global.current_gameplay_mode in [Global.GamePlay.CAMPAIGN, Global.GamePlay.FREEPLAY, Global.GamePlay.SURVIVAL]:
 		if lvlnm.begins_with("level_"):
-			var msg = Global.get_translated_text("LEVEL")
+			var msg = GameTranslation.get_translated_text("LEVEL")
 			var nmb = lvlnm.replace("level", "")
 			return msg + nmb
 	return lvlnm
 
 func _on_transition_finished():
-	start_level()
-
-func start_level():
 	pause_menu.in_transition = false
+	MobileControl.control_mode("play")
+	MobileControl.change_sprite_buttons("play")
+	MobileControl.change_sprite_buttons("shot")
 	define_level_difficulty()
 	generate_players()
 	if Global.current_gameplay_mode == Global.GamePlay.SURVIVAL:
@@ -267,9 +236,9 @@ func reset_game_over_message():
 #region Base Generation
 
 func generate_base():
-	_clear_tiles_at_rect(base_exclusion_rects[base_area_position])
+	_clear_tiles_at_rect(player_base.base_exclusion_rects[base_area_position])
 	basic_protection(true, Vector2i(0,0))
-	var base_pos = base_position.get(base_area_position, "down")
+	var base_pos = player_base.base_position.get(base_area_position, "down")
 	player_base.active_base(base_pos, base_area_position)
 
 func base_destroyed():
@@ -450,6 +419,14 @@ func protect_active_bots():
 		if bot.is_in_group("Enemies") or bot.is_in_group("EnemiesDisabled"):
 			bot.gain_life()
 
+func boat_to_active_bots():
+	var bot_arr:Array = enemy_container.get_children()
+	if bot_arr.is_empty():
+		return
+	for bot in bot_arr:
+		if bot.is_in_group("Enemies") or bot.is_in_group("EnemiesDisabled"):
+			bot.toggle_boat(true)
+
 func _on_bot_hit(bot_node: Node2D):
 	if bot_node.is_special and not bot_node.hitted_by_granade:
 		spawn_powerup()
@@ -495,7 +472,7 @@ func protect_eagle(disable_shield: bool = false):
 		basic_protection(true, Vector2i(0,1))
 
 func basic_protection(active: bool, type: Vector2i):
-	var cur_area = protection_area.get(base_area_position, "down")
+	var cur_area = player_base.protection_area.get(base_area_position, "down")
 	if active:
 		for block in cur_area:
 			terrain.set_cell(block, 1, type)
@@ -558,6 +535,9 @@ func get_tile_data_for_saving() -> Array:
 	return tile_data_to_save
 
 func load_level(levelname: String) -> bool:
+	if levelname.is_empty():
+		return false
+
 	var file_path: String
 
 	if Global.current_gameplay_mode in [Global.GamePlay.CAMPAIGN, Global.GamePlay.FREEPLAY, Global.GamePlay.SURVIVAL]:
@@ -688,7 +668,8 @@ func check_if_level_has_water() -> void:
 				return
 
 func goto_menu():
-	LoadingScreen.play_transition_to_scene("res://scenes/menu/main_menu.tscn", "")
+	MobileControl.control_mode("hidden")
+	LoadingScreen.play_transition_to_scene("res://scenes/menu/main_menu.tscn", "SUPER\nBATTLE\nCITY")
 
 #endregion
 
@@ -713,6 +694,7 @@ func level_game_over():
 	finish_timer.start()
 
 func _on_finish_level_timeout() -> void:
+	MobileControl.control_mode("hidden")
 	results_screen.start_transition()
 	pause_menu.in_transition = true
 	if bonus_1.is_active or bonus_2.is_active:
@@ -762,7 +744,7 @@ func _finish_level() -> void:
 		
 		elif Global.current_gameplay_mode == Global.GamePlay.SURVIVAL:
 			Global.check_and_update_highscore()
-			var msg = Global.get_translated_text("ROUND")
+			var msg = GameTranslation.get_translated_text("ROUND")
 			var survival_round = "\n" + msg + " " + str(Global.current_level_round)
 			LoadingScreen.play_transition_to_scene("res://scenes/levels/level.tscn", get_formatted_level_name(), true, survival_round)
 

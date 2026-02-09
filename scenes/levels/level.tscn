@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=4 uid="uid://b3e11rxsdkbmi"]
+[gd_scene format=4 uid="uid://b3e11rxsdkbmi"]
 
 [ext_resource type="Script" uid="uid://d0qpvqj4pk71a" path="res://scenes/levels/level.gd" id="1_d4w6o"]
 [ext_resource type="PackedScene" uid="uid://b5snworusylr7" path="res://scenes/hud/game_hud.tscn" id="2_mbbpy"]
@@ -278,202 +278,192 @@ _data = {
 &"game_over": SubResource("Animation_lp2ca")
 }
 
-[node name="Level" type="Node2D"]
+[node name="Level" type="Node2D" unique_id=808202764]
 script = ExtResource("1_d4w6o")
 
-[node name="interface_bg" type="ColorRect" parent="."]
+[node name="interface_bg" type="ColorRect" parent="." unique_id=1933185732]
 offset_left = -16.0
 offset_top = -16.0
-offset_right = 352.0
+offset_right = 464.0
 offset_bottom = 272.0
 color = Color(0.38431373, 0.38431373, 0.3882353, 1)
 
-[node name="Game Hud" parent="." instance=ExtResource("2_mbbpy")]
+[node name="Game Hud" parent="." unique_id=1701439602 instance=ExtResource("2_mbbpy")]
 
-[node name="game_bg" type="ColorRect" parent="."]
-offset_left = 64.0
+[node name="game_bg" type="ColorRect" parent="." unique_id=214564333]
+offset_left = 120.0
 offset_top = 24.0
-offset_right = 272.0
+offset_right = 328.0
 offset_bottom = 232.0
 color = Color(0, 0, 0, 1)
 
-[node name="LevelCamera" type="Camera2D" parent="."]
+[node name="LevelCamera" type="Camera2D" parent="." unique_id=1089586869]
 anchor_mode = 0
 script = ExtResource("3_7pb6i")
 
-[node name="Terrain" type="TileMapLayer" parent="." groups=["Terrain"]]
-position = Vector2(0, 8)
+[node name="Terrain" type="TileMapLayer" parent="." unique_id=1233423509 groups=["Terrain"]]
+position = Vector2(56, 8)
 tile_set = SubResource("TileSet_x42e6")
 script = ExtResource("4_icy5c")
 
-[node name="Barrier" type="TileMapLayer" parent="." groups=["Terrain"]]
-position = Vector2(0, 8)
+[node name="Barrier" type="TileMapLayer" parent="." unique_id=2147154740 groups=["Terrain"]]
+position = Vector2(56, 8)
 tile_map_data = PackedByteArray("AAAIABwAAQAEAAEAAAAUABwAAQAEAAEAAAAXABwAAQAEAAEAAAAiAAMAAQAEAAEAAGAiABIAAQAEAAEAAGAiABMAAQAEAAEAAGAHAAIAAQAEAAEAAFAHAAMAAQAEAAEAAFAHAAQAAQAEAAEAAFAHAAUAAQAEAAEAAFAHAAYAAQAEAAEAAFAHAAcAAQAEAAEAAFAHAAgAAQAEAAEAAFAHAAkAAQAEAAEAAFAHAAoAAQAEAAEAAFAHAAsAAQAEAAEAAFAHAAwAAQAEAAEAAFAHAA0AAQAEAAEAAFAHAA4AAQAEAAEAAFAHAA8AAQAEAAEAAFAHABAAAQAEAAEAAFAHABEAAQAEAAEAAFAHABIAAQAEAAEAAFAHABMAAQAEAAEAAFAHABQAAQAEAAEAAFAHABUAAQAEAAEAAFAHABYAAQAEAAEAAFAHABcAAQAEAAEAAFAHABgAAQAEAAEAAFAHABkAAQAEAAEAAFAHABoAAQAEAAEAAFAHABsAAQAEAAEAAFAHABwAAQADAAEAAGAJABwAAQAEAAEAAAAKABwAAQAEAAEAAAALABwAAQAEAAEAAAAMABwAAQAEAAEAAAANABwAAQAEAAEAAAAOABwAAQAEAAEAAAAPABwAAQAEAAEAAAAQABwAAQAEAAEAAAARABwAAQAEAAEAAAASABwAAQAEAAEAAAATABwAAQAEAAEAAAAVABwAAQAEAAEAAAAWABwAAQAEAAEAAAAYABwAAQAEAAEAAAAZABwAAQAEAAEAAAAaABwAAQAEAAEAAAAbABwAAQAEAAEAAAAcABwAAQAEAAEAAAAdABwAAQAEAAEAAAAeABwAAQAEAAEAAAAfABwAAQAEAAEAAAAgABwAAQAEAAEAAAAhABwAAQAEAAEAAAAiAAQAAQAEAAEAAGAiAAUAAQAEAAEAAGAiAAYAAQAEAAEAAGAiAAcAAQAEAAEAAGAiAAgAAQAEAAEAAGAiAAkAAQAEAAEAAGAiAAoAAQAEAAEAAGAiAAsAAQAEAAEAAGAiAAwAAQAEAAEAAGAiAA0AAQAEAAEAAGAiAA4AAQAEAAEAAGAiAA8AAQAEAAEAAGAiABAAAQAEAAEAAGAiABEAAQAEAAEAAGAiABQAAQAEAAEAAGAiABUAAQAEAAEAAGAiABYAAQAEAAEAAGAiABcAAQAEAAEAAGAiABgAAQAEAAEAAGAiABkAAQAEAAEAAGAiABoAAQAEAAEAAGAiABsAAQAEAAEAAGAiABwAAQADAAEAADAHAAEAAQADAAEAAAAIAAEAAQAEAAEAAAAJAAEAAQAEAAEAAAAKAAEAAQAEAAEAAAALAAEAAQAEAAEAAAAMAAEAAQAEAAEAAAANAAEAAQAEAAEAAAAOAAEAAQAEAAEAAAAPAAEAAQAEAAEAAAAQAAEAAQAEAAEAAAARAAEAAQAEAAEAAAASAAEAAQAEAAEAAAATAAEAAQAEAAEAAAAUAAEAAQAEAAEAAAAVAAEAAQAEAAEAAAAWAAEAAQAEAAEAAAAXAAEAAQAEAAEAAAAYAAEAAQAEAAEAAAAZAAEAAQAEAAEAAAAaAAEAAQAEAAEAAAAbAAEAAQAEAAEAAAAcAAEAAQAEAAEAAAAdAAEAAQAEAAEAAAAeAAEAAQAEAAEAAAAfAAEAAQAEAAEAAAAgAAEAAQAEAAEAAAAiAAIAAQAEAAEAAGAiAAEAAQADAAEAAFAhAAEAAQAEAAEAAAA=")
 tile_set = SubResource("TileSet_x42e6")
 script = ExtResource("4_icy5c")
 
-[node name="Player1" parent="." instance=ExtResource("5_rmjfq")]
+[node name="Player1" parent="." unique_id=383881138 instance=ExtResource("5_rmjfq")]
 z_index = 5
-position = Vector2(88, 168)
-spawn_position = Vector2(136, 224)
+position = Vector2(192, 264)
+spawn_position = Vector2(192, 224)
 
-[node name="Player2" parent="." instance=ExtResource("5_rmjfq")]
+[node name="Player2" parent="." unique_id=1769239423 instance=ExtResource("5_rmjfq")]
 z_index = 5
-position = Vector2(200, 264)
+position = Vector2(256, 264)
 player_id = 2
-spawn_position = Vector2(200, 224)
+spawn_position = Vector2(256, 224)
 
-[node name="Player3" parent="." instance=ExtResource("5_rmjfq")]
+[node name="Player3" parent="." unique_id=635111361 instance=ExtResource("5_rmjfq")]
 z_index = 5
-position = Vector2(104, 264)
+position = Vector2(160, 264)
 player_id = 3
-spawn_position = Vector2(104, 224)
+spawn_position = Vector2(160, 224)
 
-[node name="Player4" parent="." instance=ExtResource("5_rmjfq")]
+[node name="Player4" parent="." unique_id=484379210 instance=ExtResource("5_rmjfq")]
 z_index = 5
-position = Vector2(232, 264)
+position = Vector2(288, 264)
 player_id = 4
-spawn_position = Vector2(232, 224)
+spawn_position = Vector2(288, 224)
 
-[node name="Player Base" parent="." instance=ExtResource("6_ouxo3")]
-visible = false
-position = Vector2(168, 224)
+[node name="Player Base" parent="." unique_id=776415484 instance=ExtResource("6_ouxo3")]
+position = Vector2(224, 224)
 
-[node name="Bonus 1" parent="." instance=ExtResource("6_7pb6i")]
+[node name="Bonus 1" parent="." unique_id=1008562321 instance=ExtResource("6_7pb6i")]
 z_index = 15
-position = Vector2(168, 112)
+position = Vector2(304, 48)
 collision_mask = 3096
 bonus_id = 1
-area_x_min = 88.0
-area_x_max = 248.0
-area_y_min = 32.0
+area_x_min = 144.0
+area_x_max = 304.0
+area_y_min = 48.0
 area_y_max = 200.0
 
-[node name="Bonus 2" parent="." instance=ExtResource("6_7pb6i")]
+[node name="Bonus 2" parent="." unique_id=50186230 instance=ExtResource("6_7pb6i")]
 z_index = 15
-position = Vector2(168, 144)
+position = Vector2(144, 200)
 collision_mask = 3096
 bonus_id = 2
-area_x_min = 88.0
-area_x_max = 248.0
-area_y_min = 32.0
+area_x_min = 144.0
+area_x_max = 304.0
+area_y_min = 48.0
 area_y_max = 200.0
 
-[node name="Bots" type="Node2D" parent="."]
+[node name="Bots" type="Node2D" parent="." unique_id=1094221638]
 
-[node name="LevelArea" type="Area2D" parent="." groups=["Level"]]
+[node name="LevelArea" type="Area2D" parent="." unique_id=672036746 groups=["Level"]]
 visible = false
-position = Vector2(0, 8)
+position = Vector2(56, 8)
 collision_layer = 512
 collision_mask = 56
 input_pickable = false
 
-[node name="AreaCollision" type="CollisionPolygon2D" parent="LevelArea"]
+[node name="AreaCollision" type="CollisionPolygon2D" parent="LevelArea" unique_id=1271388855]
 position = Vector2(168, 120)
-polygon = PackedVector2Array(184, -184, -184, -184, -184, 184, -112, 112, -112, -112, 112, -112, 112, 112, -112, 112, -184, 184, 184, 184)
+polygon = PackedVector2Array(224, -184, -224, -184, -224, 184, -112, 112, -112, -112, 112, -112, 112, 112, -112, 112, -224, 184, 224, 184)
 
-[node name="GameOverMessages" type="Node2D" parent="."]
+[node name="GameOverMessages" type="Node2D" parent="." unique_id=1165468310]
 z_index = 1000
-position = Vector2(0, 8)
+position = Vector2(56, 8)
 
-[node name="GameoverOverlayer" type="ColorRect" parent="GameOverMessages"]
+[node name="GameoverOverlayer" type="ColorRect" parent="GameOverMessages" unique_id=1377156957]
 self_modulate = Color(1, 1, 1, 0)
-offset_top = -8.0
-offset_right = 336.0
-offset_bottom = 248.0
-color = Color(0, 0, 0, 0.5882353)
+offset_left = -64.0
+offset_top = -16.0
+offset_right = 400.0
+offset_bottom = 256.0
+color = Color(0, 0, 0, 0.7058824)
 
-[node name="GameOver" type="Sprite2D" parent="GameOverMessages"]
+[node name="GameOver" type="Sprite2D" parent="GameOverMessages" unique_id=2121836351]
 visible = false
 z_index = 500
 position = Vector2(168, 256)
 texture = ExtResource("8_ouxo3")
 
-[node name="GameOverP1" type="Sprite2D" parent="GameOverMessages"]
+[node name="GameOverP1" type="Sprite2D" parent="GameOverMessages" unique_id=351287693]
 visible = false
 z_index = 500
 position = Vector2(136, 256)
 texture = ExtResource("8_ouxo3")
 
-[node name="GameOverP2" type="Sprite2D" parent="GameOverMessages"]
+[node name="GameOverP2" type="Sprite2D" parent="GameOverMessages" unique_id=1836035428]
 visible = false
 z_index = 500
 position = Vector2(200, 256)
 texture = ExtResource("8_ouxo3")
 
-[node name="GameOverP3" type="Sprite2D" parent="GameOverMessages"]
+[node name="GameOverP3" type="Sprite2D" parent="GameOverMessages" unique_id=1722715168]
 visible = false
 z_index = 500
 position = Vector2(104, 256)
 texture = ExtResource("8_ouxo3")
 
-[node name="GameOverP4" type="Sprite2D" parent="GameOverMessages"]
+[node name="GameOverP4" type="Sprite2D" parent="GameOverMessages" unique_id=1761841151]
 visible = false
 z_index = 500
 position = Vector2(232, 256)
 texture = ExtResource("8_ouxo3")
 
-[node name="AnimPlayerGeral" type="AnimationPlayer" parent="GameOverMessages"]
+[node name="AnimPlayerGeral" type="AnimationPlayer" parent="GameOverMessages" unique_id=618659218]
 root_node = NodePath("../GameOver")
-libraries = {
-&"": SubResource("AnimationLibrary_rmjfq")
-}
+libraries/ = SubResource("AnimationLibrary_rmjfq")
 
-[node name="AnimPlayerP1" type="AnimationPlayer" parent="GameOverMessages"]
-libraries = {
-&"": SubResource("AnimationLibrary_qogh7")
-}
+[node name="AnimPlayerP1" type="AnimationPlayer" parent="GameOverMessages" unique_id=431094904]
+libraries/ = SubResource("AnimationLibrary_qogh7")
 
-[node name="AnimPlayerP2" type="AnimationPlayer" parent="GameOverMessages"]
-libraries = {
-&"": SubResource("AnimationLibrary_5mi6g")
-}
+[node name="AnimPlayerP2" type="AnimationPlayer" parent="GameOverMessages" unique_id=933640023]
+libraries/ = SubResource("AnimationLibrary_5mi6g")
 
-[node name="AnimPlayerP3" type="AnimationPlayer" parent="GameOverMessages"]
-libraries = {
-&"": SubResource("AnimationLibrary_jyre1")
-}
+[node name="AnimPlayerP3" type="AnimationPlayer" parent="GameOverMessages" unique_id=1276995038]
+libraries/ = SubResource("AnimationLibrary_jyre1")
 
-[node name="AnimPlayerP4" type="AnimationPlayer" parent="GameOverMessages"]
-libraries = {
-&"": SubResource("AnimationLibrary_p62il")
-}
+[node name="AnimPlayerP4" type="AnimationPlayer" parent="GameOverMessages" unique_id=118415998]
+libraries/ = SubResource("AnimationLibrary_p62il")
 
-[node name="GameOverTimerP1" type="Timer" parent="GameOverMessages"]
+[node name="GameOverTimerP1" type="Timer" parent="GameOverMessages" unique_id=2119100875]
 wait_time = 5.0
 one_shot = true
 
-[node name="GameOverTimerP2" type="Timer" parent="GameOverMessages"]
+[node name="GameOverTimerP2" type="Timer" parent="GameOverMessages" unique_id=752454675]
 wait_time = 5.0
 one_shot = true
 
-[node name="GameOverTimerP3" type="Timer" parent="GameOverMessages"]
+[node name="GameOverTimerP3" type="Timer" parent="GameOverMessages" unique_id=563240701]
 wait_time = 5.0
 one_shot = true
 
-[node name="GameOverTimerP4" type="Timer" parent="GameOverMessages"]
+[node name="GameOverTimerP4" type="Timer" parent="GameOverMessages" unique_id=1975897523]
 wait_time = 5.0
 one_shot = true
 
-[node name="PauseMenu" parent="." instance=ExtResource("9_icy5c")]
+[node name="PauseMenu" parent="." unique_id=104554547 instance=ExtResource("9_icy5c")]
 visible = false
 
-[node name="Results Screen" parent="." instance=ExtResource("10_rmjfq")]
+[node name="Results Screen" parent="." unique_id=806229606 instance=ExtResource("10_rmjfq")]
 visible = false
 
-[node name="ProtectionTimer" type="Timer" parent="."]
+[node name="ProtectionTimer" type="Timer" parent="." unique_id=260343041]
 one_shot = true
 
-[node name="SpawnTimer" type="Timer" parent="."]
+[node name="SpawnTimer" type="Timer" parent="." unique_id=1305954652]
 
-[node name="FinishTimer" type="Timer" parent="."]
+[node name="FinishTimer" type="Timer" parent="." unique_id=527223142]
 wait_time = 3.0
 one_shot = true
 
-[node name="FreezeTimer" type="Timer" parent="."]
+[node name="FreezeTimer" type="Timer" parent="." unique_id=345801267]
 one_shot = true
 
-[node name="FlickinTimer" type="Timer" parent="."]
+[node name="FlickinTimer" type="Timer" parent="." unique_id=1132881166]
 wait_time = 0.5
 
 [connection signal="area_entered" from="LevelArea" to="." method="_on_level_area_entered"]

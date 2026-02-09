@@ -112,7 +112,7 @@ func bonus_player():
 	update_player_score()
 
 func bonus_perfect():
-	bonus_1.text = Global.get_translated_text("PERFECT!")
+	bonus_1.text = GameTranslation.get_translated_text("PERFECT!")
 	bonus_1.visible = true
 	bonus_2.visible = true
 	SoundManager.play_sound("best_score")

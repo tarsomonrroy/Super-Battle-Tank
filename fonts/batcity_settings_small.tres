@@ -1,6 +1,6 @@
-[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://bfp775vrse8n5"]
+[gd_resource type="LabelSettings" format=3 uid="uid://bfp775vrse8n5"]
 
-[ext_resource type="FontFile" uid="uid://bvi2edo7cpovj" path="res://fonts/True_Battle_City.ttf" id="1_5pe5r"]
+[ext_resource type="FontFile" uid="uid://bvi2edo7cpovj" path="res://fonts/Super_Battle_City.ttf" id="1_5pe5r"]
 
 [resource]
 font = ExtResource("1_5pe5r")

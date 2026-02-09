@@ -118,7 +118,10 @@ func apply_effect(body: Node2D, is_bot: bool):
 		"shovel":
 			level.protect_eagle(is_bot)
 		"boat":
-			body.toggle_boat(true)
+			if is_bot:
+				level.protect_active_bots()
+			else:
+				body.toggle_boat(true)
 
 	if is_bot:
 		SoundManager.play_sound("item_enemy")

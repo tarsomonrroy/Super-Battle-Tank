@@ -2,17 +2,20 @@ class_name MovementComponent extends Node
 
 @export var actor: CharacterBody2D
 @export var normal_friction: float = 2000.0
-@export var ice_friction: float = 100.0
+@export var ice_friction: float = 50.0
 
 var speed: float = 30.0
 var last_axis: String = "vertical"
 var is_on_ice: bool = false
 var moved: bool = false
 
+var last_direction: Vector2 = Vector2.ZERO
+
 func handle_movement(input_vector: Vector2, delta: float, bonus_speed: float) -> void:
 	if input_vector != Vector2.ZERO:
 		moved = true
 		input_vector = input_vector.normalized()
+		last_direction = input_vector
 
 		actor.velocity = input_vector * (speed + bonus_speed)
 

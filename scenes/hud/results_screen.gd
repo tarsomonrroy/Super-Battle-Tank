@@ -5,6 +5,7 @@ signal finish_results
 @onready var level: Node2D = $".."
 @onready var results: Node2D = $Results
 @onready var level_name: Label = $Results/LevelName
+@onready var game_over_bg: ColorRect = $GameOverBG
 @onready var game_over_screen: Sprite2D = $GameOverScreen
 
 @onready var total_score: Label = $"Results/Total Score"
@@ -29,14 +30,22 @@ var PLAYER_PANEL_SCENE = preload("res://scenes/hud/player_panel.tscn")
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("game1_pause") and is_counting and not is_skipping:
 		is_skipping = true
-		if player_1.visible:
-			player_1.skip_countdown()
-		if player_2.visible:
-			player_2.skip_countdown()
-		if player_3.visible:
-			player_3.skip_countdown()
-		if player_4.visible:
-			player_4.skip_countdown()
+		skip_general_countdown()
+
+func _unhandled_input(event):
+	if event is InputEventScreenTouch and event.pressed and is_counting and not is_skipping:
+		is_skipping = true
+		skip_general_countdown()
+
+func skip_general_countdown():
+	if player_1.visible:
+		player_1.skip_countdown()
+	if player_2.visible:
+		player_2.skip_countdown()
+	if player_3.visible:
+		player_3.skip_countdown()
+	if player_4.visible:
+		player_4.skip_countdown()
 
 func create_data(levelname: String, levelround: String = "") -> void:
 	level_name.text = levelname.to_upper().replace("_", " ") + levelround
@@ -129,7 +138,7 @@ func set_best_players(players: int):
 	finish_timer.start()
 
 func _update_scores():
-	var msg = Global.get_translated_text("TOTAL SCORE")
+	var msg = GameTranslation.get_translated_text("TOTAL SCORE")
 	total_score.text = msg + ": " + str(Global.general_score)
 
 func increment_bot_list(player: int, bot: int):
@@ -147,7 +156,10 @@ func finish_result_screen():
 	if not Global.in_game_over:
 		finish_results.emit()
 	else:
+		results.visible = false
+		game_over_screen.texture = load("res://sprites/game_over/game_over_screen_" + GameTranslation.get_language_acronym() + ".png")
 		game_over_screen.visible = true
+		game_over_bg.visible = true
 		SoundManager.play_sound("game_over")
 		await get_tree().create_timer(2.0).timeout
 		finish_results.emit()

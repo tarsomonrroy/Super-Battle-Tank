@@ -22,6 +22,7 @@ var is_skipping: bool = false
 func _ready() -> void:
 	bonus_1.visible = false
 	bonus_2.visible = false
+	total_bots.text = GameTranslation.get_translated_text("TOTAL") + ": 0"
 	_reset_labels()
 
 func set_player_number(num: int):
@@ -63,7 +64,7 @@ func _start_bot_count_sequence() -> void:
 	await get_tree().create_timer(delay_per_increment).timeout
 	if is_skipping: return
 
-	total_bots.text = "TOTAL: " + str(bots_target.reduce(func(a, b): return a + b))
+	total_bots.text = GameTranslation.get_translated_text("TOTAL") + ": " + str(bots_target.reduce(func(a, b): return a + b))
 	countdown_finished.emit()
 
 func _increment_label(label: Label, index: int, bonus: int) -> void:
@@ -99,8 +100,8 @@ func skip_countdown() -> void:
 	total_bot_2.text = str(bots_current[1])
 	total_bot_3.text = str(bots_current[2])
 	total_bot_4.text = str(bots_current[3])
-
-	total_bots.text = "TOTAL: " + str(bots_target.reduce(func(a, b): return a + b))
+	
+	total_bots.text = GameTranslation.get_translated_text("TOTAL") + ": " + str(bots_target.reduce(func(a, b): return a + b))
 	countdown_finished.emit()
 
 func bonus_player():

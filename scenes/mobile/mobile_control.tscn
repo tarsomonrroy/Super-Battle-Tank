@@ -4,10 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://cx84asy17gmjc" path="res://sprites/mobile_control/up-button.png" id="1_pfwcw"]
 [ext_resource type="Texture2D" uid="uid://na0ucvm52x32" path="res://sprites/mobile_control/left-button.png" id="2_oq34s"]
 [ext_resource type="Texture2D" uid="uid://cp1t7prvejbjb" path="res://sprites/mobile_control/down-button.png" id="3_ho23j"]
+[ext_resource type="Texture2D" uid="uid://onl5nob2dfdd" path="res://sprites/mobile_control/up-button-pressed.png" id="3_we8pf"]
 [ext_resource type="Texture2D" uid="uid://yi5qsy0u6r8p" path="res://sprites/mobile_control/right-button.png" id="4_8e0ml"]
 [ext_resource type="Texture2D" uid="uid://c4084dtj0bqa4" path="res://sprites/mobile_control/shoot-button.png" id="5_6ghtb"]
+[ext_resource type="Texture2D" uid="uid://mn3cuhw7lx2m" path="res://sprites/mobile_control/left-button-pressed.png" id="5_ewgnp"]
 [ext_resource type="Texture2D" uid="uid://m3dkvxfk45m8" path="res://sprites/mobile_control/back-button.png" id="6_pi6ah"]
+[ext_resource type="Texture2D" uid="uid://cm1l480vyvvm3" path="res://sprites/mobile_control/down-button-pressed.png" id="7_lo2f1"]
 [ext_resource type="Texture2D" uid="uid://dc1rr0750c101" path="res://sprites/mobile_control/pause-button.png" id="7_we8pf"]
+[ext_resource type="Texture2D" uid="uid://bq0ugbr0iiivr" path="res://sprites/mobile_control/right-button-pressed.png" id="9_caygt"]
 [ext_resource type="Texture2D" uid="uid://b4pv505dqo24m" path="res://sprites/mobile_control/pencil-button.png" id="9_ho23j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pfwcw"]
@@ -26,14 +30,16 @@
 
 [node name="Mobile Control" type="CanvasLayer" unique_id=2054714250]
 process_mode = 3
-layer = 2
+layer = 50
 script = ExtResource("1_oq34s")
 
 [node name="TouchButton-Up" type="TouchScreenButton" parent="." unique_id=32653109]
 position = Vector2(48.000015, 144)
 scale = Vector2(1.6, 1.6)
 texture_normal = ExtResource("1_pfwcw")
+texture_pressed = ExtResource("3_we8pf")
 shape = SubResource("RectangleShape2D_pfwcw")
+passby_press = true
 action = "game1_up"
 visibility_mode = 1
 
@@ -41,7 +47,9 @@ visibility_mode = 1
 position = Vector2(16.000015, 175.99998)
 scale = Vector2(1.6, 1.6)
 texture_normal = ExtResource("2_oq34s")
+texture_pressed = ExtResource("5_ewgnp")
 shape = SubResource("RectangleShape2D_oq34s")
+passby_press = true
 action = "game1_left"
 visibility_mode = 1
 
@@ -49,7 +57,9 @@ visibility_mode = 1
 position = Vector2(48.000015, 207.99998)
 scale = Vector2(1.6, 1.6)
 texture_normal = ExtResource("3_ho23j")
+texture_pressed = ExtResource("7_lo2f1")
 shape = SubResource("RectangleShape2D_ho23j")
+passby_press = true
 action = "game1_down"
 visibility_mode = 1
 
@@ -57,7 +67,9 @@ visibility_mode = 1
 position = Vector2(80.000015, 175.99998)
 scale = Vector2(1.6, 1.6)
 texture_normal = ExtResource("4_8e0ml")
+texture_pressed = ExtResource("9_caygt")
 shape = SubResource("RectangleShape2D_8e0ml")
+passby_press = true
 action = "game1_right"
 visibility_mode = 1
 

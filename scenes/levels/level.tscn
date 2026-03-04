@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://co0ygwi05urpg" path="res://scenes/players/player_base.tscn" id="6_ouxo3"]
 [ext_resource type="Texture2D" uid="uid://bn6c6vaxia4l8" path="res://sprites/game_over.png" id="8_ouxo3"]
 [ext_resource type="PackedScene" uid="uid://djabaayggu771" path="res://scenes/levels/pause.tscn" id="9_icy5c"]
+[ext_resource type="FontFile" uid="uid://bvi2edo7cpovj" path="res://fonts/Super_Battle_City.ttf" id="9_xfk5q"]
 [ext_resource type="PackedScene" uid="uid://bp2r8x5mqayf3" path="res://scenes/hud/results_screen.tscn" id="10_rmjfq"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_mbbpy"]
@@ -99,31 +100,52 @@ pattern_3 = SubResource("TileMapPattern_rmjfq")
 pattern_4 = SubResource("TileMapPattern_7pb6i")
 pattern_5 = SubResource("TileMapPattern_xfk5q")
 
-[sub_resource type="Animation" id="Animation_icy5c"]
-length = 0.5
-step = 0.1
+[sub_resource type="LabelSettings" id="LabelSettings_qogh7"]
+font = ExtResource("9_xfk5q")
+font_size = 4
+font_color = Color(0.73, 0.17155002, 0.10949998, 1)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(0, 1)
 
-[sub_resource type="Animation" id="Animation_ouxo3"]
+[sub_resource type="Animation" id="Animation_qogh7"]
+resource_name = "RESET"
+length = 0.001
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GameOver:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(200, 256)]
+}
+
+[sub_resource type="Animation" id="Animation_5mi6g"]
 resource_name = "game_over"
 length = 1.2
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath("GameOver:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 1.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(168, 256), Vector2(168, 120)]
+"values": [Vector2(200, 256), Vector2(200, 117)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_rmjfq"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8iyoh"]
 _data = {
-&"RESET": SubResource("Animation_icy5c"),
-&"game_over": SubResource("Animation_ouxo3")
+&"RESET": SubResource("Animation_qogh7"),
+&"game_over": SubResource("Animation_5mi6g")
 }
 
 [sub_resource type="Animation" id="Animation_xfk5q"]
@@ -138,7 +160,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(136, 256)]
+"values": [Vector2(192, 256)]
 }
 
 [sub_resource type="Animation" id="Animation_7pb6i"]
@@ -155,7 +177,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(136, 256), Vector2(136, 216)]
+"values": [Vector2(192, 264), Vector2(192, 223)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qogh7"]
@@ -176,7 +198,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(200, 256)]
+"values": [Vector2(256, 264)]
 }
 
 [sub_resource type="Animation" id="Animation_8iyoh"]
@@ -193,7 +215,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(200, 256), Vector2(200, 216)]
+"values": [Vector2(256, 264), Vector2(256, 223)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5mi6g"]
@@ -214,7 +236,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(104, 256)]
+"values": [Vector2(160, 264)]
 }
 
 [sub_resource type="Animation" id="Animation_b8j7q"]
@@ -231,7 +253,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(104, 256), Vector2(104, 216)]
+"values": [Vector2(160, 264), Vector2(160, 223)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jyre1"]
@@ -252,7 +274,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(232, 256)]
+"values": [Vector2(288, 264)]
 }
 
 [sub_resource type="Animation" id="Animation_lp2ca"]
@@ -269,7 +291,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(232, 256), Vector2(232, 216)]
+"values": [Vector2(288, 264), Vector2(288, 223)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_p62il"]
@@ -373,49 +395,60 @@ polygon = PackedVector2Array(224, -184, -224, -184, -224, 184, -112, 112, -112, 
 
 [node name="GameOverMessages" type="Node2D" parent="." unique_id=1165468310]
 z_index = 1000
-position = Vector2(56, 8)
 
 [node name="GameoverOverlayer" type="ColorRect" parent="GameOverMessages" unique_id=1377156957]
 self_modulate = Color(1, 1, 1, 0)
-offset_left = -64.0
-offset_top = -16.0
-offset_right = 400.0
-offset_bottom = 256.0
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 456.0
+offset_bottom = 264.0
 color = Color(0, 0, 0, 0.7058824)
 
-[node name="GameOver" type="Sprite2D" parent="GameOverMessages" unique_id=2121836351]
-visible = false
-z_index = 500
-position = Vector2(168, 256)
-texture = ExtResource("8_ouxo3")
+[node name="GameOver" type="Label" parent="GameOverMessages" unique_id=1454331457]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 200.0
+offset_top = 256.0
+offset_right = 248.0
+offset_bottom = 280.00012
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "GAME
+OVER"
+label_settings = SubResource("LabelSettings_qogh7")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="GameOverP1" type="Sprite2D" parent="GameOverMessages" unique_id=351287693]
 visible = false
 z_index = 500
-position = Vector2(136, 256)
+position = Vector2(192, 256)
 texture = ExtResource("8_ouxo3")
 
 [node name="GameOverP2" type="Sprite2D" parent="GameOverMessages" unique_id=1836035428]
 visible = false
 z_index = 500
-position = Vector2(200, 256)
+position = Vector2(256, 264)
 texture = ExtResource("8_ouxo3")
 
 [node name="GameOverP3" type="Sprite2D" parent="GameOverMessages" unique_id=1722715168]
 visible = false
 z_index = 500
-position = Vector2(104, 256)
+position = Vector2(160, 264)
 texture = ExtResource("8_ouxo3")
 
 [node name="GameOverP4" type="Sprite2D" parent="GameOverMessages" unique_id=1761841151]
 visible = false
 z_index = 500
-position = Vector2(232, 256)
+position = Vector2(288, 264)
 texture = ExtResource("8_ouxo3")
 
-[node name="AnimPlayerGeral" type="AnimationPlayer" parent="GameOverMessages" unique_id=618659218]
-root_node = NodePath("../GameOver")
-libraries/ = SubResource("AnimationLibrary_rmjfq")
+[node name="AnimPlayerGeral" type="AnimationPlayer" parent="GameOverMessages" unique_id=1775114643]
+libraries/ = SubResource("AnimationLibrary_8iyoh")
 
 [node name="AnimPlayerP1" type="AnimationPlayer" parent="GameOverMessages" unique_id=431094904]
 libraries/ = SubResource("AnimationLibrary_qogh7")

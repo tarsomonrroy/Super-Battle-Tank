@@ -28,7 +28,7 @@ var flick_state: bool = false
 @onready var player_4: CharacterBody2D = $Player4
 
 @onready var gameover_overlayer: ColorRect = $GameOverMessages/GameoverOverlayer
-@onready var game_over_general: Sprite2D = $GameOverMessages/GameOver
+@onready var game_over_general: Label = $GameOverMessages/GameOver
 @onready var game_over_p1: Sprite2D = $GameOverMessages/GameOverP1
 @onready var game_over_p2: Sprite2D = $GameOverMessages/GameOverP2
 @onready var game_over_p3: Sprite2D = $GameOverMessages/GameOverP3
@@ -60,6 +60,7 @@ var bot_number: int = 1
 
 var game_over_stack: int = 0
 var game_players: int = 1
+var active_players: int = 1
 
 var BOT_SCENE = preload("res://scenes/enemies/bot.tscn")
 var frozen_spawn: bool = false
@@ -72,7 +73,8 @@ var base_area_position: String = "down"
 var player_hitted: bool = false
 var fixed_total_bots: int = 0
 
-# Maker
+var block_boss_tank: bool = false
+
 var current_mode: int = 0
 var level_number: int = 1
 var level_name: String = ""
@@ -87,6 +89,8 @@ func _ready() -> void:
 
 	game_hud.players = game_players
 	game_hud.toggle_hud_itens()
+
+	active_players = game_players
 
 	var survival_round = ""
 	if Global.current_gameplay_mode == Global.GamePlay.SURVIVAL:
@@ -130,6 +134,7 @@ func _on_transition_finished():
 		populate_random_spawn_queue()
 	else:
 		populate_spawn_queue()
+	game_hud.total_bots = fixed_total_bots
 	try_spawn_bot()
 	spawn_timer.start(spawn_interval)
 
@@ -143,7 +148,13 @@ func define_level_difficulty():
 		survival_config()
 
 func campaign_config():
-	match game_players:
+	bot_spawn_rules(game_players)
+	if Global.hard_mode:
+		max_active_enemies += 2
+		spawn_interval /= 2
+
+func bot_spawn_rules(players_value: int):
+	match players_value:
 		1:
 			max_active_enemies = 5
 			spawn_interval -= 0.1
@@ -156,10 +167,6 @@ func campaign_config():
 		4:
 			max_active_enemies = 10
 			spawn_interval -= 0.7
-
-	if Global.hard_mode:
-		max_active_enemies += 2
-		spawn_interval /= 2
 
 func survival_config():
 	Global.current_level_round += 1
@@ -186,6 +193,8 @@ func generate_players():
 
 func player_game_over(player: int):
 	if Global.in_game_over: return
+	active_players -= 1
+	bot_spawn_rules(active_players)
 	match player:
 		1:
 			anim_p1.play("game_over")
@@ -216,9 +225,15 @@ func player_game_over(player: int):
 			generate_players()
 			for j in range(game_players):
 				Global.add_lifes(j + 1, false)
+			active_players = game_players
 		else:
 			var tween: Tween = get_tree().create_tween()
 			tween.tween_property(gameover_overlayer, "self_modulate", Color(1, 1, 1, 1), 1.2)
+			var translated_text = GameTranslation.get_translated_text("GAME OVER")
+			print(translated_text)
+			var message = translated_text.split(" ")
+			print("\n".join(message))
+			game_over_general.text = "\n".join(message)
 			game_over_general.visible = true
 			Global.in_game_over = true
 			player_base.is_invencible = true
@@ -247,6 +262,9 @@ func base_destroyed():
 	reset_game_over_message()
 	var tween: Tween = get_tree().create_tween()
 	tween.tween_property(gameover_overlayer, "self_modulate", Color(1, 1, 1, 1), 1.2)
+	var translated_text = GameTranslation.get_translated_text("GAME OVER")
+	var message = translated_text.split(" ")
+	game_over_general.text = "\n".join(message)
 	game_over_general.visible = true
 	anim_geral.play("game_over")
 	level_game_over()
@@ -283,6 +301,11 @@ func populate_spawn_queue():
 			for i in range(extra):
 				var random_type = randi_range(1, 4)
 				var is_special = i == 5 or i == 15
+				if not block_boss_tank:
+					var boss_tank = true if randf() < 0.02 else false
+					if boss_tank:
+						random_type = 5
+						block_boss_tank = true
 				spawn_queue.append({"state": random_type, "special": is_special, "reinforcement": true})
 				total_bots_in_level += 1
 
@@ -308,7 +331,12 @@ func populate_random_spawn_queue():
 	var extra = data.get("extra", 0)
 	for i in range(extra):
 		var random_type = randi_range(1, data.get("type", 1))
-		var is_special = i == 5 or i == 15
+		var is_special = i == 5 or i == 15		
+		if not block_boss_tank:
+			var boss_tank = true if randf() < 0.04 else false
+			if boss_tank:
+				random_type = 5
+				block_boss_tank = true
 		spawn_queue.append({"state": random_type, "special": is_special, "reinforcement": true})
 		total_bots_in_level += 1
 
@@ -324,7 +352,6 @@ func try_spawn_bot():
 		check_level_win_condition()
 		return
 
-	# Generate Bots
 	var bot_data: Dictionary = spawn_queue.pop_front()
 
 	var new_bot = BOT_SCENE.instantiate()
@@ -392,6 +419,8 @@ func kill_active_bots(kill_players: bool = false):
 		level_camera.start_shake(2.0, 0.4)
 		for bot in bot_arr:
 			if bot.is_in_group("Enemies") or bot.is_in_group("EnemiesDisabled"):
+				if bot.bot_state == 5:
+					continue
 				bot.hitted_by_granade = true
 				bot.receive_hit(-1)
 
@@ -435,6 +464,7 @@ func _on_bot_hit(bot_node: Node2D):
 func _on_bot_died(bot_node: Node2D):
 	results_screen.increment_bot_list(bot_node.player_who_hit, bot_node.bot_state)
 	active_enemies.erase(bot_node)
+	game_hud.update_level_percent()
 	check_level_win_condition()
 
 func _on_spawn_timeout() -> void:
@@ -705,14 +735,18 @@ func _on_finish_level_timeout() -> void:
 	player_4.disable_actions()
 
 func _finish_level() -> void:
+	## GAME OVER
 	if Global.in_game_over:
 		if Global.current_gameplay_mode == Global.GamePlay.CAMPAIGN:
 			Global.check_and_update_highscore()
 			Highscore.save_highscores()
 		elif Global.current_gameplay_mode == Global.GamePlay.SURVIVAL:
 			Highscore.save_level_score(level_name, Global.general_score)
+		else:
+			Highscore.save_highscores()
 		goto_menu()
 
+	## END LEVEL
 	else:
 		if Global.current_gameplay_mode == Global.GamePlay.CAMPAIGN:
 			Global.check_and_update_highscore()
@@ -724,24 +758,20 @@ func _finish_level() -> void:
 			Highscore.new_levels_unlocked(Global.current_level_number)
 			LoadingScreen.play_transition_to_scene("res://scenes/levels/level.tscn", get_formatted_level_name(), true)
 
-		elif Global.current_gameplay_mode == Global.GamePlay.FREEPLAY:
+		elif Global.current_gameplay_mode in [Global.GamePlay.FREEPLAY, Global.GamePlay.CUSTOM]:
 			if Global.freeplay_to_campaign:
 				Global.current_level_number += 1
 				if Global.current_level_number > 100:
 					Global.current_level_number = 1
 				Global.current_level_name = "level_" + str(Global.current_level_number)
 				Global.set_level(Global.current_level_number)
+				Highscore.new_levels_unlocked(Global.current_level_number)
 				LoadingScreen.play_transition_to_scene("res://scenes/levels/level.tscn", get_formatted_level_name(), true)
 			else:
 				MenuState.skip_intro = true
 				MenuState.start_in = 3
 				goto_menu()
 
-		elif Global.current_gameplay_mode == Global.GamePlay.CUSTOM:
-			MenuState.skip_intro = true
-			MenuState.start_in = 3
-			goto_menu()
-		
 		elif Global.current_gameplay_mode == Global.GamePlay.SURVIVAL:
 			Global.check_and_update_highscore()
 			var msg = GameTranslation.get_translated_text("ROUND")
@@ -764,12 +794,16 @@ func _on_level_body_entered(body: Node2D) -> void:
 
 func _on_game_over_p1_timeout() -> void:
 	anim_p1.play("RESET")
+	game_over_p1.visible = false
 
 func _on_game_over_p2_timeout() -> void:
 	anim_p2.play("RESET")
+	game_over_p2.visible = false
 
 func _on_game_over_p3_timeout() -> void:
 	anim_p3.play("RESET")
+	game_over_p3.visible = false
 
 func _on_game_over_p4_timeout() -> void:
 	anim_p4.play("RESET")
+	game_over_p4.visible = false

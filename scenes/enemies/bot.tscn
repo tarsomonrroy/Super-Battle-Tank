@@ -1,18 +1,13 @@
-[gd_scene load_steps=58 format=3 uid="uid://gambswi45ene"]
+[gd_scene format=3 uid="uid://gambswi45ene"]
 
 [ext_resource type="Texture2D" uid="uid://6s88vq7g4a8i" path="res://sprites/tank.png" id="1_538is"]
 [ext_resource type="Script" uid="uid://dboc36472gre3" path="res://scenes/enemies/bot.gd" id="1_p4124"]
 [ext_resource type="Texture2D" uid="uid://ygv7t7kheemr" path="res://sprites/tank_effect.png" id="2_gtugy"]
 [ext_resource type="Texture2D" uid="uid://vmfj6hbj5xg7" path="res://sprites/boat.png" id="2_p4124"]
+[ext_resource type="Texture2D" uid="uid://dx2mur8vsex7x" path="res://sprites/boss.png" id="4_hyja5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p4124"]
 size = Vector2(12.5, 12.5)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_gtugy"]
-size = Vector2(10, 10)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hyja5"]
-size = Vector2(16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gtugy"]
 atlas = ExtResource("1_538is")
@@ -46,6 +41,14 @@ region = Rect2(64, 112, 16, 16)
 atlas = ExtResource("1_538is")
 region = Rect2(80, 112, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_4qt5k"]
+atlas = ExtResource("4_hyja5")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r8iqp"]
+atlas = ExtResource("4_hyja5")
+region = Rect2(80, 0, 16, 16)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_3p5fb"]
 atlas = ExtResource("1_538is")
 region = Rect2(32, 64, 16, 16)
@@ -77,6 +80,14 @@ region = Rect2(32, 112, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_qke40"]
 atlas = ExtResource("1_538is")
 region = Rect2(48, 112, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ino07"]
+atlas = ExtResource("4_hyja5")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ffmwj"]
+atlas = ExtResource("4_hyja5")
+region = Rect2(48, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dd4gj"]
 atlas = ExtResource("1_538is")
@@ -110,6 +121,14 @@ region = Rect2(96, 112, 16, 16)
 atlas = ExtResource("1_538is")
 region = Rect2(112, 112, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_77jiy"]
+atlas = ExtResource("4_hyja5")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_onqq6"]
+atlas = ExtResource("4_hyja5")
+region = Rect2(112, 0, 16, 16)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_l4us3"]
 atlas = ExtResource("1_538is")
 region = Rect2(0, 64, 16, 16)
@@ -141,6 +160,14 @@ region = Rect2(0, 112, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_n2lrk"]
 atlas = ExtResource("1_538is")
 region = Rect2(16, 112, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qiysn"]
+atlas = ExtResource("4_hyja5")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_igb26"]
+atlas = ExtResource("4_hyja5")
+region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4dswm"]
 animations = [{
@@ -190,6 +217,17 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_4qt5k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r8iqp")
+}],
+"loop": true,
+"name": &"down_5",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_3p5fb")
 }, {
 "duration": 1.0,
@@ -230,6 +268,17 @@ animations = [{
 }],
 "loop": true,
 "name": &"left_4",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ino07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ffmwj")
+}],
+"loop": true,
+"name": &"left_5",
 "speed": 12.0
 }, {
 "frames": [{
@@ -278,6 +327,17 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_77jiy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_onqq6")
+}],
+"loop": true,
+"name": &"right_5",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_l4us3")
 }, {
 "duration": 1.0,
@@ -318,6 +378,17 @@ animations = [{
 }],
 "loop": true,
 "name": &"up_4",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qiysn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_igb26")
+}],
+"loop": true,
+"name": &"up_5",
 "speed": 12.0
 }]
 
@@ -442,7 +513,13 @@ animations = [{
 "speed": 12.0
 }]
 
-[node name="Bot" type="CharacterBody2D" groups=["EnemiesDisabled"]]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gtugy"]
+size = Vector2(12, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hyja5"]
+size = Vector2(16, 16)
+
+[node name="Bot" type="CharacterBody2D" unique_id=1176059950 groups=["EnemiesDisabled"]]
 collision_layer = 1024
 collision_mask = 359
 motion_mode = 1
@@ -450,65 +527,66 @@ platform_on_leave = 2
 platform_floor_layers = 4294901760
 script = ExtResource("1_p4124")
 
-[node name="Collision" type="CollisionShape2D" parent="."]
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=1334729883]
 z_index = 5
 shape = SubResource("RectangleShape2D_p4124")
 disabled = true
 debug_color = Color(0.9, 1, 0, 0.22745098)
 
-[node name="BotSpawnArea" type="Area2D" parent="." groups=["BotArea"]]
-visible = false
-collision_layer = 4096
-collision_mask = 24
-input_pickable = false
-
-[node name="CollisionArea" type="CollisionShape2D" parent="BotSpawnArea"]
-shape = SubResource("RectangleShape2D_gtugy")
-debug_color = Color(0.3838848, 0, 0.70196074, 0.41960785)
-
-[node name="BotArea" type="Area2D" parent="." groups=["EnemiesDisabled"]]
-visible = false
-collision_layer = 4112
-collision_mask = 0
-input_pickable = false
-
-[node name="CollisionArea" type="CollisionShape2D" parent="BotArea"]
-shape = SubResource("RectangleShape2D_hyja5")
-debug_color = Color(1, 0, 0, 0.41960785)
-
-[node name="Boat" type="Sprite2D" parent="."]
+[node name="Boat" type="Sprite2D" parent="." unique_id=150870959]
 visible = false
 position = Vector2(-0.5, 0)
 scale = Vector2(0.9444444, 1)
 texture = ExtResource("2_p4124")
 
-[node name="Sprite" type="AnimatedSprite2D" parent="."]
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=1503085547]
 visible = false
 position = Vector2(-8, -8)
 sprite_frames = SubResource("SpriteFrames_4dswm")
-animation = &"up_3"
+animation = &"up_5"
+frame_progress = 0.39197212
 centered = false
 
-[node name="Invencible" type="AnimatedSprite2D" parent="."]
+[node name="Invencible" type="AnimatedSprite2D" parent="." unique_id=64411709]
 visible = false
 position = Vector2(0, 1)
 sprite_frames = SubResource("SpriteFrames_kije5")
 animation = &"invencible"
 
-[node name="Spawn" type="AnimatedSprite2D" parent="."]
+[node name="Spawn" type="AnimatedSprite2D" parent="." unique_id=1417907161]
 visible = false
 sprite_frames = SubResource("SpriteFrames_dx382")
 animation = &"spawn"
 
-[node name="InvencibleTimer" type="Timer" parent="."]
+[node name="BotSpawnArea" type="Area2D" parent="." unique_id=1148280911 groups=["BotArea"]]
+visible = false
+collision_layer = 4096
+collision_mask = 24
+input_pickable = false
+
+[node name="CollisionArea" type="CollisionShape2D" parent="BotSpawnArea" unique_id=990877136]
+shape = SubResource("RectangleShape2D_gtugy")
+debug_color = Color(0.3838848, 0, 0.70196074, 0.41960785)
+
+[node name="BotArea" type="Area2D" parent="." unique_id=647070958 groups=["EnemiesDisabled"]]
+visible = false
+collision_layer = 4112
+collision_mask = 0
+input_pickable = false
+
+[node name="CollisionArea" type="CollisionShape2D" parent="BotArea" unique_id=1664587771]
+shape = SubResource("RectangleShape2D_hyja5")
+debug_color = Color(1, 0, 0, 0.41960785)
+
+[node name="InvencibleTimer" type="Timer" parent="." unique_id=163384292]
 one_shot = true
 
-[node name="ShotTimer" type="Timer" parent="."]
+[node name="ShotTimer" type="Timer" parent="." unique_id=1489397415]
 
-[node name="TurnTimer" type="Timer" parent="."]
+[node name="TurnTimer" type="Timer" parent="." unique_id=190884507]
 one_shot = true
 
-[node name="PalleteTimer" type="Timer" parent="."]
+[node name="PalleteTimer" type="Timer" parent="." unique_id=1701330842]
 
 [connection signal="animation_finished" from="Spawn" to="." method="_on_spawn_animation_finished"]
 [connection signal="timeout" from="InvencibleTimer" to="." method="_on_invencible_timeout"]

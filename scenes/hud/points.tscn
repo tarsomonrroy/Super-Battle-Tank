@@ -1,27 +1,31 @@
-[gd_scene load_steps=9 format=3 uid="uid://byfnu4d6rjx3t"]
+[gd_scene format=3 uid="uid://byfnu4d6rjx3t"]
 
 [ext_resource type="Texture2D" uid="uid://capl0wwqi1duu" path="res://sprites/points.png" id="1_xvseb"]
 [ext_resource type="Script" uid="uid://ba7wrea2dasvh" path="res://scenes/hud/points.gd" id="2_85vv5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_85vv5"]
 atlas = ExtResource("1_xvseb")
-region = Rect2(0, 0, 16, 7)
+region = Rect2(0, 0, 20, 7)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oymi7"]
 atlas = ExtResource("1_xvseb")
-region = Rect2(16, 0, 16, 7)
+region = Rect2(100, 0, 20, 7)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dsrv2"]
 atlas = ExtResource("1_xvseb")
-region = Rect2(32, 0, 16, 7)
+region = Rect2(20, 0, 20, 7)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lutau"]
 atlas = ExtResource("1_xvseb")
-region = Rect2(48, 0, 16, 7)
+region = Rect2(40, 0, 20, 7)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r8c67"]
 atlas = ExtResource("1_xvseb")
-region = Rect2(64, 0, 16, 7)
+region = Rect2(60, 0, 20, 7)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nl6x5"]
+atlas = ExtResource("1_xvseb")
+region = Rect2(80, 0, 20, 7)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_jefbb"]
 animations = [{
@@ -38,7 +42,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_oymi7")
 }],
 "loop": true,
-"name": &"200",
+"name": &"1000",
 "speed": 5.0
 }, {
 "frames": [{
@@ -46,7 +50,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_dsrv2")
 }],
 "loop": true,
-"name": &"300",
+"name": &"200",
 "speed": 5.0
 }, {
 "frames": [{
@@ -54,7 +58,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_lutau")
 }],
 "loop": true,
-"name": &"400",
+"name": &"300",
 "speed": 5.0
 }, {
 "frames": [{
@@ -62,11 +66,19 @@ animations = [{
 "texture": SubResource("AtlasTexture_r8c67")
 }],
 "loop": true,
+"name": &"400",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nl6x5")
+}],
+"loop": true,
 "name": &"500",
 "speed": 5.0
 }]
 
-[node name="Points" type="AnimatedSprite2D"]
+[node name="Points" type="AnimatedSprite2D" unique_id=105367697]
 z_index = 20
 sprite_frames = SubResource("SpriteFrames_jefbb")
 animation = &"100"

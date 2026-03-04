@@ -1,0 +1,11 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://dl2feycc3t8wf"]
+
+[ext_resource type="FontFile" uid="uid://bvi2edo7cpovj" path="res://fonts/Super_Battle_City.ttf" id="1_4tt5x"]
+
+[resource]
+font = ExtResource("1_4tt5x")
+font_size = 4
+font_color = Color(0, 0.54901963, 0.19215687, 1)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(0, 1)

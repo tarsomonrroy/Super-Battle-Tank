@@ -24,6 +24,12 @@ var in_sub_popup: bool = false
 var bot_list: Array = []
 
 func _ready() -> void:
+	total_bots_spin.get_line_edit().virtual_keyboard_enabled = false
+	spawn_time_spin.get_line_edit().virtual_keyboard_enabled = false
+
+	if Global.os_type == "mobile":
+		export_button.visible = false
+
 	setup_button.pressed.connect(_on_setup_pressed)
 	cancel_button.pressed.connect(_on_cancel_pressed)
 	save_button.pressed.connect(_on_save_pressed)
@@ -152,3 +158,7 @@ func toggle_itens(state: bool = false):
 	cancel_button.disabled = not state
 	save_button.disabled = not state
 	export_button.disabled = not state
+
+func on_focus_exited():
+	if Global.os_type == "mobile":
+		DisplayServer.virtual_keyboard_hide()

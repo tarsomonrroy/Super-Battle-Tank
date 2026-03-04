@@ -5,14 +5,11 @@
 [ext_resource type="LabelSettings" uid="uid://dlu2d5m077to" path="res://fonts/small_black_font.tres" id="3_7xq0w"]
 [ext_resource type="Texture2D" uid="uid://dmiy8vydpxivs" path="res://sprites/revive_heart.png" id="4_1rlcw"]
 [ext_resource type="PackedScene" uid="uid://b6w0clggia3xi" path="res://scenes/hud/star.tscn" id="5_7jlme"]
-[ext_resource type="LabelSettings" uid="uid://bahcm62l22avs" path="res://scenes/hud/life_hud_label_settings.tres" id="6_7xq0w"]
+[ext_resource type="LabelSettings" uid="uid://btdymxkh4ecvn" path="res://scenes/hud/player1_label_settings.tres" id="6_1rlcw"]
 [ext_resource type="Texture2D" uid="uid://cnravmbvw4fqm" path="res://sprites/enemy_icon.png" id="6_jedst"]
-[ext_resource type="LabelSettings" uid="uid://cgdggutjnoqh1" path="res://scenes/hud/star_hud_label_settings.tres" id="7_1rlcw"]
-[ext_resource type="LabelSettings" uid="uid://dv82brw04afb0" path="res://scenes/hud/label_settings.tres" id="7_jedst"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_1rlcw"]
-font_size = 8
-font_color = Color(0, 0, 0, 1)
+[ext_resource type="LabelSettings" uid="uid://dl2feycc3t8wf" path="res://scenes/hud/player2_label_settings.tres.tres" id="8_4l4mr"]
+[ext_resource type="LabelSettings" uid="uid://c1da6sk8qrrt7" path="res://scenes/hud/player3_label_settings.tres.tres" id="9_66uiv"]
+[ext_resource type="LabelSettings" uid="uid://dv0yn52mrg775" path="res://scenes/hud/player4_label_settings.tres.tres" id="10_jmcfm"]
 
 [node name="Game Hud" type="Control" unique_id=1766708239]
 layout_mode = 3
@@ -31,89 +28,96 @@ offset_right = 328.0
 offset_bottom = 232.0
 color = Color(0, 0, 0, 1)
 
-[node name="level_flag" type="Sprite2D" parent="." unique_id=1382808704]
-position = Vector2(88, 204)
+[node name="LevelFlag" type="Node2D" parent="." unique_id=216325292]
+position = Vector2(88, 205)
+
+[node name="level_flag" type="Sprite2D" parent="LevelFlag" unique_id=1382808704]
 texture = ExtResource("2_7xq0w")
 centered = false
 
-[node name="Level" type="Label" parent="." unique_id=1593263500]
-layout_mode = 0
-offset_left = 88.0
-offset_top = 224.0
-offset_right = 104.0
-offset_bottom = 232.0
+[node name="Level" type="Label" parent="LevelFlag" unique_id=1593263500]
+offset_top = 20.0
+offset_right = 16.0
+offset_bottom = 28.0
 text = "00"
 label_settings = ExtResource("3_7xq0w")
 
-[node name="revive_heart" type="Sprite2D" parent="." unique_id=433268022]
-position = Vector2(352, 212)
+[node name="GameRevives" type="Node2D" parent="." unique_id=605783759]
+position = Vector2(344, 205)
+
+[node name="revive_heart" type="Sprite2D" parent="GameRevives" unique_id=433268022]
+position = Vector2(8, 8)
 texture = ExtResource("4_1rlcw")
 
-[node name="Revives" type="Label" parent="." unique_id=2016557742]
-layout_mode = 0
-offset_left = 344.0
-offset_top = 224.0
-offset_right = 360.0
-offset_bottom = 232.0
+[node name="Revives" type="Label" parent="GameRevives" unique_id=2016557742]
+offset_top = 20.0
+offset_right = 16.0
+offset_bottom = 28.0
 text = "00"
 label_settings = ExtResource("3_7xq0w")
 
-[node name="AllBots1" type="Node2D" parent="." unique_id=1212564848]
+[node name="AllBots" type="Node2D" parent="." unique_id=1212564848]
 position = Vector2(88, 32)
 
-[node name="EnemyIcon" type="Sprite2D" parent="AllBots1" unique_id=2017180601]
+[node name="EnemyIcon" type="Sprite2D" parent="AllBots" unique_id=2017180601]
 position = Vector2(4, 4)
 texture = ExtResource("6_jedst")
 
-[node name="x" type="Label" parent="AllBots1" unique_id=948931446]
+[node name="x" type="Label" parent="AllBots" unique_id=948931446]
 offset_left = 8.0
 offset_right = 16.0
 offset_bottom = 8.0
 text = "x"
-label_settings = SubResource("LabelSettings_1rlcw")
+label_settings = ExtResource("3_7xq0w")
 
-[node name="Bots" type="Label" parent="AllBots1" unique_id=378839976]
+[node name="Bots" type="Label" parent="AllBots" unique_id=378839976]
 offset_top = 12.0
 offset_right = 16.0
 offset_bottom = 20.0
 text = "00"
 label_settings = ExtResource("3_7xq0w")
 
-[node name="AllBots2" type="Node2D" parent="." unique_id=1392497648]
+[node name="LevelClear" type="Node2D" parent="." unique_id=1392497648]
 position = Vector2(344, 32)
 
-[node name="EnemyIcon" type="Sprite2D" parent="AllBots2" unique_id=469595968]
-position = Vector2(4, 4)
-texture = ExtResource("6_jedst")
-
-[node name="x" type="Label" parent="AllBots2" unique_id=1702234464]
-offset_left = 8.0
+[node name="Title" type="Label" parent="LevelClear" unique_id=1702234464]
 offset_right = 16.0
 offset_bottom = 8.0
-text = "x"
+text = "CLR"
 label_settings = ExtResource("3_7xq0w")
 
-[node name="Bots" type="Label" parent="AllBots2" unique_id=1488300573]
+[node name="Percent" type="Label" parent="LevelClear" unique_id=1488300573]
 offset_top = 12.0
 offset_right = 16.0
 offset_bottom = 20.0
-text = "00"
+text = "00%"
 label_settings = ExtResource("3_7xq0w")
 
 [node name="LifeHudP1" type="Node2D" parent="." unique_id=654804137]
-position = Vector2(88, 72)
+position = Vector2(88, 80)
 
 [node name="Title" type="Label" parent="LifeHudP1" unique_id=1953383052]
 offset_right = 16.0
 offset_bottom = 8.0
 text = "1P"
-label_settings = ExtResource("6_7xq0w")
+label_settings = ExtResource("6_1rlcw")
 
 [node name="Lifes" type="Label" parent="LifeHudP1" unique_id=409686621]
 offset_top = 12.0
 offset_right = 16.0
 offset_bottom = 20.0
 text = "00"
+label_settings = ExtResource("3_7xq0w")
+
+[node name="Star" parent="LifeHudP1" unique_id=469707419 instance=ExtResource("5_7jlme")]
+position = Vector2(3.5, 28)
+
+[node name="Value" type="Label" parent="LifeHudP1" unique_id=1051931227]
+offset_left = 9.5
+offset_top = 25.0
+offset_right = 17.5
+offset_bottom = 33.0
+text = "1"
 label_settings = ExtResource("3_7xq0w")
 
 [node name="LifeHudP2" type="Node2D" parent="." unique_id=1105210406]
@@ -123,7 +127,7 @@ position = Vector2(88, 144)
 offset_right = 16.0
 offset_bottom = 8.0
 text = "2P"
-label_settings = ExtResource("6_7xq0w")
+label_settings = ExtResource("8_4l4mr")
 
 [node name="Lifes" type="Label" parent="LifeHudP2" unique_id=797262689]
 offset_top = 12.0
@@ -132,14 +136,25 @@ offset_bottom = 20.0
 text = "00"
 label_settings = ExtResource("3_7xq0w")
 
+[node name="Star" parent="LifeHudP2" unique_id=1084490769 instance=ExtResource("5_7jlme")]
+position = Vector2(3.5, 28)
+
+[node name="Value" type="Label" parent="LifeHudP2" unique_id=1599034128]
+offset_left = 9.5
+offset_top = 25.0
+offset_right = 17.5
+offset_bottom = 33.0
+text = "1"
+label_settings = ExtResource("3_7xq0w")
+
 [node name="LifeHudP3" type="Node2D" parent="." unique_id=1656774961]
-position = Vector2(344, 72)
+position = Vector2(344, 80)
 
 [node name="Title" type="Label" parent="LifeHudP3" unique_id=579321875]
 offset_right = 16.0
 offset_bottom = 8.0
 text = "3P"
-label_settings = ExtResource("6_7xq0w")
+label_settings = ExtResource("9_66uiv")
 metadata/_edit_use_anchors_ = true
 
 [node name="Lifes" type="Label" parent="LifeHudP3" unique_id=69914803]
@@ -150,6 +165,17 @@ text = "00"
 label_settings = ExtResource("3_7xq0w")
 metadata/_edit_use_anchors_ = true
 
+[node name="Star" parent="LifeHudP3" unique_id=1852876990 instance=ExtResource("5_7jlme")]
+position = Vector2(3.5, 28)
+
+[node name="Value" type="Label" parent="LifeHudP3" unique_id=1043895841]
+offset_left = 9.5
+offset_top = 25.0
+offset_right = 17.5
+offset_bottom = 33.0
+text = "1"
+label_settings = ExtResource("3_7xq0w")
+
 [node name="LifeHudP4" type="Node2D" parent="." unique_id=1190512692]
 position = Vector2(344, 144)
 
@@ -157,7 +183,7 @@ position = Vector2(344, 144)
 offset_right = 16.0
 offset_bottom = 8.0
 text = "4P"
-label_settings = ExtResource("6_7xq0w")
+label_settings = ExtResource("10_jmcfm")
 
 [node name="Lifes" type="Label" parent="LifeHudP4" unique_id=1308978729]
 offset_top = 12.0
@@ -166,84 +192,14 @@ offset_bottom = 20.0
 text = "00"
 label_settings = ExtResource("3_7xq0w")
 
-[node name="StarsP1" type="Node2D" parent="." unique_id=948350418]
-position = Vector2(88, 104)
+[node name="Star" parent="LifeHudP4" unique_id=1227260022 instance=ExtResource("5_7jlme")]
+position = Vector2(3.5, 28)
 
-[node name="Title" type="Label" parent="StarsP1" unique_id=1658013547]
-offset_right = 16.0
-offset_bottom = 8.0
-text = "1S"
-label_settings = ExtResource("7_1rlcw")
-
-[node name="Star" parent="StarsP1" unique_id=469707419 instance=ExtResource("5_7jlme")]
-position = Vector2(4, 12)
-animation = &"super_level_1"
-
-[node name="Value" type="Label" parent="StarsP1" unique_id=1051931227]
-offset_left = 10.0
-offset_top = 9.0
-offset_right = 18.0
-offset_bottom = 17.0
-text = "1"
-label_settings = ExtResource("3_7xq0w")
-
-[node name="StarsP2" type="Node2D" parent="." unique_id=921054072]
-position = Vector2(88, 176)
-
-[node name="Title" type="Label" parent="StarsP2" unique_id=322217214]
-offset_right = 16.0
-offset_bottom = 8.0
-text = "2S"
-label_settings = ExtResource("7_1rlcw")
-
-[node name="Star" parent="StarsP2" unique_id=1084490769 instance=ExtResource("5_7jlme")]
-position = Vector2(4, 12)
-
-[node name="Value" type="Label" parent="StarsP2" unique_id=1599034128]
-offset_left = 10.0
-offset_top = 9.0
-offset_right = 18.0
-offset_bottom = 17.0
-text = "1"
-label_settings = ExtResource("3_7xq0w")
-
-[node name="StarsP3" type="Node2D" parent="." unique_id=1107042123]
-position = Vector2(344, 104)
-
-[node name="Title" type="Label" parent="StarsP3" unique_id=170371227]
-offset_right = 16.0
-offset_bottom = 8.0
-text = "3S"
-label_settings = ExtResource("7_1rlcw")
-
-[node name="Star" parent="StarsP3" unique_id=1852876990 instance=ExtResource("5_7jlme")]
-position = Vector2(4, 12)
-
-[node name="Value" type="Label" parent="StarsP3" unique_id=1043895841]
-offset_left = 10.0
-offset_top = 9.0
-offset_right = 18.0
-offset_bottom = 17.0
-text = "1"
-label_settings = ExtResource("3_7xq0w")
-
-[node name="StarsP4" type="Node2D" parent="." unique_id=843917648]
-position = Vector2(344, 176)
-
-[node name="Title" type="Label" parent="StarsP4" unique_id=496435794]
-offset_right = 16.0
-offset_bottom = 8.0
-text = "4S"
-label_settings = ExtResource("7_1rlcw")
-
-[node name="Star" parent="StarsP4" unique_id=1227260022 instance=ExtResource("5_7jlme")]
-position = Vector2(4, 12)
-
-[node name="Value" type="Label" parent="StarsP4" unique_id=1410620019]
-offset_left = 10.0
-offset_top = 9.0
-offset_right = 18.0
-offset_bottom = 17.0
+[node name="Value" type="Label" parent="LifeHudP4" unique_id=1410620019]
+offset_left = 9.5
+offset_top = 25.0
+offset_right = 17.5
+offset_bottom = 33.0
 text = "1"
 label_settings = ExtResource("3_7xq0w")
 
@@ -260,8 +216,8 @@ offset_bottom = 16.0
 
 [node name="Title" type="Label" parent="ScoreP1/HBoxContainer" unique_id=656586637]
 layout_mode = 2
-text = "1P"
-label_settings = ExtResource("7_jedst")
+text = "P1"
+label_settings = ExtResource("6_1rlcw")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -291,8 +247,8 @@ vertical_alignment = 1
 
 [node name="Title" type="Label" parent="ScoreP2/HBoxContainer" unique_id=1430700509]
 layout_mode = 2
-text = "2P"
-label_settings = ExtResource("7_jedst")
+text = "P2"
+label_settings = ExtResource("8_4l4mr")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -311,8 +267,8 @@ offset_bottom = 16.0
 
 [node name="Title" type="Label" parent="ScoreP3/HBoxContainer" unique_id=1301778296]
 layout_mode = 2
-text = "3P"
-label_settings = ExtResource("7_jedst")
+text = "P3"
+label_settings = ExtResource("9_66uiv")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -343,7 +299,7 @@ vertical_alignment = 1
 
 [node name="Title" type="Label" parent="ScoreP4/HBoxContainer" unique_id=2056551741]
 layout_mode = 2
-text = "4P"
-label_settings = ExtResource("7_jedst")
+text = "P4"
+label_settings = ExtResource("10_jmcfm")
 horizontal_alignment = 1
 vertical_alignment = 1

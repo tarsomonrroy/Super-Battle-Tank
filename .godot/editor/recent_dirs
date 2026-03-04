@@ -1,8 +1,13 @@
 C:/Users/Tarso/Documents/Super Battle City/Super Battle City ANDROID/
+C:/Users/Tarso/Documents/Super Battle City/Super Battle City HTML/
+C:/Users/Tarso/Documents/Super Battle City/Super Battle City LINUX/
+C:/Users/Tarso/Documents/Super Battle City/Super Battle City WINDOWS/
+res://scenes/hud/
+res://
+res://sprites/mobile_control/
+res://sprites/
 res://scenes/maker/
 res://scenes/mobile/
-C:/Users/Tarso/Documents/Super Battle City/Super Battle City HTML/
-C:/Users/Tarso/Documents/Super Battle City/Super Battle City WINDOWS/
 res://fonts/
 C:/Users/Tarso/Documents/Super Battle City 2025/super-battle-city-2025/
 C:/Users/Tarso/.android/
@@ -10,11 +15,8 @@ C:/Program Files/Eclipse Adoptium/jdk-17.0.17.10-hotspot/
 res://translations/
 res://scripts/
 C:/Users/Tarso/Documents/Super Battle City/
-res://sprites/
 res://scenes/
 res://shaders_material/
-res://scenes/hud/
-res://
 res://scenes/menu/
 res://scenes/bullets/
 res://scenes/levels/

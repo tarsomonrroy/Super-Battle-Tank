@@ -22,6 +22,11 @@ func _ready() -> void:
 	bot_list_total.resize(100)
 	save_button.disabled = true
 
+	total_bots_spin_1.get_line_edit().virtual_keyboard_enabled = false
+	total_bots_spin_2.get_line_edit().virtual_keyboard_enabled = false
+	total_bots_spin_3.get_line_edit().virtual_keyboard_enabled = false
+	total_bots_spin_4.get_line_edit().virtual_keyboard_enabled = false
+
 	cancel_button.pressed.connect(_on_cancel_pressed)
 	save_button.pressed.connect(_on_save_pressed)
 

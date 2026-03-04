@@ -29,9 +29,10 @@ var input_actions: Dictionary = {
 }
 
 func _ready() -> void:
-	if OS.get_name() != "Android":
+	if Global.os_type == "desktop":
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		virtual_controls.visible = false
+
 	button_left.pressed.connect(_change_player_keys.bind(-1))
 	button_right.pressed.connect(_change_player_keys.bind(1))
 	back_menu.pressed.connect(_back_to_menu)

@@ -142,6 +142,8 @@ func _update_scores():
 	total_score.text = msg + ": " + str(Global.general_score)
 
 func increment_bot_list(player: int, bot: int):
+	if bot == 5: 
+		bot = 4
 	match player:
 		1:
 			p1_bots[bot] += 1

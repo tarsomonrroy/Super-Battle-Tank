@@ -4,14 +4,14 @@ extends Node2D
 @onready var warning: Label = $Warning
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
+@onready var title_timer: Timer = $TitleTimer
+@onready var credits_timer: Timer = $CreditsTimer
+@onready var warning_timer: Timer = $WarningTimer
+
 @onready var lang_container: Node2D = $ChooseLanguage
 
 var enable_skip: bool = false
-var finished: bool = false
-
-var mshs: Dictionary = {
-	"msg1": "msg"
-}
+var cur_step: String = ""
 
 var msgs: Dictionary = {
 	# ENG
@@ -39,7 +39,7 @@ var msgs: Dictionary = {
 	Questo fangame è gratuito, se lo hai pagato, sei stato truffato.\n
 	BATTLE CITY è un marchio registrato del rispettivo proprietario.",
 	# NTL
-	"netherlands": "Dit is een fanproject en is niet gelieerd aan, goedgekeurd of ondersteund door Namco LTD.\n
+	"nederlands": "Dit is een fanproject en is niet gelieerd aan, goedgekeurd of ondersteund door Namco LTD.\n
 	Deze fangame is gratis, als je ervoor hebt betaald, ben je opgelicht.\n
 	BATTLE CITY is een handelsmerk van de respectieve eigenaar.",
 	# MGY
@@ -74,11 +74,11 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if enable_skip and Input.is_action_just_pressed("game1_pause"):
-		finish_intro()
+		skip_step()
 
-func _unhandled_input(event):
+func _input(event):
 	if event is InputEventScreenTouch and event.pressed and enable_skip:
-		finish_intro()
+		skip_step()
 
 func choose_language():
 	lang_container.open()
@@ -86,35 +86,66 @@ func choose_language():
 func _on_language_selected(lang: String):
 	SettingsManager.language = lang
 	SettingsManager.first_start = false
+	GameTranslation.language = lang
 	GameTranslation.set_game_language(lang)
 	SettingsManager.save_settings()
-
 	await animation_player.animation_finished
 	start_intro()
 
 func start_intro():
 	lang_container.visible = false
-
 	warning.text = msgs[SettingsManager.language]
 	animation_player.play("RESET")
-
 	animation_player.play("title")
-	await animation_player.animation_finished
-	await get_tree().create_timer(1.2).timeout
 
+func skip_step():
+	enable_skip = false
+	match cur_step:
+		"title":
+			title_timer.stop()
+			animation_player.play("title_out")
+		"credits":
+			credits_timer.stop()
+			animation_player.play("credits_out")
+		"warning":
+			warning_timer.stop()
+			animation_player.play("warning_out")
+
+func _on_animation_finished(anim_name: StringName) -> void:
+	cur_step = anim_name
+	match anim_name:
+		"title":
+			enable_skip = true
+			title_timer.start()
+
+		"title_out":
+			await get_tree().create_timer(0.1).timeout
+			animation_player.play("credits")
+
+		"credits":
+			enable_skip = true
+			credits_timer.start()
+
+		"credits_out":
+			await get_tree().create_timer(0.1).timeout
+			animation_player.play("warning")
+
+		"warning":
+			enable_skip = true
+			warning_timer.start()
+
+		"warning_out":
+			await get_tree().create_timer(0.1).timeout
+			get_tree().change_scene_to_file("res://scenes/menu/main_menu.tscn")
+
+func _on_title_timer_timeout() -> void:
+	enable_skip = false
 	animation_player.play("title_out")
-	await animation_player.animation_finished
 
-	animation_player.play("warning")
-	await animation_player.animation_finished
-	enable_skip = true
-	await get_tree().create_timer(6.5).timeout
+func _on_credits_timer_timeout() -> void:
+	enable_skip = false
+	animation_player.play("credits_out")
 
-	finish_intro()
-
-func finish_intro():
-	if finished: return
-	finished = true
+func _on_warning_timer_timeout() -> void:
+	enable_skip = false
 	animation_player.play("warning_out")
-	await animation_player.animation_finished
-	get_tree().change_scene_to_file("res://scenes/menu/main_menu.tscn")

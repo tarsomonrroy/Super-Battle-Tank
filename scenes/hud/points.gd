@@ -1,7 +1,7 @@
 extends AnimatedSprite2D
 
 func set_points(points: int = 100):
-	if points not in [100, 200, 300, 400, 500]:
+	if points not in [100, 200, 300, 400, 500, 1000]:
 		queue_free()
 		return
 

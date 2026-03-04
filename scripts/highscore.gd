@@ -30,7 +30,7 @@ func load_highscores():
 			var content = file.get_as_text()
 			file.close()
 			var data = JSON.parse_string(content)
-			highscores = data.get("highscores", highscores)
+			highscores = data.get("highscore", highscores)
 			hard_highscores = data.get("hard_highscores", hard_highscores)
 			levels_unlocked = data.get("levels_unlocked", levels_unlocked)
 			level_scores = data.get("level_scores", level_scores)

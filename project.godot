@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Super Battle City"
-config/version="1.0"
+config/version="1.1.0"
 run/main_scene="uid://wr4g8moowdav"
 config/quit_on_go_back=false
 config/features=PackedStringArray("4.6", "GL Compatibility")
@@ -46,6 +46,10 @@ mouse_cursor/custom_image="uid://chyvrvn7q8ht2"
 window/defaults/default_clear_color=Color(0.20442706, 0.20442706, 0.20442706, 1)
 window/snap/snap_2d_transforms_to_pixel=true
 window/emulate_touch_from_mouse=false
+
+[editor_plugins]
+
+enabled=PackedStringArray()
 
 [global_group]
 
@@ -257,10 +261,6 @@ game_change_build={
 "deadzone": 0.2,
 "events": []
 }
-
-[input_devices]
-
-pointing/emulate_touch_from_mouse=true
 
 [internationalization]
 

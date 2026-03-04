@@ -1,21 +1,21 @@
 extends Control
 
-@onready var bots1: Label = $AllBots1/Bots
-@onready var bots2: Label = $AllBots2/Bots
+@onready var all_bots: Label = $AllBots/Bots
+@onready var level_clear: Label = $LevelClear/Percent
 
 @onready var lifesP1: Label = $LifeHudP1/Lifes
 @onready var lifesP2: Label = $LifeHudP2/Lifes
 @onready var lifesP3: Label = $LifeHudP3/Lifes
 @onready var lifesP4: Label = $LifeHudP4/Lifes
 
-@onready var starP1: AnimatedSprite2D = $StarsP1/Star
-@onready var valueP1: Label = $StarsP1/Value
-@onready var starP2: AnimatedSprite2D = $StarsP2/Star
-@onready var valueP2: Label = $StarsP2/Value
-@onready var starP3: AnimatedSprite2D = $StarsP3/Star
-@onready var valueP3: Label = $StarsP3/Value
-@onready var starP4: AnimatedSprite2D = $StarsP4/Star
-@onready var valueP4: Label = $StarsP4/Value
+@onready var starP1: AnimatedSprite2D = $LifeHudP1/Star
+@onready var valueP1: Label = $LifeHudP1/Value
+@onready var starP2: AnimatedSprite2D = $LifeHudP2/Star
+@onready var valueP2: Label = $LifeHudP2/Value
+@onready var starP3: AnimatedSprite2D = $LifeHudP3/Star
+@onready var valueP3: Label = $LifeHudP3/Value
+@onready var starP4: AnimatedSprite2D = $LifeHudP4/Star
+@onready var valueP4: Label = $LifeHudP4/Value
 
 @onready var scoreP1: Label = $ScoreP1/HBoxContainer/Score
 @onready var scoreP2: Label = $ScoreP2/HBoxContainer/Score
@@ -27,19 +27,16 @@ extends Control
 @onready var life_hud_p3: Node2D = $LifeHudP3
 @onready var life_hud_p4: Node2D = $LifeHudP4
 
-@onready var stars_hud_p1: Node2D = $StarsP1
-@onready var stars_hud_p2: Node2D = $StarsP2
-@onready var stars_hud_p3: Node2D = $StarsP3
-@onready var stars_hud_p4: Node2D = $StarsP4
-
 @onready var score_hud_p2: Control = $ScoreP2
 @onready var score_hud_p3: Control = $ScoreP3
 @onready var score_hud_p4: Control = $ScoreP4
 
-@onready var level: Label = $Level
-@onready var revives: Label = $Revives
+@onready var level: Label = $LevelFlag/Level
+@onready var revives: Label = $GameRevives/Revives
 
 var players: int = 1
+var total_bots: int = 20
+var defeated_bots: int = 0
 
 func _ready() -> void:
 	Global.lifes_p1_changed.connect(update_p1_lifes_label)
@@ -80,9 +77,6 @@ func toggle_hud_itens():
 	life_hud_p2.visible = players >= 2
 	life_hud_p3.visible = players >= 3
 	life_hud_p4.visible = players >= 4
-	stars_hud_p2.visible = players >= 2
-	stars_hud_p3.visible = players >= 3
-	stars_hud_p4.visible = players >= 4
 	score_hud_p2.visible = players >= 2
 	score_hud_p3.visible = players >= 3
 	score_hud_p4.visible = players >= 4
@@ -92,18 +86,14 @@ func toggle_hud_itens():
 func define_hud_layout():
 	if players == 1:
 		life_hud_p1.position = Vector2(88.0, 104.0)
-		stars_hud_p1.position = Vector2(88.0, 136.0)
 
 	elif players == 2:
 		life_hud_p1.position = Vector2(88.0, 104.0)
-		stars_hud_p1.position = Vector2(88.0, 136.0)
 
 		life_hud_p2.position = Vector2(344.0, 104.0)
-		stars_hud_p2.position = Vector2(344.0, 136.0)
 
 	elif players == 3:
 		life_hud_p3.position = Vector2(344.0, 104.0)
-		stars_hud_p3.position = Vector2(344.0, 136.0)
 
 func update_p1_lifes_label(value):
 	lifesP1.text = format_number(value)
@@ -164,8 +154,13 @@ func update_level_label(value):
 	level.text = format_number(value)
 
 func update_bots_remaining(value):
-	bots1.text = format_number(value)
-	bots2.text = format_number(value)
+	all_bots.text = format_number(value)
+
+func update_level_percent():
+	defeated_bots += 1
+	defeated_bots = clamp(defeated_bots, 0, total_bots)
+	var percent := int((defeated_bots * 100.0) / total_bots)
+	level_clear.text = str(percent) + "%"
 
 func format_number(number: int, pad_value: int = 2) -> String:
 	var number_string: String = str(number)

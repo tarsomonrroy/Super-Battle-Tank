@@ -34,7 +34,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(56, 457)]
+"values": [Vector2(0, 457)]
 }
 
 [sub_resource type="Animation" id="Animation_isoef"]
@@ -63,7 +63,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(56, 216)]
+"values": [Vector2(0, 216)]
 }
 
 [sub_resource type="Animation" id="Animation_kiqgm"]
@@ -92,7 +92,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(56, 457), Vector2(56, 216)]
+"values": [Vector2(0, 457), Vector2(0, 216)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xn6kt"]
@@ -101,10 +101,6 @@ _data = {
 &"finished": SubResource("Animation_isoef"),
 &"start": SubResource("Animation_kiqgm")
 }
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1k4da"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vovv2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kiqgm"]
 
@@ -138,9 +134,8 @@ scale = Vector2(1.0625, 1.0714285)
 texture = ExtResource("3_qgo02")
 
 [node name="CreditsText" type="Label" parent="." unique_id=461088302]
-offset_left = 56.0
 offset_top = 457.0
-offset_right = 408.0
+offset_right = 448.0
 offset_bottom = 492.0
 text = "© 1980 1985 NANCO LTD.
 © BIOS AXIS - 2025"
@@ -148,78 +143,40 @@ label_settings = ExtResource("3_xn6kt")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=881666552]
-libraries/ = SubResource("AnimationLibrary_xn6kt")
-
-[node name="Menu" type="Node2D" parent="." unique_id=1219277611]
-position = Vector2(56, 0)
-
-[node name="PanelContainer1" type="PanelContainer" parent="Menu" unique_id=130867813]
-offset_left = 48.0
-offset_right = 288.0
-offset_bottom = 24.0
-size_flags_horizontal = 0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_1k4da")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Menu/PanelContainer1" unique_id=1535161787]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-
-[node name="HiScoreTitle" type="Label" parent="Menu/PanelContainer1/HBoxContainer" unique_id=1046919072]
+[node name="HiScoreTitle" type="Label" parent="." unique_id=1046919072]
 visible = false
-layout_mode = 2
+offset_top = 8.0
+offset_right = 448.0
+offset_bottom = 16.0
 size_flags_horizontal = 4
-text = "HIGHSCORE 1P -"
+text = "HIGHSCORE 1P - 000000"
 label_settings = ExtResource("3_xn6kt")
+horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HiScoreValue1" type="Label" parent="Menu/PanelContainer1/HBoxContainer" unique_id=547982360]
+[node name="PlayersTitle" type="Label" parent="." unique_id=2086424572]
 visible = false
-layout_mode = 2
-text = "000000"
-label_settings = ExtResource("3_xn6kt")
-vertical_alignment = 1
-
-[node name="HiScoreValue2" type="Label" parent="Menu/PanelContainer1/HBoxContainer" unique_id=1529365667]
-visible = false
-layout_mode = 2
-text = "000000"
-label_settings = ExtResource("3_xn6kt")
-vertical_alignment = 1
-
-[node name="HiScoreValue3" type="Label" parent="Menu/PanelContainer1/HBoxContainer" unique_id=1216156516]
-visible = false
-layout_mode = 2
-text = "000000"
-label_settings = ExtResource("3_xn6kt")
-vertical_alignment = 1
-
-[node name="HiScoreValue4" type="Label" parent="Menu/PanelContainer1/HBoxContainer" unique_id=1279502771]
-visible = false
-layout_mode = 2
-text = "000000"
-label_settings = ExtResource("3_xn6kt")
-vertical_alignment = 1
-
-[node name="PanelContainer2" type="PanelContainer" parent="Menu" unique_id=519125806]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 336.0
-offset_bottom = 24.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxEmpty_vovv2")
-
-[node name="Players" type="Label" parent="Menu/PanelContainer2" unique_id=2086424572]
-visible = false
-layout_mode = 2
+offset_top = 8.0
+offset_right = 448.0
+offset_bottom = 16.0
 size_flags_horizontal = 4
 text = "1 PLAYER MODE"
 label_settings = ExtResource("3_xn6kt")
+horizontal_alignment = 1
+
+[node name="Version" type="Label" parent="." unique_id=508426335]
+visible = false
+offset_left = 392.0
+offset_top = 232.0
+offset_right = 448.0
+offset_bottom = 256.0
+text = "V0.0.0"
+label_settings = ExtResource("3_xn6kt")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=881666552]
+libraries/ = SubResource("AnimationLibrary_xn6kt")
 
 [node name="Page1" type="Node2D" parent="." unique_id=2108733505]
 modulate = Color(1, 1, 1, 0)

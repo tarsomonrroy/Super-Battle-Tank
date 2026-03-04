@@ -30,7 +30,8 @@ func _ready():
 
 func open():
 	visible = true
-	MobileControl.control_mode("menu")
+	MobileControl.control_mode("language")
+	MobileControl.change_sprite_buttons("okay")
 	current_index = 0
 	update_focus()
 	can_input = false

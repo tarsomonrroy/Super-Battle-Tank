@@ -39,17 +39,17 @@ var is_reinforcement: bool = false
 var hitted_by_granade: bool = false
 var player_who_hit: int = 0
 
-var speed: float = 40.0
 var cur_state: String = "down"
 var shield: int = 0
-var points: int = 100
 
+var points: int = 100
+var inline_top_time: float = 3.0
+var speed: float = 40.0
 var power: int  = 1
 var fire_rate: Vector2 = Vector2(0.75, 1.5)
 
 var tank_direction: String = "down"
 var last_axis: String = "vertical"
-var inline_top_time: float = 3.0
 var inline_timer: float = 0.0
 var on_boat: bool = false
 
@@ -69,6 +69,8 @@ var SHIELD_MAX_DARK_PALLETE: Material = preload("res://shaders_material/max_shie
 var SHIELD_MAX_PALLETE: Material = preload("res://shaders_material/max_shield_bot_shader_material.tres")
 var SHIELD_HALF_PALLETE: Material = preload("res://shaders_material/half_shield_bot_shader_material.tres")
 var SHIELD_LOW_PALLETE: Material = preload("res://shaders_material/low_shield_bot_shader_material.tres")
+var BOSS_ONE_PALLETE: Material = preload("res://shaders_material/boss_tank_one_shader_material.tres")
+var BOSS_TWO_PALLETE: Material = preload("res://shaders_material/boss_tank_two_shader_material.tres")
 
 func _ready() -> void:
 	bots_group_node = get_parent()
@@ -87,7 +89,11 @@ func generate_bot(state: int = 1, special: bool = false, reinforcement: bool = f
 func define_bot_type():
 	match bot_state:
 		1:
-			pass
+			points = 100
+			inline_top_time = 3.0
+			speed = 40.0
+			power  = 1
+			fire_rate = Vector2(0.75, 1.5)
 		2:
 			points = 200
 			inline_top_time = 1.5
@@ -107,34 +113,63 @@ func define_bot_type():
 			speed = 30.0
 			shield = 3
 			fire_rate = Vector2(0.8, 1.2)
+		5:
+			points = 1000
+			inline_top_time = 1.5
+			power = 2
+			speed = 10.0
+			shield = 30
+			fire_rate = Vector2(0.3, 0.8)
+			max_bullets = 5
 
 	if Global.hard_mode:
 		speed += 10.0
 
 func add_extra_armor():
-	if is_reinforcement:
+	if is_reinforcement and bot_state != 5:
 		if is_special:
 			shield = 5
 		else:
 			shield = 4
 
 	elif Global.current_gameplay_mode in [Global.GamePlay.CAMPAIGN, Global.GamePlay.FREEPLAY] and Global.hard_mode:
-		if bot_state == 4:
+		if bot_state == 5:
+			shield = 30
+		elif bot_state == 4:
 			shield = randi_range(3, 4)
 		else:
 			shield = randi_range(0, 3)
 
 	elif Global.current_gameplay_mode == Global.GamePlay.SURVIVAL:
 		if Global.current_level_round >= 10:
-			if bot_state != 4:
-				var data: Dictionary = Global.level_round_data
-				shield = randi_range(0, data.get("shield", 0))
+			if bot_state == 5:
+				shield = 25
+			elif bot_state == 4:
+				shield = randi_range(3, 4)
+
 		elif Global.current_level_round >= 20:
-			if bot_state != 4:
+			if bot_state == 5:
+				shield = 50
+			if bot_state == 4:
 				shield = randi_range(3, 4)
 			else:
-				var data: Dictionary = Global.level_round_data
-				shield = randi_range(0, data.get("shield", 0))
+				shield = randi_range(0, Global.level_round_data.get("shield", 0))
+
+		elif Global.current_level_round >= 30:
+			if bot_state == 5:
+				shield = 750
+			elif bot_state == 4:
+				shield = randi_range(4, 6)
+			else:
+				shield = randi_range(0, Global.level_round_data.get("shield", 0))
+		
+		elif Global.current_level_round >= 40:
+			if bot_state == 5:
+				shield = 100
+			elif bot_state == 4:
+				shield = randi_range(5, 8)
+			else:
+				shield = randi_range(0, Global.level_round_data.get("shield", 0))
 
 func verify_shader_material():
 	if (is_special or shield > 0) and not sprite.material:
@@ -524,6 +559,8 @@ func update_bot_palette():
 
 	if is_special:
 		start_blinking(SPECIAL_PALLETE, null, 0.2)
+	elif bot_state == 5:
+		start_blinking(BOSS_ONE_PALLETE, BOSS_TWO_PALLETE, 0.06)
 	elif shield > 3:
 		start_blinking(SHIELD_EXTRA_PALLETE, SHIELD_EXTRA_WHITE_PALLETE, 0.06)
 	elif shield > 2:
@@ -534,3 +571,4 @@ func update_bot_palette():
 		start_blinking(SHIELD_LOW_PALLETE, SHIELD_HALF_PALLETE, 0.02)
 	else:
 		stop_blinking(null)
+	

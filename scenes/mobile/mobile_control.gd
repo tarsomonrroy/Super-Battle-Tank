@@ -15,7 +15,8 @@ var visibility_value: float = 0.5
 func _ready() -> void:
 	set_visibility(SettingsManager.virtual_control_visibility)
 	control_mode("hidden")
-	if OS.get_name() != "Android":
+
+	if Global.os_type == "desktop":
 		active_controls = false
 
 func control_mode(mode_name: String):
@@ -97,7 +98,7 @@ func control_mode(mode_name: String):
 			toggle_button("TouchButton-Back", false)
 			toggle_button("TouchButton-Pause", true)
 			toggle_button("TouchButton-Build", false)
-			change_move_buttons("editor")
+			change_move_buttons("play")
 			change_action_buttons("menu")
 		"mobile":
 			toggle_button("TouchButton-Up", false)
@@ -193,7 +194,6 @@ func toggle_button(btn_name: String, enable: bool):
 		button.visible = enable
 
 func toggle_virtual_buttons(enable: bool):
-	if not active_controls: return
 	if enable:
 		active_controls = true
 	else:

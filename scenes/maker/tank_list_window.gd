@@ -49,6 +49,7 @@ func _ready() -> void:
 		spinbox.add_theme_icon_override("down_hover", icon_down_hover)
 		spinbox.add_theme_icon_override("down_pressed", icon_down_pressed)
 		spinbox.add_theme_icon_override("down_disabled", icon_down_disabled)
+		spinbox.get_line_edit().virtual_keyboard_enabled = false
 
 		hbox.add_child(label)
 		hbox.add_child(spinbox)

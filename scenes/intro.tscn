@@ -42,6 +42,52 @@ tracks/2/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Credits:modulate:a")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_t1qkj"]
+resource_name = "credits"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Credits:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_272cy"]
+resource_name = "credits_out"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Credits:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
 
 [sub_resource type="Animation" id="Animation_0naf5"]
 resource_name = "language_in"
@@ -148,6 +194,8 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_es01l"]
 _data = {
 &"RESET": SubResource("Animation_i2l1n"),
+&"credits": SubResource("Animation_t1qkj"),
+&"credits_out": SubResource("Animation_272cy"),
 &"language_in": SubResource("Animation_0naf5"),
 &"language_out": SubResource("Animation_bu1yb"),
 &"title": SubResource("Animation_4bx60"),
@@ -163,16 +211,27 @@ script = ExtResource("1_yjqpq")
 modulate = Color(1, 1, 1, 0)
 offset_right = 448.0
 offset_bottom = 256.0
-text = "GUARANA STUDIOS
+text = "GUARANA GAMES
 PRODUCTION"
+label_settings = ExtResource("1_ioskq")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Credits" type="Label" parent="." unique_id=1119509353]
+modulate = Color(1, 1, 1, 0)
+offset_right = 448.0
+offset_bottom = 256.0
+text = "DEVELOPED BY
+BIOS AXIS
+"
 label_settings = ExtResource("1_ioskq")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Warning" type="Label" parent="." unique_id=300172408]
 modulate = Color(1, 1, 1, 0)
-offset_left = 32.0
-offset_right = 416.0
+offset_left = 80.0
+offset_right = 368.0
 offset_bottom = 256.0
 text = "This is a fan project, not affiliated with, approved or endorsed by Namco LTD.
 This fangame is free, if you paid for it, you were scammed.
@@ -297,3 +356,20 @@ offset_bottom = 224.0
 text = "BAHASA INDONESIA"
 label_settings = ExtResource("1_ioskq")
 horizontal_alignment = 1
+
+[node name="TitleTimer" type="Timer" parent="." unique_id=2081203454]
+wait_time = 1.2
+one_shot = true
+
+[node name="CreditsTimer" type="Timer" parent="." unique_id=1510144823]
+wait_time = 1.2
+one_shot = true
+
+[node name="WarningTimer" type="Timer" parent="." unique_id=2090032756]
+wait_time = 6.5
+one_shot = true
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_finished"]
+[connection signal="timeout" from="TitleTimer" to="." method="_on_title_timer_timeout"]
+[connection signal="timeout" from="CreditsTimer" to="." method="_on_credits_timer_timeout"]
+[connection signal="timeout" from="WarningTimer" to="." method="_on_warning_timer_timeout"]

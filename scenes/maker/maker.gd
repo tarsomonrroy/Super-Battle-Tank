@@ -11,7 +11,8 @@ var current_tile_action: TileAction = TileAction.BUILD
 @onready var terrain: TileMapLayer = $Terrain
 @onready var barrier: TileMapLayer = $Barrier
 @onready var player_base: StaticBody2D = $"Player Base"
-@onready var exit_panel: PanelContainer = $ExitPanel
+
+@onready var export_file_dialog: FileDialog = $ExportFileDialog
 
 var spawn_interval: float = 2.5
 var total_bots_in_level: int = 20
@@ -36,8 +37,11 @@ var old_base_area_position: String = "down"
 
 # Maker
 @onready var maker_cursor: AnimatedSprite2D = $"Maker Cursor"
+
 @onready var save_level_window: PanelContainer = $"Save Level Window"
 @onready var level_saved_message: Control = $"Level Saved Message"
+@onready var exit_panel: PanelContainer = $ExitPanel
+
 @onready var save_message_timer: Timer = $SaveMessageTimer
 
 @onready var spawn_p1: Sprite2D = $PlayerSpawn/SpawnP1
@@ -48,7 +52,8 @@ var old_base_area_position: String = "down"
 @onready var bot_spawn2: Sprite2D = $BotSpawn/BotSpawn2
 @onready var bot_spawn3: Sprite2D = $BotSpawn/BotSpawn3
 
-var pending_export_data: Dictionary = {}
+var pending_export_data: Dictionary
+var pending_export_levelname: String
 
 var all_spawn_sprites: Array[Sprite2D] = []
 
@@ -87,9 +92,10 @@ const MAKER_BOUNDARY = Rect2i(8, 2, 26, 26)
 var exclusion_zones: Array[Rect2i] = []
 
 func _ready() -> void:
-	if OS.get_name() != "Android":
+	if Global.os_type == "desktop":
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		maker_cursor.visible = false
+
 	set_tile_action(true)
 	MobileControl.control_mode("build1")
 	MobileControl.change_sprite_buttons("save")
@@ -148,46 +154,41 @@ func _process(_delta: float) -> void:
 				exit_game()
 			else:
 				try_exit()
-	if OS.get_name() == "Android":
+
+	if Global.os_type == "mobile":
 		pointer_just_pressed = false
 
-func _unhandled_input(event):
-	if OS.get_name() == "Android":
-		if event is InputEventScreenTouch:
-			pointer_pos = event.position
-			pointer_down = event.pressed
-			pointer_just_pressed = event.pressed
+func _input(event):
+	if event is InputEventScreenTouch:
+		pointer_pos = event.position
+		pointer_down = event.pressed
+		pointer_just_pressed = event.pressed
 
-		elif event is InputEventScreenDrag:
-			pointer_pos = event.position
-
-func try_exit():
-	if OS.get_name() != "Android":
-		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
-	exit_panel.visible = true
-	confirmed_exit = true
-	MobileControl.control_mode("build3")
-	MobileControl.change_sprite_buttons("okay")
-
-func back_editor():
-	if OS.get_name() != "Android":
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	exit_panel.visible = false
-	confirmed_exit = false
-	MobileControl.change_sprite_buttons("save")
-	mobile_layout()
-
-func exit_game():
-	MenuState.skip_intro = true
-	MenuState.start_in = 5
-	goto_menu()
+	elif event is InputEventScreenDrag:
+		pointer_pos = event.position
+		pointer_down = true
 
 func _handle_tile_input():
-	if OS.get_name() == "Android":
+	if Global.os_type == "mobile":
 		maker_cursor.visible = false
-		var mouse_pos = pointer_pos
-		var map_coords = terrain.local_to_map(terrain.to_local(mouse_pos))
-		#maker_cursor.global_position = terrain.to_global(terrain.map_to_local(map_coords))
+
+		# Change Tile
+		if Input.is_action_just_pressed("menu_right") or Input.is_action_just_pressed("game1_right"):
+			current_tile_index = (current_tile_index + 1) % available_maker_tiles.size()
+			#get_viewport().set_input_as_handled()
+
+		if Input.is_action_just_pressed("menu_left") or Input.is_action_just_pressed("game1_left"):
+			current_tile_index = (current_tile_index - 1 + available_maker_tiles.size()) % available_maker_tiles.size()
+			#get_viewport().set_input_as_handled()
+
+		# Mobile Tile Action
+		if Input.is_action_just_pressed("game_change_build"):
+			var is_build = current_tile_action == TileAction.ERASE
+			set_tile_action(is_build)
+
+		var mouse_pos_local = terrain.to_local(pointer_pos)
+		var map_coords = terrain.local_to_map(mouse_pos_local)
+		tile_block_icon.change_sprite(current_tile_index)
 
 		# Touch Pressed
 		if pointer_down:
@@ -200,7 +201,7 @@ func _handle_tile_input():
 					terrain.set_cell(map_coords, tile_source_id, selected_tile_coords)
 				TileAction.ERASE:
 					terrain.set_cell(map_coords, -1)
-			get_viewport().set_input_as_handled()
+			#get_viewport().set_input_as_handled()
 
 		# Touch Just Pressed
 		if pointer_just_pressed:
@@ -231,7 +232,7 @@ func _handle_tile_input():
 				maker_cursor.visible = false
 				terrain.set_cell(map_coords, -1)
 				get_viewport().set_input_as_handled()
-		
+
 		# Mouse Just Pressed
 		if Input.is_action_just_pressed("game_build"):
 			if not is_valid_short_location(map_coords):
@@ -251,11 +252,6 @@ func _handle_tile_input():
 		if Input.is_action_just_pressed("menu_left") or Input.is_action_just_pressed("game1_left"):
 			current_tile_index = (current_tile_index - 1 + available_maker_tiles.size()) % available_maker_tiles.size()
 			get_viewport().set_input_as_handled()
-
-		# Mobile Tile Action
-		if Input.is_action_just_pressed("game_change_build"):
-			var is_build = current_tile_action == TileAction.ERASE
-			set_tile_action(is_build)
 
 func _handle_base_input():
 	maker_cursor.visible = false
@@ -282,29 +278,23 @@ func _handle_base_input():
 		else:
 			get_viewport().set_input_as_handled()
 
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
-		if not confirmed_exit:
-			try_exit()
-
-func _get_snapped_pointer_pos() -> Vector2:
-	return get_snapped_position(pointer_pos, 8)
-
 func _handle_spawn_input() -> void:
 	maker_cursor.visible = false
-	if OS.get_name() == "Android":
+	if Global.os_type == "mobile":
 		var snapped_mouse_pos = _get_snapped_pointer_pos()
 		if pointer_down and not currently_dragged_spawn:
 			if currently_dragged_spawn:
 				return
 			var mouse_pos = pointer_pos
 			for spawn_sprite in all_spawn_sprites:
-				var mouse_local_pos = spawn_sprite.to_local(mouse_pos)
-				if spawn_sprite.get_rect().has_point(mouse_local_pos):
+				var sprite_size = spawn_sprite.texture.get_size() * spawn_sprite.global_scale
+				var top_left = spawn_sprite.global_position - (sprite_size / 2)
+				var spawn_rect = Rect2(top_left, sprite_size)
+				if spawn_rect.has_point(mouse_pos):
 					currently_dragged_spawn = spawn_sprite
 					drag_start_position = currently_dragged_spawn.global_position
 					currently_dragged_spawn.modulate.a = 0.5
-					get_viewport().set_input_as_handled()
+					# get_viewport().set_input_as_handled() # Remova isso do _process/handler
 					break
 
 		elif pointer_down and currently_dragged_spawn:
@@ -325,8 +315,8 @@ func _handle_spawn_input() -> void:
 			currently_dragged_spawn.modulate.a = 1.0 
 			currently_dragged_spawn = null
 			drag_start_position = Vector2.ZERO
-			get_viewport().set_input_as_handled()
-	
+			#get_viewport().set_input_as_handled()
+
 	else:
 		var snapped_mouse_pos = _get_snapped_mouse_pos()
 		if Input.is_action_just_pressed("game_build"):
@@ -368,6 +358,35 @@ func set_tile_action(build: bool) -> void:
 		MobileControl.change_sprite_buttons("pencil")
 	else:
 		MobileControl.change_sprite_buttons("eraser")
+
+func try_exit():
+	if Global.os_type == "desktop":
+		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	exit_panel.visible = true
+	confirmed_exit = true
+	MobileControl.control_mode("build3")
+	MobileControl.change_sprite_buttons("okay")
+
+func back_editor():
+	if Global.os_type == "desktop":
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	exit_panel.visible = false
+	confirmed_exit = false
+	MobileControl.change_sprite_buttons("save")
+	mobile_layout()
+
+func exit_game():
+	MenuState.skip_intro = true
+	MenuState.start_in = 5
+	goto_menu()
+
+func _get_snapped_pointer_pos() -> Vector2:
+	return get_snapped_position(pointer_pos, 8)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		if not confirmed_exit and not in_popup:
+			try_exit()
 
 #region Base Generation
 
@@ -613,7 +632,7 @@ func _on_save_message_timeout() -> void:
 	mobile_layout()
 
 func goto_menu():
-	if OS.get_name() != "Android":
+	if Global.os_type == "desktop":
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	MobileControl.control_mode("hidden")
 	MenuState.skip_intro = true
@@ -698,38 +717,15 @@ func _build_level_data_dictionary(popup_data: Dictionary) -> Dictionary:
 
 func _on_export_requested(popup_data: Dictionary, levelname: String):
 	var level_data = _build_level_data_dictionary(popup_data)
-	
 	if OS.get_name() == "Web":
 		_web_export(level_data, levelname)
 		_on_export_success()
 	else:
 		pending_export_data = level_data
-		DisplayServer.file_dialog_show(
-			GameTranslation.get_translated_text("Export level..."),
-			"*.bcd",
-			levelname + ".bcd",
-			false,
-			DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
-			["*.bcd ; " + GameTranslation.get_translated_text("Super Battle City Files")],
-			_on_file_dialog_result
-		)
+		pending_export_levelname = levelname
+		go_to_export_file()
 
-func _on_file_dialog_result(status: bool, selected_paths: PackedStringArray, _filter_index: int):
-	if status and selected_paths.size() > 0:
-		var path_to_save = selected_paths[0]
-		_finalize_windows_export(path_to_save)
-
-func _finalize_windows_export(path: String):
-	var json_string = JSON.stringify(pending_export_data, "\t")
-	var file = FileAccess.open_encrypted_with_pass(path, FileAccess.WRITE, "battle_tank_maker")
-	if file:
-		file.store_string(json_string)
-		file.close()
-		_on_export_success()
-		#OS.shell_show_in_file_manager(path)
-	else:
-		SoundManager.play_sound("editor_error")
-
+## WEB EXPORT
 func _web_export(level_data: Dictionary, levelname: String):
 	var json_string = JSON.stringify(level_data, "\t")
 	var temp_path = "user://temp_web_export.bcd"
@@ -743,6 +739,35 @@ func _web_export(level_data: Dictionary, levelname: String):
 		JavaScriptBridge.download_buffer(buffer, levelname + ".bcd")
 		DirAccess.remove_absolute(temp_path)
 
+## WINDOWS EXPORT
+func go_to_export_file():
+	DisplayServer.file_dialog_show(
+		GameTranslation.get_translated_text("Export level..."),
+		"*.bcd",
+		pending_export_levelname + ".bcd",
+		false,
+		DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
+		["*.bcd ; " + GameTranslation.get_translated_text("Super Battle City Files")],
+		_on_file_dialog_result
+	)
+
+func _on_file_dialog_result(status: bool, selected_paths: PackedStringArray, _filter_index: int):
+	if not status or selected_paths.size() == 0:
+		return
+	var path_to_save = selected_paths[0]
+	_finalize_file_export(path_to_save)
+
+func _finalize_file_export(path: String):
+	var json_string = JSON.stringify(pending_export_data, "\t")
+	var file = FileAccess.open_encrypted_with_pass(path, FileAccess.WRITE, "battle_tank_maker")
+	if file:
+		file.store_string(json_string)
+		file.close()
+		_on_export_success()
+	else:
+		SoundManager.play_sound("editor_error")
+
+# EXPORT FINALIZED
 func _on_export_success():
 	save_level_window.hide()
 	in_popup = false

@@ -163,6 +163,12 @@ var next_extra_life_score_p2: int = 50000
 var next_extra_life_score_p3: int = 50000
 var next_extra_life_score_p4: int = 50000
 
+var os_type: String = "desktop"
+
+func _ready() -> void:
+	if OS.get_name() == "Android" or OS.has_feature("web_android"):
+		os_type = "mobile"
+
 func add_score(player: int, amount: int):
 	match player:
 		1:

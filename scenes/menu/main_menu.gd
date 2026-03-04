@@ -1,7 +1,9 @@
 extends Node2D
 
 @onready var option_menu: Sprite2D = $OptionMenu
-@onready var player_mode: Label = $Menu/PanelContainer2/Players
+@onready var player_mode: Label = $PlayersTitle
+
+@onready var version: Label = $Version
 
 @onready var page_1: Node2D = $Page1
 @onready var button_container_1: Array = $Page1/PageContainer/VBoxContainer.get_children()
@@ -35,12 +37,7 @@ extends Node2D
 @onready var icon_right: Sprite2D = $IconRight
 @onready var animation: AnimationPlayer = $AnimationPlayer
 
-@onready var hi_score_container: HBoxContainer = $Menu/PanelContainer1/HBoxContainer
-@onready var hi_score_title: Label = $Menu/PanelContainer1/HBoxContainer/HiScoreTitle
-@onready var hi_score_value_1: Label = $Menu/PanelContainer1/HBoxContainer/HiScoreValue1
-@onready var hi_score_value_2: Label = $Menu/PanelContainer1/HBoxContainer/HiScoreValue2
-@onready var hi_score_value_3: Label = $Menu/PanelContainer1/HBoxContainer/HiScoreValue3
-@onready var hi_score_value_4: Label = $Menu/PanelContainer1/HBoxContainer/HiScoreValue4
+@onready var hi_score_title: Label = $HiScoreTitle
 @onready var hi_score_timer: Timer = $HiScoreTimer
 
 @onready var initial_delay_timer: Timer = $InitialDelayTimer
@@ -90,6 +87,9 @@ func _ready() -> void:
 		var dff = " " + GameTranslation.get_translated_text("HARD")
 		extra_hiscore_title = dff
 		change_title()
+	
+	var vers = ProjectSettings.get_setting("application/config/version")
+	version.text = "v" + vers
 
 func start_menu(skip_intro: bool, start_in: int = 1):
 	if skip_intro:
@@ -184,12 +184,6 @@ func _on_repeat_timeout() -> void:
 	_move_level_selection(held_direction)
 	repeat_timer.start()
 
-func _update_hi_score():
-	hi_score_value_1.text = Highscore.get_highscore_string(1)
-	hi_score_value_2.text = Highscore.get_highscore_string(2)
-	hi_score_value_3.text = Highscore.get_highscore_string(3)
-	hi_score_value_4.text = Highscore.get_highscore_string(4)
-
 func _on_hi_score_timeout() -> void:
 	_update_hi_score_texts(1)
 	
@@ -199,26 +193,21 @@ func _update_hi_score_texts(value: int = 0) -> void:
 	else:
 		tier = 1
 	change_title()
-	hi_score_value_1.visible = tier == 1
-	hi_score_value_2.visible = tier == 2
-	hi_score_value_3.visible = tier == 3
-	hi_score_value_4.visible = tier == 4
 
 func change_title():
-	_update_hi_score()
 	match tier:
 		1:
 			var msg = GameTranslation.get_translated_text("HIGHSCORE 1P")
-			hi_score_title.text = msg + extra_hiscore_title + " -"
+			hi_score_title.text = msg + extra_hiscore_title + " - " + Highscore.get_highscore_string(1)
 		2:
 			var msg = GameTranslation.get_translated_text("HIGHSCORE 2P")
-			hi_score_title.text = msg + extra_hiscore_title + " -"
+			hi_score_title.text = msg + extra_hiscore_title + " - " + Highscore.get_highscore_string(2)
 		3:
 			var msg = GameTranslation.get_translated_text("HIGHSCORE 3P")
-			hi_score_title.text = msg + extra_hiscore_title + " -"
+			hi_score_title.text = msg + extra_hiscore_title + " - " + Highscore.get_highscore_string(3)
 		4:
 			var msg = GameTranslation.get_translated_text("HIGHSCORE 4P")
-			hi_score_title.text = msg + extra_hiscore_title + " -"
+			hi_score_title.text = msg + extra_hiscore_title + " - " + Highscore.get_highscore_string(4)
 
 func _on_animation_finished(_anim_name: StringName) -> void:
 	icon_left.visible = true
@@ -229,7 +218,7 @@ func _on_animation_finished(_anim_name: StringName) -> void:
 	MobileControl.change_sprite_buttons("okay")
 	MobileControl.change_sprite_buttons("score")
 	_update_hi_score_texts(0)
-	_update_hi_score()
+	version.visible = true
 	control_active = true
 	menu_started = true
 	change_page(start_page)
@@ -382,10 +371,14 @@ func to_level_scene(gameplay: Global.GamePlay, filename: String = "", level_num:
 	Global.current_level_name = filename
 	Global.set_player_level(players)
 
+	if Global.current_gameplay_mode == Global.GamePlay.CUSTOM:
+		Global.current_level_number = 0
+
 	var survival_round = ""
 	if Global.current_gameplay_mode == Global.GamePlay.SURVIVAL:
 		var msg = GameTranslation.get_translated_text("ROUND")
 		survival_round = "\n" + msg + " " + str(Global.current_level_round)
+
 	MobileControl.control_mode("hidden")
 	LoadingScreen.play_transition_to_scene("res://scenes/levels/level.tscn", get_formatted_level_name(), true, survival_round)
 
@@ -432,7 +425,7 @@ func change_page(page: int):
 	icon_left.visible = true
 	icon_right.visible = true
 	option_menu.visible = page == 4
-	hi_score_container.visible = true
+	hi_score_title.visible = true
 	player_mode.visible = false
 	match page:
 	# Main Menu
@@ -449,7 +442,7 @@ func change_page(page: int):
 		3:
 			current_page = page_3
 			current_page_buttons = button_container_3
-			hi_score_container.visible = false
+			hi_score_title.visible = false
 			player_mode.visible = true
 
 	# Options Menu
@@ -469,7 +462,7 @@ func change_page(page: int):
 			icon_left.visible = false
 			icon_right.visible = false
 			if Global.current_game_mode == Global.GameMode.PLAY:
-				hi_score_container.visible = false
+				hi_score_title.visible = false
 				player_mode.visible = true
 
 	# Exit Menu
@@ -678,9 +671,6 @@ func validate_level_file(levelname: String, is_import: bool = false) -> bool:
 
 #endregion
 
-
-
-
 func _setup_web_upload():
 	_js_upload_callback = JavaScriptBridge.create_callback(_on_web_file_loaded)
 	var js_code = """
@@ -713,6 +703,16 @@ func _setup_web_upload():
 func _handle_import_request():
 	if OS.get_name() == "Web":
 		JavaScriptBridge.eval("document.getElementById('godot_upload_input').click();")
+
+	# UNUSED...
+	elif OS.get_name() == "Android":
+		DisplayServer.file_dialog_show(
+			GameTranslation.get_translated_text("Import level..."), "*.bcd", "", false,
+			DisplayServer.FILE_DIALOG_MODE_OPEN_FILE,
+			["*.bcd ; " + GameTranslation.get_translated_text("Super Battle City Files")],
+			_on_android_file_selected
+		)
+
 	else:
 		DisplayServer.file_dialog_show(
 			GameTranslation.get_translated_text("Import level..."), "*.bcd", "", false,
@@ -722,11 +722,21 @@ func _handle_import_request():
 		)
 
 func _on_windows_file_selected(status: bool, selected_paths: PackedStringArray, _filter_index: int):
-	if status and selected_paths.size() > 0:
-		var source_path = selected_paths[0]
-		var file_content = FileAccess.get_file_as_bytes(source_path)
-		var file_name = source_path.get_file().get_slice(".", 0)
-		_finalize_import(file_name, file_content)
+	if not status or selected_paths.is_empty(): return
+	var source_path = selected_paths[0]
+	var file_content = FileAccess.get_file_as_bytes(source_path)
+	var file_name = source_path.get_file().get_slice(".", 0)
+	_finalize_import(file_name, file_content)
+
+func _on_android_file_selected(status: bool, selected_paths: PackedStringArray, _filter_index: int):
+	if not status or selected_paths.is_empty(): return
+	var source_path = selected_paths[0]
+	var file = FileAccess.open(source_path, FileAccess.READ)
+	if not file: return
+	var file_bytes = file.get_buffer(file.get_length())
+	file.close()
+	var file_name = source_path.get_file().get_slice(".", 0)
+	_finalize_import(file_name, file_bytes)
 
 func _on_web_file_loaded(args):
 	var file_name_w_ext = args[0]
@@ -745,6 +755,10 @@ func _js_byte_array_to_packed(js_obj) -> PackedByteArray:
 	return out
 
 func _finalize_import(level_name_raw: String, file_bytes: PackedByteArray):
+	var dir_check = DirAccess.open("user://")
+	if not dir_check.dir_exists("levels"):
+		dir_check.make_dir("levels")
+
 	var clean_name = level_name_raw.validate_filename()
 	var temp_path = "user://levels/temp_import.bcd"
 	var file = FileAccess.open(temp_path, FileAccess.WRITE)

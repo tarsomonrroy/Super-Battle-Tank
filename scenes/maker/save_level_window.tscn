@@ -246,5 +246,6 @@ position = Vector2i(0, 36)
 access = 2
 filters = PackedStringArray("")
 
+[connection signal="focus_exited" from="MarginContainer/VBoxContainer/MarginContainer1/HBoxContainer1/MarginContainer/LevelNameEdit" to="." method="on_focus_exited"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckQuick" to="." method="_on_check_quick_toggled"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckManual" to="." method="_on_check_manual_toggled"]

@@ -15,12 +15,6 @@ func _process(_delta: float) -> void:
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if OS.get_name() == "Android":
-		if event.is_action_pressed("ui_cancel"):
-			print("BACK pressionado")
-			get_viewport().set_input_as_handled()
-
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
 		get_viewport().set_input_as_handled()

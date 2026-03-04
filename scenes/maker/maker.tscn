@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://1krni5ns08dn" path="res://sprites/icon_left.png" id="7_kv6oy"]
 [ext_resource type="Texture2D" uid="uid://c2qum1o3s6cj5" path="res://sprites/spawn_point.png" id="7_sfvha"]
 [ext_resource type="PackedScene" uid="uid://bkh13hvw8pygp" path="res://scenes/maker/maker_cursor.tscn" id="8_biqfn"]
+[ext_resource type="Script" uid="uid://gt0ir31uw7h1" path="res://scenes/levels/level_camera.gd" id="9_jvaop"]
 [ext_resource type="LabelSettings" uid="uid://bb2u8lhx0w2up" path="res://fonts/batcity_settings.tres" id="14_qvgvm"]
 [ext_resource type="LabelSettings" uid="uid://bfp775vrse8n5" path="res://fonts/batcity_settings_small.tres" id="15_jvaop"]
 
@@ -516,6 +517,10 @@ offset_right = 328.0
 offset_bottom = 232.0
 color = Color(0, 0, 0, 1)
 
+[node name="LevelCamera" type="Camera2D" parent="." unique_id=1260336495]
+position = Vector2(224, 128)
+script = ExtResource("9_jvaop")
+
 [node name="Terrain" type="TileMapLayer" parent="." unique_id=448164666 groups=["Terrain"]]
 position = Vector2(56, 8)
 tile_set = SubResource("TileSet_x42e6")
@@ -632,4 +637,10 @@ text = "PRESS ENTER TO BACK EDITOR"
 label_settings = ExtResource("15_jvaop")
 horizontal_alignment = 1
 
+[node name="ExportFileDialog" type="FileDialog" parent="." unique_id=1642343756]
+oversampling_override = 1.0
+display_mode = 1
+use_native_dialog = true
+
 [connection signal="timeout" from="SaveMessageTimer" to="." method="_on_save_message_timeout"]
+[connection signal="file_selected" from="ExportFileDialog" to="." method="_on_export_file_dialog_file_selected"]

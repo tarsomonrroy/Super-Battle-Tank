@@ -1,0 +1,13 @@
+Copyright (c) 2026 Bios Axis
+
+Permission is granted to anyone to use, study, modify, and redistribute this game and its source code, provided that:
+
+- The game remains free to play
+- The original company is credited (Namco LTD.)
+- The fangame author is credited (Bios Axis)
+- This game is not sold or monetized in any way
+
+Commercial use is strictly prohibited, including but not limited to:
+selling the game, including it in paid products, or distributing it behind a paywall.
+
+This game is free to play and must remain free to play.

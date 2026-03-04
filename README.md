@@ -40,7 +40,7 @@ Increases the game's difficulty as follows: enemy tanks have random shield level
 Allows you to fire automatically simply by holding down the fire button, without having to press it to shoot.
 
 ### Language
-Choose a general language from those currently available, which are English, Español and Português.
+Choose a general language from those available: English Português, Español, Français, Deutsch, Italiano, Nederlands, Magyar, Turk, Русский, Ελληνικά, Bahasa Indonesia.
 
 ### Gamepads
 Configure each player's buttons, with keyboard and controller support.
@@ -68,11 +68,11 @@ Power-ups offer advantages to players and bots:
 
 **Clock**: Paralyzes all bots or players in place. Temporary effect.
 
-**Grenade**: Kills all bots or players on the map.
+**Grenade**: Kills all bots or players on the map. Has no effect on bosses.
 
 **Shovel**: Protects the base area with metal or removes its current protections. Temporary effect.
 
-**Boat**: Provides a boat for the player or bot to travel on water, in addition to offering a special shield point.
+**Boat**: Provides a boat for the player or bot to travel on water, in addition to offering a special shield point. Instant death if the boat is lost on the water, ignoring shields and stars.
 
 ## Contribution
 Feel free to criticize my fangame as long as you remain calm and respectful, make suggestions, point out errors and offer solutions. It's my first fangame and Godot project, so it may have a bug or two, some poorly written code, or ways to improve it.
